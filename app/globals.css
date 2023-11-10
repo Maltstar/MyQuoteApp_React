@@ -1,0 +1,398 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* :root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+} */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+/* body {
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+} */
+
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  color: white;
+  color-scheme: dark;
+  background: rgb(65, 62, 62);
+  text-align:center ;
+  margin-top:2%;  
+}
+
+
+:root{
+  --color-1 : #0c09c7;
+  --color-2 : #8df308; 
+  --color-3 : #659de6; 
+  --color-4 : #343436; 
+  --color-5 : #498a23; 
+ }
+
+a {
+  color: inherit;
+  text-decoration: none;
+  margin: 0%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,body
+{
+	height:100%;
+	padding:0px;
+	
+}
+
+h1, .popup
+{
+ text-align: center;
+ font-family:  'Impact' ;
+ font-size: 4rem ;
+ margin: 0;
+ color : var(--color-2); 
+ text-decoration: underline double var(--color-1);
+ text-shadow: 2px 2px 15px var(--color-1) ;
+}
+
+#up_about
+{
+  text-align: center;
+  margin-left: 39.5%;
+}
+
+h2
+{
+  color : var(--color-2); 
+}
+
+
+/* @media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+    background: dark;
+  } */
+  body {
+    color: white;
+    background: rgb(65, 62, 62);
+    text-align:center ;
+    margin-top:2%;   
+  }
+
+  button {
+    font-size: 110%;
+    font-weight:bold;
+    margin-top:1%;
+    background:black;
+    color: var(--color-3);
+    margin:1%;
+    _display: block;
+    _text-align: center;
+
+  }
+
+  #menu
+  {
+    text-align: center;
+    display:block;
+  }
+
+  button:hover,#submit_write:hover, .submit_read:hover
+  {
+    /* background:#34c24c; */
+
+    background-color: var(--color-1); 
+    color: var(--color-2);
+  }
+
+  .default_button
+  {
+    font-size: 110%;
+    font-weight:bold;
+    margin-top:1%;
+    background:black;
+    color: var(--color-3);
+    margin:1%;
+  }
+
+  .default_button:hover
+  {
+    background-color: var(--color-1);
+    color: var(--color-2);
+  }
+
+ 
+
+  #site-navigation
+  {
+    color: yellowgreen;
+  }
+
+  #navigation_menu
+  {
+    display: flex;
+    justify-content: center;
+    gap:1%;
+  }
+
+  .navipunkt
+{
+	_background: var(--color-1);
+	border:2px solid var(--color-1) ;
+	border-radius: 10px;
+	padding:10px;
+	font-size: 200%;
+}
+
+.navipunkt:hover
+{
+	background:#2F000B;
+}
+
+/** ENDE NAVIPUNKT **/
+
+#dabinich
+{
+	_background:#062F53;
+  background:black;
+}
+
+#dabinich:hover
+{
+	background:#2F000B;
+}
+
+  /* a{
+    margin: 2%;
+    color: yellowgreen;
+    
+  }; */
+
+
+  h2{
+     margin: 1%; 
+    font-size: 180%;
+  }
+
+  .text_about{
+    white-space:pre; /* or pre-wrap if you want wrapping to still work. */
+}
+
+
+  p,ol,ul{
+    font-style: italic;
+    color:var(--color-2)
+  }
+
+  .quote_title
+  {
+    font-size:large;
+    color:var(--color-5);
+  }
+
+  ul{
+    _list-style: none;
+  }
+
+  .list_instructions
+  {
+    list-style:none
+  }
+
+  #up
+  {
+    width: 100%; 
+    display: flex;
+    justify-content: flex-end;
+  }
+
+ h1
+  {
+    _display:inline;
+    width: fit-content;
+    margin-left: 0%;
+  }
+
+  li
+  {
+    padding-top: 0.5%;
+  }
+
+  #connect
+  {
+    margin-left: 34%;
+    margin-right: 1%;
+    _display:inline-block;
+  }
+
+
+  #wrapper, .link{
+    margin: 2%;
+    color : var(--color-2); 
+    height: fit-content;
+  }
+
+  #wrapper
+  {
+     margin-top:2%;
+     font-size: 150%;
+  }
+
+  #write{
+
+    _display: inline-grid;
+    justify-content: center;
+    _vertical-align: middle;
+    _line-height: normal;
+
+  }
+
+  #submit_write, .submit_read {
+    font-size: 110%;
+    font-weight:bold;
+    width: fit-content;
+    background:black;
+    color: var(--color-3);
+  }
+
+  #submit_write
+  {
+    display: inline;
+    width: fit-content;
+    height: fit-content;
+  }
+
+  #quote_input
+  {
+    width: fit-content;
+    height: fit-content;
+    vertical-align: middle;
+    margin-bottom: 0%;
+    display: inline;
+    
+  }
+
+  #menu_nav_home
+  {
+    margin: 14%;
+  }
+
+  #menu_nav_other
+  {
+    margin-bottom: 4%;
+    margin-top: 2%;
+  }
+
+  a:hover
+  {
+    /* color: yellowgreen; */
+    color: var(--color-5);
+  }
+
+  a
+  {
+    /* color: yellowgreen; */
+    color: rgb(101, 157, 230);
+  }
+
+  #footer
+  {
+    margin-top: 2%;
+  }
+  #link_key
+  {
+    font-size: small;
+    /* margin: */
+  }
+
+  #but_set
+  {
+    font-size: small;
+  }
+
+  label
+  {
+    margin: 20%;
+  }
+  input {
+    margin-top: 1%;
+    margin-bottom: 2%;
+    width: 25%; 
+    text-align: center
+   };
+
+   form {
+    margin-top: 10%;
+    width: fit-content;
+   }
+
+   
+   .result_img{
+    display: flex;
+    justify-content: center;
+    align-items:baseline;
+
+   }
+
+   .link_button{
+
+    border-radius: 4%;
+    border: #f37908 solid;
+    background-color: var(--color-1);
+
+   }
+
+   .foot
+   {
+    color: greenyellow;
+   }
+
+   footer a
+   {
+  
+      margin: 0%;
+    
+    
+   }
+
+
+/***************************************************************/
+/************************ MEDIA QUERY **************************/
+/***************************************************************/
+
+@media screen and (max-width:800px) {
+
+  #quote_input{
+    width: fit-content;
+  }
+
+}
+
+   /* #NFT_data{
+    resize: both;
+    overflow: auto;
+   } */
+
+/* } */
