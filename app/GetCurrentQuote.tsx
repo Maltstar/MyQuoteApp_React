@@ -42,7 +42,7 @@ import { Small_Button_with_hover } from "./Style";
                             </li>
                         </ul>
 
-                        <Small_Button_with_hover onClick={SetActivateReadQuote} text={"clear quote"}/>
+                        <Small_Button_with_hover onClick={() => SetActivateReadQuote(false)} text={"clear quote"}/>
                     </article>
 
 

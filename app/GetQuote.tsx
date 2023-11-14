@@ -34,7 +34,7 @@ import {Small_Button_with_hover} from './Style'
             return( activateReadQuote &&
                 <div className="result">
                     <article>
-                        <h4 className="quote_title">{title}</h4>
+                        <h5 className="quote_title">{title}</h5>
                         <ul>
                             <li>
                                  "{quote.myQuote}"

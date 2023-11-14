@@ -12,9 +12,8 @@
                 <div className="result">
                     <article>
                         
-                            <h3>
-                                Author {number}: {address}
-                            </h3>
+                            <h5 className="white">Author {number}: {address}
+                            </h5>
                         {/* <button onClick={() => SetActivateReadQuote(false)}>
                             clear authors
                         </button> */}

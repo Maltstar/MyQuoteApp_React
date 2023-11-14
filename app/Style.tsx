@@ -1,10 +1,12 @@
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 
-export default function Button_with_hover({text,onClick})
+export default function Button_with_hover({text,onClick,display="block",v_align=false})
 {
 
     const [isHover, setIsHover] = useState(false);
+    console.log("display",display);
+    
 
     const handleMouseEnter = () => {
         setIsHover(true);
@@ -20,9 +22,10 @@ export default function Button_with_hover({text,onClick})
      "color-4" : "#343436", 
      "color-5" : "#498a23", 
      }
+
     const default_button_style = 
     {
-        "font-size": "110%",
+        "fontSize": "110%",
         "font-weight":"bold",
         //"margin-top":"1%",
         "background":isHover ? colors["color-1" ] :'black',
@@ -30,13 +33,16 @@ export default function Button_with_hover({text,onClick})
         //"margin":"1%",
         // "margin-left":"41%",
         // "margin-bottom":"5%",
-        "display":"block",
+        "display":display,
+        //"display":"block",
         "margin": "auto",
-        "margin-bottom":"4%",
+        "marginBottom":"4%",
+        "vertical-align": v_align ? "baseline":"",
+        "margin-left": v_align ? "1%": "auto",
         "width": "fit-content",
         //"position": "center",
-        "justify-content": "center",
-        "text-align":"center",
+        "justifyContent": "center",
+        "textAlign":"center",
         // "position": "'absolute', left: '50%', top: '50%'",
         // "transform": 'translate(-50%, -50%)',
     };
@@ -67,7 +73,7 @@ export function Small_Button_with_hover({text,onClick})
      }
     const default_button_style = 
     {
-        "font-size": "95%",
+        "fontSize": "95%",
         //"font-weight":"bold",
         //"margin-top":"1%",
         "background":isHover ? colors["color-1" ] :'black',
@@ -77,11 +83,11 @@ export function Small_Button_with_hover({text,onClick})
         // "margin-bottom":"5%",
         "display":"block",
         "margin": "auto",
-        "margin-bottom":"2%",
+        "marginBottom":"2%",
         "width": "fit-content",
         //"position": "center",
-        "justify-content": "center",
-        "text-align":"center",
+        "justifyContent": "center",
+        "textAlign":"center",
         // "position": "'absolute', left: '50%', top: '50%'",
         // "transform": 'translate(-50%, -50%)',
     };

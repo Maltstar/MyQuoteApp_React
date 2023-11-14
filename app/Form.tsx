@@ -5,8 +5,9 @@ import GetCurrentQuote from './GetCurrentQuote'
 import GetAllAuthors from './GetAllAuthors';
 import { useState } from 'react';
 import GetAllQuotes from './GetAllQuotes';
-import Button from 'react-bootstrap/Button';
+import GetQuoteByOwner from './GetQuoteByOwner'
 import Button_with_hover from './Style';
+
 
 
 export default function Form(
@@ -15,7 +16,11 @@ export default function Form(
 
         authors,activateAllAuthors,SetShowAllAuthors,SetActivateAllAuthors,// api GetAllAuthors parameters 
 
-        quotes,activateAllQuotes, SetShowAllQuotes, SetActivateAllQuotes // api GetAllQuotes parameters 
+        quotes,activateAllQuotes, SetShowAllQuotes, SetActivateAllQuotes, // api GetAllQuotes parameters 
+
+        quotesOwnerSetByUser, activateOwnerSetByUser, SetOwnerSetByUser, SetShowOwnerSetByUser, SetActivateOwnerSetByUser// api GetQuotesByOwner parameters 
+
+        
     
     }) {
 
@@ -80,19 +85,20 @@ export default function Form(
     return (
 <div id="menu">
 
-{/* api GetQuote className="submit_read" */}
-
+{/* api GetQuote  */}
 <Button_with_hover text={"Read current quote on Blockchain"} onClick={handleGetQuote}/>
 {activateReadQuote && <GetCurrentQuote quote={quote} title="last quote" SetActivateReadQuote={SetActivateReadQuote}/>}  
 
+{/* api GetAllQuotes */}
+<Button_with_hover text={"Read all quotes"} onClick={handleGetAllQuotes}/>
+{activateAllQuotes && <GetAllQuotes quotes={quotes} SetActivateAllQuotes={SetActivateAllQuotes} SetActivateReadQuote={SetActivateReadQuote}/>} 
 
 {/* api GetAllAuthors */}
 <Button_with_hover text={"List all authors"} onClick={handleGetAllAuthors}/>
 {activateAllAuthors && <GetAllAuthors authors={authors} SetActivateAllAuthors={SetActivateAllAuthors}/>} 
 
-{/* api GetAllQuotes */}
-<Button_with_hover text={"List all quotes"} onClick={handleGetAllQuotes}/>
-{activateAllQuotes && <GetAllQuotes quotes={quotes} SetActivateAllQuotes={SetActivateAllQuotes} SetActivateReadQuote={SetActivateReadQuote}/>} 
+{/* api GetQuoteByOwner */}
+<GetQuoteByOwner quotes={quotesOwnerSetByUser} SetOwnerSetByUser={SetOwnerSetByUser} activateOwnerSetByUser={activateOwnerSetByUser} SetShowOwnerSetByUser={SetShowOwnerSetByUser} SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}/>
 
 </div>
     )

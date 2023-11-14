@@ -2,6 +2,7 @@
 import './App.scss';   // stylesheet
 import { SetStateAction, useEffect, useState } from 'react';
 import { Head } from 'next/document';
+import {default_bytes20} from './utils'
 import {Web3} from 'web3'
 import Form from './Form';
 
@@ -54,6 +55,20 @@ export default function App(){
   // flag to indicate that the all the quotes have been read and are ready to be displayed
   const [activateAllQuotes,SetActivateAllQuotes] = useState(false)
 
+
+  //#####################
+  // api GetQuoteByOwner()
+  //#####################
+
+  // store user input as author/owner
+  // call the smart contract with a default 20 bytes since they are no record for a bad formated input
+  const [ownerSetByUser,SetOwnerSetByUser] = useState(default_bytes20)
+     // user request to read quotes from a specific author
+  const [showOwnerSetByUser,SetShowOwnerSetByUser] = useState(false)
+    // flag to indicate that the current has been read and is ready to be displayed
+  const [activateOwnerSetByUser,SetActivateOwnerSetByUser] = useState(false)
+   // store the quotes of the request author
+   const [quotesOwnerSetByUser,SetQuotesOwnerSetByUser] = useState({})
 
 
 //   const [currentOwner,SetCurrentOwner] = useState('')
@@ -208,6 +223,36 @@ export default function App(){
   //   const data = await contract.methods.getQuote().call();
   //   console.log(data);
   // };
+
+  /* call to getQuotesbyOwner() from the user input */
+  useEffect( () =>
+  {
+    if(showOwnerSetByUser)
+    {
+      const fetchAuthorQuote = async () =>
+      {
+        const data = await getQuotesbyOwnerWrapper(ownerSetByUser);
+        
+        // memorizing for the authors requested
+        SetQuotesOwnerSetByUser(data)
+        // indicating that the quotes are ready to be displayed
+        SetActivateOwnerSetByUser(true)
+        // reset flag for next request
+        SetShowOwnerSetByUser(false)
+
+
+      }
+
+
+      fetchAuthorQuote();
+      
+    }
+    else
+    {
+     //  SetActivateOwnerSetByUser(false)
+    }
+// when author changed or the read quote by author was clicked
+  },[ownerSetByUser,showOwnerSetByUser]) 
 
   // call getQuote method of smart contract with RPC
   // each time the user click on the button "Read Quote on Blockchain"
@@ -507,6 +552,13 @@ export default function App(){
             activateAllQuotes={activateAllQuotes}
             SetShowAllQuotes={SetShowAllQuotes}
             SetActivateAllQuotes={SetActivateAllQuotes}
+
+            // ########### GetQuotesByOwner api ################ //
+            quotesOwnerSetByUser={quotesOwnerSetByUser}
+            activateOwnerSetByUser={activateOwnerSetByUser}
+            SetOwnerSetByUser={SetOwnerSetByUser}
+            SetShowOwnerSetByUser={SetShowOwnerSetByUser}
+            SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}
             
             />
     </>

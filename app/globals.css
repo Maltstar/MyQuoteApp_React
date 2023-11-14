@@ -88,6 +88,46 @@ h2
   color : var(--color-2); 
 }
 
+.white
+{
+  color: white;
+  display:block;
+  margin: auto;
+  width: fit-content;
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
+
+.list_quotes
+{
+  border-color: var(--color-3); 
+  border-radius: 3%;
+  border-width:thin;
+  width: fit-content;
+  margin:auto;
+  margin-bottom: 2%;
+  margin-top: 2%;
+}
+
+#author_input
+{
+  width: 25%;
+  text-align: center;
+  _padding-left: 4%;
+  _padding-right: 4%;
+  color: white;
+}
+
+#menu_get_author
+{
+  display: block;
+}
+
+#quotesform
+{
+  margin:auto;
+  display: inline;
+}
 
 /* @media (prefers-color-scheme: dark) {
   html {
@@ -208,7 +248,7 @@ h2
 
   .quote_title
   {
-    font-size:large;
+    /* _font-size:100%; */
     color:var(--color-5);
   }
 
