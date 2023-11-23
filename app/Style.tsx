@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
 
-export default function Button_with_hover({text,onClick,display="block",v_align=false})
+export default function Button_with_hover({text,onClick,display="block",v_align=false, disable=false})
 {
 
     const [isHover, setIsHover] = useState(false);
@@ -26,7 +26,7 @@ export default function Button_with_hover({text,onClick,display="block",v_align=
     const default_button_style = 
     {
         "fontSize": "110%",
-        "font-weight":"bold",
+        "fontWeight":"bold",
         //"margin-top":"1%",
         "background":isHover ? colors["color-1" ] :'black',
         "color": isHover ? colors["color-2"] : colors["color-3"],
@@ -47,12 +47,12 @@ export default function Button_with_hover({text,onClick,display="block",v_align=
         // "transform": 'translate(-50%, -50%)',
     };
 
-    return <Button variant="primary" size="lg" onClick={onClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
+    return <Button disabled={disable} variant="primary" size="lg" onClick={onClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
 
 }
 
 
-export function Small_Button_with_hover({text,onClick})
+export function Small_Button_with_hover({text,onClick,disable=false})
 {
 
     const [isHover, setIsHover] = useState(false);
@@ -92,6 +92,8 @@ export function Small_Button_with_hover({text,onClick})
         // "transform": 'translate(-50%, -50%)',
     };
 
-    return <Button variant="primary" size="sm" onClick={() => onClick(false)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
+    return <Button disabled={disable} variant="primary" size="sm" onClick={() => onClick(false)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
 
 }
+
+

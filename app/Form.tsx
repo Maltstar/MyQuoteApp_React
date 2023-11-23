@@ -12,13 +12,32 @@ import Button_with_hover from './Style';
 
 export default function Form(
     {
-        quote,activateReadQuote,SetShowCurrentQuote, SetActivateReadQuote, // api GetQuote parameters
+        // ########### api GetQuote parameters ################ //
+        quote, //last quote
+        activateReadQuote, // bool indicate that last quote has been fetched and stored
+        SetShowCurrentQuote, // bool set user flag in Form to trigger a call to getQuote api from App
+        SetActivateReadQuote, // reset fetch flag once the quote has been displayed and the user request to clear the quote
 
-        authors,activateAllAuthors,SetShowAllAuthors,SetActivateAllAuthors,// api GetAllAuthors parameters 
+        // ########### api GetAllAuthors parameters ################ //
+        authors, // list of all authors
+        activateAllAuthors, // indicate all authors have been fetched and stored
+        SetShowAllAuthors, // set user flag in Form to trigger a call to GetAllAuthors api from App
+        SetActivateAllAuthors,  // reset fetch flag once all authors have been displayed and the user request to clear all authors
 
-        quotes,activateAllQuotes, SetShowAllQuotes, SetActivateAllQuotes, // api GetAllQuotes parameters 
+        // ########### api GetAllQuotes parameters ################ //
+        quotes, // list of all quotes
+        activateAllQuotes, // indicate all quotes have been fetched and stored
+        SetShowAllQuotes, // set user flag in Form to trigger a call to GetAllQuotes api from App
+        SetActivateAllQuotes, // reset fetch flag once all quotes have been displayed and the user request to clear all quotes
 
-        quotesOwnerSetByUser, activateOwnerSetByUser, SetOwnerSetByUser, SetShowOwnerSetByUser, SetActivateOwnerSetByUser// api GetQuotesByOwner parameters 
+        // ########### api GetQuotesByOwner parameters ################ //
+        quotesOwnerSetByUser, // author/owner set by user
+        activateOwnerSetByUser, // indicate all quotes for the author have been fetched and stored
+        SetOwnerSetByUser, // memorize the author set by the user in App
+        SetShowOwnerSetByUser, // set user flag in Form to trigger a call to GetQuotesByOwner api from App
+        SetActivateOwnerSetByUser,// reset fetch flag once all quotes for the author have been displayed and the user request to clear all quotes
+
+        contractAvailable //inform the availability of the contract
 
         
     
@@ -86,19 +105,23 @@ export default function Form(
 <div id="menu">
 
 {/* api GetQuote  */}
-<Button_with_hover text={"Read current quote on Blockchain"} onClick={handleGetQuote}/>
+<Button_with_hover disable={!contractAvailable} // disable button if smart contract is not avaialable
+text={"Read current quote on Blockchain"} 
+onClick={handleGetQuote}/>
 {activateReadQuote && <GetCurrentQuote quote={quote} title="last quote" SetActivateReadQuote={SetActivateReadQuote}/>}  
 
 {/* api GetAllQuotes */}
-<Button_with_hover text={"Read all quotes"} onClick={handleGetAllQuotes}/>
+<Button_with_hover disable={!contractAvailable} // disable button if smart contract is not avaialable
+text={"Read all quotes"} 
+onClick={handleGetAllQuotes}/>
 {activateAllQuotes && <GetAllQuotes quotes={quotes} SetActivateAllQuotes={SetActivateAllQuotes} SetActivateReadQuote={SetActivateReadQuote}/>} 
 
 {/* api GetAllAuthors */}
-<Button_with_hover text={"List all authors"} onClick={handleGetAllAuthors}/>
+<Button_with_hover disable={!contractAvailable} text={"List all authors"} onClick={handleGetAllAuthors}/>
 {activateAllAuthors && <GetAllAuthors authors={authors} SetActivateAllAuthors={SetActivateAllAuthors}/>} 
 
 {/* api GetQuoteByOwner */}
-<GetQuoteByOwner quotes={quotesOwnerSetByUser} SetOwnerSetByUser={SetOwnerSetByUser} activateOwnerSetByUser={activateOwnerSetByUser} SetShowOwnerSetByUser={SetShowOwnerSetByUser} SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}/>
+<GetQuoteByOwner disable={!contractAvailable} quotes={quotesOwnerSetByUser} SetOwnerSetByUser={SetOwnerSetByUser} activateOwnerSetByUser={activateOwnerSetByUser} SetShowOwnerSetByUser={SetShowOwnerSetByUser} SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}/>
 
 </div>
     )

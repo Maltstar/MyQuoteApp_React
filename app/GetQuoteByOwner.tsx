@@ -3,7 +3,12 @@ import ListQuotes from "./ListQuotes";
 import Button_with_hover from './Style';
 import {check_input_author,default_bytes20} from './utils.js'
 
-export default function GetQuoteByOwner({quotes,SetOwnerSetByUser,activateOwnerSetByUser,SetShowOwnerSetByUser,SetActivateOwnerSetByUser})
+export default function GetQuoteByOwner({quotes,
+                                        SetOwnerSetByUser,
+                                        activateOwnerSetByUser,
+                                        SetShowOwnerSetByUser,
+                                        SetActivateOwnerSetByUser,
+                                        disable=false})
 {
 
     const title = `Author: ${quotes.author}`;
@@ -58,7 +63,7 @@ export default function GetQuoteByOwner({quotes,SetOwnerSetByUser,activateOwnerS
     <div id="menu_get_author">
     {/* <form id="quotesform" onSubmit={handleSubmit}> */}
         <input id="author_input" type="text" alt="text field to enter the author" placeholder="type the author address"/>
-        <Button_with_hover v_align={true} onClick={handleSubmit} display="inline" text={"Read quotes from author"} alt="button to submit the author" type="submit" value="Read quotes from author"/>    
+        <Button_with_hover disable={disable} v_align={true} onClick={handleSubmit} display="inline" text={"Read quotes from author"} alt="button to submit the author" type="submit" value="Read quotes from author"/>    
         {/* <input alt="button to submit the author" type="submit" placeholder="Read quotes from author"/> */}
     {/* </form> */}
 

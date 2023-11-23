@@ -19,6 +19,9 @@ export default function App(){
   // store contract interface 
   const [contract,setContract] = useState(null)
 
+  // handling connection status to metamask
+  const [connectWallet,SetConnectWallet] = useState(false)
+
   //#####################
   // api GetQuote()
   //#####################
@@ -79,12 +82,28 @@ export default function App(){
  // let privateKey = process.env.PRIVATE_KEY;
   let contract_json 
 
+  const disconnectWallet =  async () => 
+  {
+    await window.ethereum.request({
+    method: "wallet_requestPermissions",
+    params: [
+      {
+        eth_accounts: {}
+      }
+    ]
+  });
+}
 
-  // fetch crypto account from MetaMask
-  useEffect(() => {
-    const fetchAccount = async () => {
+const removeWeb3 = () =>{
+  setWeb3Gateway(undefined);
+}
+
+// connect to MetaMask and fetch user account
+const fetchAccount = async () => {
       try {
+        // pop up metamask and waiting for the user to login
         window.ethereum.enable().then(async () => {
+          // get a getaway from metamask to web3
           const web3 = new Web3(window.ethereum);
           // fetching accounts list on metamask
           accounts = await web3.eth.getAccounts();
@@ -95,6 +114,8 @@ export default function App(){
           setAccount(userAddress);
           // memorize web3 object
           setWeb3Gateway(web3)
+          // memorizing the connection state
+          SetConnectWallet(true)
 
           // window.ethereum.on("accountsChanged", async (accounts) => {
           //   // handle account change
@@ -122,7 +143,6 @@ export default function App(){
     };
 
   //  fetch smart contract interface from json file
-
   const fetchContractInterface= async () => {
     try {
       await fetch('/contracts/infos_contract.json')
@@ -139,16 +159,103 @@ export default function App(){
     console.log(error);
     
   }
-}
+  }
 
-    // fetch account
-    fetchAccount()
+  const connectToWeb3 = () => {
+        // fetch account
+        fetchAccount()
 
-    //fetch smart contract interface
-    fetchContractInterface()
+        //fetch smart contract interface
+        fetchContractInterface()
+  }
+
+
+  // fetch crypto account from MetaMask
+  useEffect(() => {
+
+    // remote eth request
+    // object were set to undefined on user request
+    if(web3Gateway == undefined && connectWallet)
+    {
+      //disconnectWallet()
+      setAccount(undefined) // reset account
+      setContract(null) // remove connection to web3object
+      SetConnectWallet(false) // indicate that wallet is not anymore connected
+      
+      
+    }
+
+//     const fetchAccount = async () => {
+//       try {
+//         // pop up metamask and waiting for the user to login
+//         window.ethereum.enable().then(async () => {
+//           // get a get away from metamask to web3
+//           const web3 = new Web3(window.ethereum);
+//           // fetching accounts list on metamask
+//           accounts = await web3.eth.getAccounts();
+//           // take the first address on the list
+//           const userAddress = accounts[0];
+//           console.log("account",account);
+//           // memorize address
+//           setAccount(userAddress);
+//           // memorize web3 object
+//           setWeb3Gateway(web3)
+
+//           // window.ethereum.on("accountsChanged", async (accounts) => {
+//           //   // handle account change
+//           //   accounts = await web3.eth.getAccounts();
+//           //   const userAddress = accounts[0];
+//           //   console.log("userAddress",userAddress);
+//           //   setAccount(userAddress);
+//           // });
+
+//           // window.ethereum.on("disconnect", () => {
+//           //   // handle metamask logout
+//           //   console.log("disconnect");
+//           //   setAccount(null);
+//           // });
+//         });
+//       } catch (error) {
+//         if (error.message === "User denied account authorization") {
+//           // handle the case where the user denied the connection request
+//         } else if (error.message === "MetaMask is not enabled") {
+//           // handle the case where MetaMask is not available
+//         } else {
+//           // handle other errors
+//         }
+//       }
+//     };
+
+//   //  fetch smart contract interface from json file
+
+//   const fetchContractInterface= async () => {
+//     try {
+//       await fetch('/contracts/infos_contract.json')
+//       .then((response) => response.json())
+//       .then((json_contract_interface) => 
+//       {
+//         setContractJson(json_contract_interface)
+//         console.log('after setContractJson', json_contract_interface);
+//     })
+
+//   }
+//   catch(error)
+//   {
+//     console.log(error);
+    
+//   }
+// }
+
+    // // fetch account
+    // fetchAccount()
+
+    // //fetch smart contract interface
+    // fetchContractInterface()
+
+   // connectToWeb3()
       // make sure to catch any error
-      .catch(console.error);
-  }, []);
+     // .catch(console.error);
+  }, [web3Gateway]);
 
 
   /// fetch smart contract on the blockchain via a web3 object and contract object
@@ -507,15 +614,16 @@ export default function App(){
       </Head> */}
       <div >
         {!account ? (
-          <button
-            className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded"
-            onClick={() => window.ethereum.enable()}
+          <button 
+            className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded position-absolute top-0 end-0"
+            onClick={() => connectToWeb3()}//window.ethereum.enable()}
           >
             Connect to MetaMask
           </button>
         ) : null}
-        {account ? (
-          <>
+
+        {account && window.ethereum.isConnected()? (
+          <div >
             {/* <button
               className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded"
               onClick={getQuote}
@@ -525,11 +633,17 @@ export default function App(){
             {/* <button
               className="ml-5 bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded"
               onClick={sexContract}
-            >
+            > 
               Set Smart Contract
             </button> */}
-            <p >Your account address: {account}</p>
-          </>
+            <p className="badge rounded-pill bg-dark text-success position-absolute fs-6 top-0 end-0" >Your account address: <br></br>{account}</p>
+            <button 
+            className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded position-absolute top-10 end-0"
+            onClick={() => removeWeb3()}//window.ethereum.enable()}
+          >
+            Disconnect
+          </button>
+          </div>
         ) : null}
       </div>
 
@@ -543,22 +657,25 @@ export default function App(){
             
             // ########### GetAllAuthors api ################ //
             authors={allAuthors} // list of all authors
-            activateAllAuthors={activateAllAuthors}
-            SetShowAllAuthors={SetShowAllAuthors}
-            SetActivateAllAuthors={SetActivateAllAuthors}
+            activateAllAuthors={activateAllAuthors} // indicate all authors have been fetched and stored
+            SetShowAllAuthors={SetShowAllAuthors} // set user flag in Form to trigger a call to GetAllAuthors api from App
+            SetActivateAllAuthors={SetActivateAllAuthors} // reset fetch flag once all authors have been displayed and the user request to clear all authors
 
             // ########### GetAllQuotes api ################ //
             quotes={allQuotes} // list of all quotes
-            activateAllQuotes={activateAllQuotes}
-            SetShowAllQuotes={SetShowAllQuotes}
-            SetActivateAllQuotes={SetActivateAllQuotes}
+            activateAllQuotes={activateAllQuotes} // indicate all quotes have been fetched and stored
+            SetShowAllQuotes={SetShowAllQuotes} // set user flag in Form to trigger a call to GetAllQuotes api from App
+            SetActivateAllQuotes={SetActivateAllQuotes} // reset fetch flag once all quotes have been displayed and the user request to clear all quotes
 
             // ########### GetQuotesByOwner api ################ //
-            quotesOwnerSetByUser={quotesOwnerSetByUser}
-            activateOwnerSetByUser={activateOwnerSetByUser}
-            SetOwnerSetByUser={SetOwnerSetByUser}
-            SetShowOwnerSetByUser={SetShowOwnerSetByUser}
-            SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}
+            quotesOwnerSetByUser={quotesOwnerSetByUser} // author/owner set by user
+            activateOwnerSetByUser={activateOwnerSetByUser} // indicate all quotes for the author have been fetched and stored
+            SetOwnerSetByUser={SetOwnerSetByUser} // memorize the author set by the user
+            SetShowOwnerSetByUser={SetShowOwnerSetByUser} // set user flag in Form to trigger a call to GetQuotesByOwner api from App
+            SetActivateOwnerSetByUser={SetActivateOwnerSetByUser} // reset fetch flag once all quotes for the author have been displayed and the user request to clear all quotes
+
+            // ######## Smart contract Interface availability ###### //
+            contractAvailable={contract !=null ? true:false}
             
             />
     </>

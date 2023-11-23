@@ -109,6 +109,11 @@ h2
   margin-top: 2%;
 }
 
+#metamask_btn
+{
+  margin-inline-end: auto;
+}
+
 #author_input
 {
   width: 25%;
