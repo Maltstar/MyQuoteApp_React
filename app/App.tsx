@@ -9,10 +9,32 @@ import Form from './Form';
 
 export default function App(){
 
-  //  const [account, SetAccount] =useState()
     // store account
   const [account, setAccount] = useState();
   // store web3 object
+  /**
+   * There are several possibilities for the design to get a connection to the web3 object
+   * and call the smart contract apis:
+   *  either :
+   *  + create a web3 object for each component that will be called in the Form:
+   *    - advantages:
+   *                 each component is independent and sufficient on its own
+   *    - drawback:
+   *                 each component need to create a web3 object and make a request to a blockchain node
+   *                 which cost resources, time and make the code redundant
+   * 
+   *  + create a single web3 object which would be shared at the top level and each component will trigger
+   *    a call to the smart contract api on the top level and the top level component will
+   *    distribute the result at a lower component level:
+   *    - advantages:
+   *                 no redundant code, smart contract handling is located in a single component
+   *    - drawback:
+   *                 parameters redundancy from the top level component to the lower level components
+   * 
+   *  for performance reason and simplicity it has been decided to choose the design with a single top level component
+   *  handling the web3 object and the apis call to the smart contract
+   * 
+   **/
   const [web3Gateway,setWeb3Gateway] = useState()
   // store contract interface json
   const [contractJson,setContractJson] = useState()

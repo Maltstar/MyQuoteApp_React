@@ -1,7 +1,10 @@
-import { useState } from "react";
-import ListQuotes from "./ListQuotes";
+import { useState, lazy, Suspense } from "react";
+//import ListQuotes from "./ListQuotes";
 import Button_with_hover from './Style';
-import {check_input_author,default_bytes20} from './utils.js'
+import {check_input_author,default_bytes20,lazyRetry} from './utils.js'
+
+const ListQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "ListQuotes" */ './ListQuotes'), "ListQuotes"));
+
 
 export default function GetQuoteByOwner({quotes,
                                         SetOwnerSetByUser,
@@ -68,16 +71,23 @@ export default function GetQuoteByOwner({quotes,
     {/* </form> */}
 
         {/* The user entered a valid author and clicked on the button  */}
-    {
-        activateOwnerSetByUser &&   /* The user made a request. i.e clicked on the button */   
-        !emptyInput  /* The user input is not empty */ &&
-        quotes.quotes.length > 0 && /* There is at least 1 quote to display */
-        <ListQuotes /* The list of quotes fetched for the user input */ 
-            quoteslist={quotes.quotes}
-            title={title}
-            SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}
-        /> 
-    }
+        <Suspense fallback={ // display spinner until component is loaded
+        <div className="spinner-border text-warning" role="status">
+        <span className="visually-hidden">Loading...</span>
+        </div>}
+        >
+            {
+                activateOwnerSetByUser &&   /* The user made a request. i.e clicked on the button */   
+                !emptyInput  /* The user input is not empty */ &&
+                quotes.quotes.length > 0 && /* There is at least 1 quote to display */
+                <ListQuotes /* The list of quotes fetched for the user input */ 
+                    quoteslist={quotes.quotes}
+                    title={title}
+                    SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}
+                /> 
+            }
+        </Suspense>
+
 
 
     {/* The user entered an invalid author and clicked on the button  */}
