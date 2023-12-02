@@ -98,8 +98,31 @@ h2
   margin-bottom: 1%;
 }
 
-.list_quotes
+#select
 {
+  margin: auto;
+  width: 33%;
+}
+
+.button_color
+{
+  color: var(--color-3);
+  background-color: black;
+  font-size: 110%;
+  font-weight:bold;
+  border-radius: 5%;
+  display:block;
+  margin: auto;
+  width: fit-content;
+  justify-content: center;
+  text-align: center;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  padding: 1rem;
+}
+
+.list_quotes
+{ 
   border-color: var(--color-3); 
   border-radius: 3%;
   border-width:thin;

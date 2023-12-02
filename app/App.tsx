@@ -69,6 +69,7 @@ export default function App(){
   const [activateAllAuthors,SetActivateAllAuthors] = useState(false)
 
 
+
   //#####################
   // api GetAllQuotes()
   //#####################
@@ -95,7 +96,18 @@ export default function App(){
    // store the quotes of the request author
    const [quotesOwnerSetByUser,SetQuotesOwnerSetByUser] = useState({})
 
-
+  //#####################
+  // api GetQuoteByOwnerList()
+  //#####################
+  // call the smart contract with a default 20 bytes since they are no record for a bad formated input
+  const [ownerSetByUserFromList,SetOwnerSetByUserFromList] = useState(default_bytes20)
+ // flag to indicate that the authors list has been read and is ready to be displayed
+  const [activateAllAuthorsList,SetActivateAllAuthorsList] = useState(false)
+    // user request to read quotes from a specific author from the select list
+  const [quotesOwnerSetByUserFromList,SetQuotesOwnerSetByUserFromList] = useState({})
+   // flag to indicate that the current has been read and is ready to be displayed
+  const [activateOwnerSetByUserFromList,SetActivateOwnerSetByUserFromList] = useState(false)
+  
 //   const [currentOwner,SetCurrentOwner] = useState('')
 //   const [currentTimestamp,SetCurrentTimestamp] = useState('')
 
@@ -191,21 +203,54 @@ const fetchAccount = async () => {
         fetchContractInterface()
   }
 
-
-  // fetch crypto account from MetaMask
   useEffect(() => {
 
-    // remote eth request
-    // object were set to undefined on user request
-    if(web3Gateway == undefined && connectWallet)
+    if(contract != null)
     {
-      //disconnectWallet()
-      setAccount(undefined) // reset account
-      setContract(null) // remove connection to web3object
-      SetConnectWallet(false) // indicate that wallet is not anymore connected
-      
+        // fetch authors list for display as a list
+
+        const getAllAuthors = async () => {
+        // const data = await contract.methods.getAllAuthors().call();
+          const data = await getAllAuthorsWrapper();
+        //const allAuthors = await getAllAuthors();
+          const allAuthors = data
+          console.log('getAllAuthors',allAuthors);
+          
+          // memorize quote
+          SetAllAuthors(allAuthors)
+          // enable display of the quote since the quote has been memorized in a state
+          SetActivateAllAuthorsList(true)
+
+          // reset the flag user read request
+          //SetShowAllAuthors(false)
+          //console.log(data);
+        };
+
+
+        getAllAuthors()
       
     }
+
+  },[contract])
+
+
+  // remove all state derived from web3 object
+  useEffect(() => {
+
+
+    // web3 object was removed but MetaMask wallet is connected
+    if(web3Gateway == undefined && connectWallet)
+    {
+      setAccount(undefined) // reset account
+      setContract(null) // remove connection between web3 object and smart contract
+      SetConnectWallet(false) // indicate that wallet is not anymore connected
+    }
+
+    
+    
+      
+      
+    
 
 //     const fetchAccount = async () => {
 //       try {
@@ -382,6 +427,38 @@ const fetchAccount = async () => {
     }
 // when author changed or the read quote by author was clicked
   },[ownerSetByUser,showOwnerSetByUser]) 
+
+
+   /* call to getQuotesbyOwner() from the user input */
+   useEffect( () =>
+   {
+    // if(showOwnerSetByUserFromList)
+    // {
+
+      if(ownerSetByUserFromList != default_bytes20)
+      {
+        const fetchAuthorQuote = async () =>
+        {
+          const data = await getQuotesbyOwnerWrapper(ownerSetByUserFromList);
+          
+          // memorizing for the authors requested
+          SetQuotesOwnerSetByUserFromList(data)
+          // indicating that the quotes are ready to be displayed
+          SetActivateOwnerSetByUserFromList(true)
+          console.log('ownerSetByUserFromList');
+          
+  
+  
+        }
+  
+  
+        fetchAuthorQuote();
+        
+      //}
+    }
+
+ // when author changed or the read quote by author was clicked
+   },[ownerSetByUserFromList]) 
 
   // call getQuote method of smart contract with RPC
   // each time the user click on the button "Read Quote on Blockchain"
@@ -696,6 +773,12 @@ const fetchAccount = async () => {
             SetShowOwnerSetByUser={SetShowOwnerSetByUser} // set user flag in Form to trigger a call to GetQuotesByOwner api from App
             SetActivateOwnerSetByUser={SetActivateOwnerSetByUser} // reset fetch flag once all quotes for the author have been displayed and the user request to clear all quotes
 
+            // ########### GetQuotesByOwnerList api ################ //
+            activateAllAuthorsList={activateAllAuthorsList}
+            activateOwnerSetByUserFromList={activateOwnerSetByUserFromList}
+            SetActivateOwnerSetByUserFromList={SetActivateOwnerSetByUserFromList}
+            quotesOwnerSetByUserFromList={quotesOwnerSetByUserFromList}
+            SetOwnerSetByUserFromList={SetOwnerSetByUserFromList}
             // ######## Smart contract Interface availability ###### //
             contractAvailable={contract !=null ? true:false}
             

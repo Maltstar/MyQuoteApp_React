@@ -8,6 +8,7 @@ import { useState, lazy, Suspense } from 'react';
 import GetQuoteByOwner from './GetQuoteByOwner'
 import Button_with_hover from './Style';
 import {lazyRetry} from './utils'
+import GetQuoteByOwnerList from './GetQuoteByOwnerList';
 
 const GetCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'), "GetCurrentQuote"));
 const GetAllQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ './GetAllQuotes'), "GetAllQuotes"));
@@ -42,6 +43,14 @@ export default function Form(
         SetShowOwnerSetByUser, // set user flag in Form to trigger a call to GetQuotesByOwner api from App
         SetActivateOwnerSetByUser,// reset fetch flag once all quotes for the author have been displayed and the user request to clear all quotes
 
+        // ########### api GetQuotesByOwnerList parameters ################ //
+        //authors
+        activateAllAuthorsList,
+        activateOwnerSetByUserFromList,
+        SetActivateOwnerSetByUserFromList,
+        quotesOwnerSetByUserFromList,
+        SetOwnerSetByUserFromList,
+        // common
         contractAvailable //inform the availability of the contract
 
         
@@ -146,8 +155,24 @@ onClick={handleGetAllQuotes}/>
 </Suspense>
 
 
-{/* api GetQuoteByOwner */}
-<GetQuoteByOwner disable={!contractAvailable} quotes={quotesOwnerSetByUser} SetOwnerSetByUser={SetOwnerSetByUser} activateOwnerSetByUser={activateOwnerSetByUser} SetShowOwnerSetByUser={SetShowOwnerSetByUser} SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}/>
+    {/* api GetQuoteByOwner */}
+    <div>
+    <GetQuoteByOwner disable={!contractAvailable}
+                     quotes={quotesOwnerSetByUser}
+                     SetOwnerSetByUser={SetOwnerSetByUser}
+                     activateOwnerSetByUser={activateOwnerSetByUser}
+                     SetShowOwnerSetByUser={SetShowOwnerSetByUser}
+                     SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}/>
+
+    {/* api GetQuoteByOwnerList */}
+    {activateAllAuthorsList && 
+    <GetQuoteByOwnerList disable={!contractAvailable}
+                         quotes={quotesOwnerSetByUserFromList}
+                         authors={authors}
+                         activateOwnerSetByUserFromList={activateOwnerSetByUserFromList}
+                         SetActivateOwnerSetByUserFromList={SetActivateOwnerSetByUserFromList}
+                         SetOwnerSetByUserFromList={SetOwnerSetByUserFromList}/>}
+    </div>
 
 </div>
     )

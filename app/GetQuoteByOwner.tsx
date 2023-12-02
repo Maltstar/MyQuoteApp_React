@@ -5,7 +5,17 @@ import {check_input_author,default_bytes20,lazyRetry} from './utils.js'
 
 const ListQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "ListQuotes" */ './ListQuotes'), "ListQuotes"));
 
-
+/**
+ * 
+ * @param quotes list of quotes of a specific author
+ * @param SetOwnerSetByUser function to memorize the author set by the user in App
+ * @param activateOwnerSetByUser  indicate all quotes for the author have been fetched and stored
+ * @param SetShowOwnerSetByUser  function to set user flag in Form to trigger a call to GetQuotesByOwner api from App
+ * @param SetActivateOwnerSetByUser function to reset fetch flag once all quotes for the author 
+ *                                  have been displayed and the user request to clear all quotes
+ * @param disable button disabled 
+ * @returns 
+ */
 export default function GetQuoteByOwner({quotes,
                                         SetOwnerSetByUser,
                                         activateOwnerSetByUser,
@@ -14,8 +24,9 @@ export default function GetQuoteByOwner({quotes,
                                         disable=false})
 {
 
-    const title = `Author: ${quotes.author}`;
+    
     const [emptyInput,setEmptyInput] = useState(false);
+    //const title = `Author: ${quotes.author}`;
 
 
 
@@ -54,8 +65,6 @@ export default function GetQuoteByOwner({quotes,
             else
             {
                 setEmptyInput(true);
-                // indicate that the user made a request for reading quotes
-                //SetShowOwnerSetByUser(true);
             }
 
 
@@ -79,10 +88,11 @@ export default function GetQuoteByOwner({quotes,
             {
                 activateOwnerSetByUser &&   /* The user made a request. i.e clicked on the button */   
                 !emptyInput  /* The user input is not empty */ &&
+               // Object.keys(quotes).length != 0 && /* quotes is not empty*/
                 quotes.quotes.length > 0 && /* There is at least 1 quote to display */
                 <ListQuotes /* The list of quotes fetched for the user input */ 
                     quoteslist={quotes.quotes}
-                    title={title}
+                    title={`Author: ${quotes.author}`}
                     SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}
                 /> 
             }
