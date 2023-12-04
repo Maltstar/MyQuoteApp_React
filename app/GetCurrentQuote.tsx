@@ -32,7 +32,7 @@ import { Small_Button_with_hover } from "./Style";
                         <h4 className="quote_title">{title}</h4>
                         <ul>
                             <li>
-                                 "{quote.quote}"
+                                 {quote.quote}
                             </li>
                             <li>
                                 Author: {quote.owner}

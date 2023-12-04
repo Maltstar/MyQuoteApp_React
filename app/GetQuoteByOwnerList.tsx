@@ -1,6 +1,7 @@
 import Select from 'react-select'
 import ListQuotes from './ListQuotes';
 import { useState } from 'react';
+import { customStylesSelect } from './Style';
 
 export default function GetQuoteByOwnerList({authors,
                                             quotes,
@@ -29,12 +30,21 @@ export default function GetQuoteByOwnerList({authors,
     
     }
 
+    const colors = {
+        "color-1" : "#0c09c7",
+      "color-2" : "#8df308", 
+      "color-3" : "#659de6", 
+      "color-4" : "#343436", 
+      "color-5" : "#498a23", 
+      }
+
     return(
 
         //  <label>List of Authors
         <>
-        <h5 className='button_color'> Or <br></br>choose an author from the list to read his quotes</h5>
-         <Select id="select" options={options} onChange={handleChange}/>
+        <h5 className="button_color"> Or <br></br>choose an author from the list to read his quotes</h5>
+         <Select id="select" options={options} onChange={handleChange} 
+         styles={customStylesSelect}/>
          {//optionSelected && 
             activateOwnerSetByUserFromList &&   /* The user made a request. i.e clicked on the button */   
 

@@ -93,26 +93,6 @@ export default function Form(
         setIsHover(false);
      };
 
-     const colors = {
-       "color-1" : "#0c09c7",
-     "color-2" : "#8df308", 
-     "color-3" : "#659de6", 
-     "color-4" : "#343436", 
-     "color-5" : "#498a23", 
-     }
-    const default_button_style = 
-    {
-        "font-size": "110%",
-        "font-weight":"bold",
-        "margin-top":"1%",
-        "background":isHover ? colors["color-1" ] :'black',
-        "color": isHover ? colors["color-2"] : colors["color-3"],
-        "margin":"1%",
-        // aligning
-        "display":"block",
-        "position": "'absolute', left: '50%', top: '50%'",
-        "transform": 'translate(-50%, -50%)',
-    };
 
    
     return (

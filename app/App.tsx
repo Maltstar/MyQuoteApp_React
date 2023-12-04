@@ -542,17 +542,6 @@ const fetchAccount = async () => {
       return quote_with_author
   }
 
-  const addQuotesbyOwner = async (allQuotesdummy: Array<{}>,authorQuotes) =>
-  {
-      console.log('addQuotesbyOwner');
-     // console.log('author',author);
-      console.log('authorQuotes',authorQuotes);
-      const quote_details = await getQuotesbyOwnerWrapper(authorQuotes)
-      console.log('quote_details',quote_details);
-     // allQuotesdummy.push(quote_details)
-      return quote_details
-  }
-
   // call getAllQuotes method of smart contract with RPC
   // each time the user click on the button "Read All Quote on Blockchain"
   useEffect(() =>
@@ -719,7 +708,7 @@ const fetchAccount = async () => {
           >
             Connect to MetaMask
           </button>
-        ) : null}
+        ) : <div></div>}
 
         {account && window.ethereum.isConnected()? (
           <div >
@@ -743,7 +732,7 @@ const fetchAccount = async () => {
             Disconnect
           </button>
           </div>
-        ) : null}
+        ) :  <div></div>}
       </div>
 
       <Form 
