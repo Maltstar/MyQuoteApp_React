@@ -1,7 +1,11 @@
 import Select from 'react-select'
-import ListQuotes from './ListQuotes';
-import { useState } from 'react';
+//import ListQuotes from './ListQuotes';
+import { useState, lazy, Suspense } from 'react';
 import { customStylesSelect } from './Style';
+import {lazyRetry} from './utils'
+//import GetQuoteByOwnerList from './GetQuoteByOwnerList';
+
+const ListQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "ListQuotes" */ './ListQuotes'), "ListQuotes"));
 
 export default function GetQuoteByOwnerList({authors,
                                             quotes,
@@ -43,19 +47,26 @@ export default function GetQuoteByOwnerList({authors,
         //  <label>List of Authors
         <>
         <h5 className="button_color"> Or <br></br>choose an author from the list to read his quotes</h5>
-         <Select id="select" options={options} onChange={handleChange} 
+         <Select isDisabled={disable} id="select" options={options} onChange={handleChange} 
          styles={customStylesSelect}/>
-         {//optionSelected && 
-            activateOwnerSetByUserFromList &&   /* The user made a request. i.e clicked on the button */   
+         <Suspense fallback={ // display spinner until component is loaded
+            <div className="spinner-border text-warning" role="status">
+            <span className="visually-hidden">Loading...</span>
+            </div>}
+            >
+            {       
 
-            //Object.keys(quotes).length != 0 && /* quotes is not empty*/
-            quotes.quotes.length > 0 && /* There is at least 1 quote to display */
-            <ListQuotes /* The list of quotes fetched for the user input */ 
-                        quoteslist={quotes.quotes}
-                        title={author.label}
-                        SetActivateOwnerSetByUser={SetActivateOwnerSetByUserFromList}
-            /> 
-        }
+                activateOwnerSetByUserFromList &&   /* The user made a request. i.e clicked on the button */   
+
+                //Object.keys(quotes).length != 0 && /* quotes is not empty*/
+                quotes.quotes.length > 0 && /* There is at least 1 quote to display */
+                <ListQuotes /* The list of quotes fetched for the user input */ 
+                            quoteslist={quotes.quotes}
+                            title={author.label}
+                            SetActivateOwnerSetByUser={SetActivateOwnerSetByUserFromList}
+                /> 
+            }
+         </Suspense>
         </>
          
     //   </label>

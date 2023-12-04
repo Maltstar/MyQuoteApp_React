@@ -8,11 +8,13 @@ import { useState, lazy, Suspense } from 'react';
 import GetQuoteByOwner from './GetQuoteByOwner'
 import Button_with_hover from './Style';
 import {lazyRetry} from './utils'
-import GetQuoteByOwnerList from './GetQuoteByOwnerList';
+//import GetQuoteByOwnerList from './GetQuoteByOwnerList';
 
 const GetCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'), "GetCurrentQuote"));
 const GetAllQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ './GetAllQuotes'), "GetAllQuotes"));
 const GetAllAuthors = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllAuthors" */ './GetAllAuthors'), "GetAllAuthors"));
+const GetQuoteByOwnerList = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetQuoteByOwnerList" */ './GetQuoteByOwnerList'), "GetQuoteByOwnerList"));
+
 
 //const GetCurrentQuote = lazy(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'));;
 
@@ -145,13 +147,20 @@ onClick={handleGetAllQuotes}/>
                      SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}/>
 
     {/* api GetQuoteByOwnerList */}
-    {activateAllAuthorsList && 
-    <GetQuoteByOwnerList disable={!contractAvailable}
-                         quotes={quotesOwnerSetByUserFromList}
-                         authors={authors}
-                         activateOwnerSetByUserFromList={activateOwnerSetByUserFromList}
-                         SetActivateOwnerSetByUserFromList={SetActivateOwnerSetByUserFromList}
-                         SetOwnerSetByUserFromList={SetOwnerSetByUserFromList}/>}
+    <Suspense fallback={ // display spinner until component is loaded
+        <div className="spinner-border text-warning" role="status">
+        <span className="visually-hidden">Loading...</span>
+        </div>}
+        >
+            {activateAllAuthorsList && 
+            <GetQuoteByOwnerList disable={!contractAvailable}
+                                quotes={quotesOwnerSetByUserFromList}
+                                authors={authors}
+                                activateOwnerSetByUserFromList={activateOwnerSetByUserFromList}
+                                SetActivateOwnerSetByUserFromList={SetActivateOwnerSetByUserFromList}
+                                SetOwnerSetByUserFromList={SetOwnerSetByUserFromList}/>}
+    </Suspense>
+    
     </div>
 
 </div>
