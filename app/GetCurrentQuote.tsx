@@ -1,8 +1,14 @@
 import { Small_Button_with_hover } from "./Style";
     
     
-    
-    export default function GetQuote({quote,title, SetActivateReadQuote})
+    /**
+     * 
+     * @param quote last quote of the last new author 
+     * @param title title of the section
+     * @param SetActivateReadQuote allow the display of the quote
+     * @returns 
+     */
+    export default function GetCurrentQuote({quote,title, SetActivateReadQuote})
     {
 
         console.log('GetCurrentQuote: quote',quote);

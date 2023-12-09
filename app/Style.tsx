@@ -14,6 +14,8 @@ export default function Button_with_hover({text,onClick,display="block",v_align=
 
     const [isHover, setIsHover] = useState(false);
     console.log("display",display);
+    console.log("Button_with_hover props",props);
+    
     
 
     const handleMouseEnter = () => {

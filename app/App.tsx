@@ -9,8 +9,7 @@ import Form from './Form';
 
 export default function App(){
 
-    // store account
-  const [account, setAccount] = useState();
+
   // store web3 object
   /**
    * There are several possibilities for the design to get a connection to the web3 object
@@ -108,6 +107,18 @@ export default function App(){
    // flag to indicate that the current has been read and is ready to be displayed
   const [activateOwnerSetByUserFromList,SetActivateOwnerSetByUserFromList] = useState(false)
   
+  //#####################
+  // api WriteQuote()
+  //#####################
+
+  // store account, wallet address of the current user
+  const [account, setAccount] = useState();
+
+  // memorize quote from user input
+  const [userQuote,SetUserQuote] = useState("")
+
+
+
 //   const [currentOwner,SetCurrentOwner] = useState('')
 //   const [currentTimestamp,SetCurrentTimestamp] = useState('')
 
@@ -524,6 +535,28 @@ const fetchAccount = async () => {
 
   },[showAllAuthors])
 
+
+  // call setQuote method of smart contract with RPC
+  useEffect(() =>
+  {
+    if(userQuote.length != 0)
+    {
+      const writeQuote = async () => {
+       // const data = await contract.methods.getAllAuthors().call();
+        await setQuoteWrapper();
+       //const allAuthors = await getAllAuthors();
+        
+        // reset quote
+        SetUserQuote("")
+
+      };
+
+
+      writeQuote()
+    }
+
+  },[userQuote])
+
  
   const getAllAuthorsWrapper = async () => 
   {
@@ -542,6 +575,61 @@ const fetchAccount = async () => {
       return quote_with_author
   }
 
+
+  const setQuoteWrapper = async () => 
+  {
+    console.log('setQuoteWrapper',userQuote,account);
+
+    // write quote on blockchain
+    try{
+
+       await contract.methods.setQuote(userQuote).send({from:account});
+
+    }
+    catch(error){
+      if (error.name === "ResponseError")
+      {
+          console.log(error.message);
+          
+      }
+    }
+  }
+
+
+  const getAllQuotesPromises = async () => {
+        
+    console.log('getAllQuotesPromises')
+    // fetch all authors
+    const allAuthors = await getAllAuthorsWrapper();
+    console.log('allAuthors',allAuthors);
+    const allQuotesdummy: Array<String> = []
+    console.log('allAuthors',allAuthors);
+    
+    // for each author, collect their quotes
+    const allQuotes = []
+    //const allQuotes: Array<String> = await allAuthors.reduce(addQuotesbyOwner,allQuotesdummy)
+    //console.log('allQuotes',allQuotes);
+
+    const promises = []
+
+    allAuthors.map((author) => 
+    {
+      // create an array of promise for which each promise will be a call to getQuotesbyOwner(author) for all authors
+      promises.push(getQuotesbyOwnerWrapper(author))
+      console.log('allAuthors.map','author',author);
+      
+      //   const quote_details = await contract.methods.getQuotesbyOwner(author).call()
+      //   // await  contract.methods.getQuotesbyOwner(author).call({from: ""},function(error, result){
+      //   // allQuotes[author] = result;
+      //   console.log('quote',quote_details);
+      // //});
+    });
+
+    console.log("getAllQuotesPromises, promises",promises);
+    
+
+    return promises
+  }
   // call getAllQuotes method of smart contract with RPC
   // each time the user click on the button "Read All Quote on Blockchain"
   useEffect(() =>
@@ -551,38 +639,43 @@ const fetchAccount = async () => {
 
       const getAllQuotes = async () => {
         
-        console.log('getAllQuotes')
-        // fetch all authors
-        const allAuthors = await getAllAuthorsWrapper();
-        console.log('allAuthors',allAuthors);
-        const allQuotesdummy: Array<String> = []
-        console.log('allAuthors',allAuthors);
+        // console.log('getAllQuotes')
+        // // fetch all authors
+        // const allAuthors = await getAllAuthorsWrapper();
+        // console.log('allAuthors',allAuthors);
+        // const allQuotesdummy: Array<String> = []
+        // console.log('allAuthors',allAuthors);
         
         // for each author, collect their quotes
         const allQuotes = []
-        //const allQuotes: Array<String> = await allAuthors.reduce(addQuotesbyOwner,allQuotesdummy)
-        //console.log('allQuotes',allQuotes);
+        // //const allQuotes: Array<String> = await allAuthors.reduce(addQuotesbyOwner,allQuotesdummy)
+        // //console.log('allQuotes',allQuotes);
 
-        const promises = []
+        // const promises = []
 
-        allAuthors.map((author) => 
-        {
-          // create an array of promise for which each promise will be a call to getQuotesbyOwner(author) for all authors
-          promises.push(getQuotesbyOwnerWrapper(author))
-          console.log('allAuthors.map','author',author);
+        // allAuthors.map((author) => 
+        // {
+        //   // create an array of promise for which each promise will be a call to getQuotesbyOwner(author) for all authors
+        //   promises.push(getQuotesbyOwnerWrapper(author))
+        //   console.log('allAuthors.map','author',author);
           
-          //   const quote_details = await contract.methods.getQuotesbyOwner(author).call()
-          //   // await  contract.methods.getQuotesbyOwner(author).call({from: ""},function(error, result){
-          //   // allQuotes[author] = result;
-          //   console.log('quote',quote_details);
-          // //});
-        });
+        //   //   const quote_details = await contract.methods.getQuotesbyOwner(author).call()
+        //   //   // await  contract.methods.getQuotesbyOwner(author).call({from: ""},function(error, result){
+        //   //   // allQuotes[author] = result;
+        //   //   console.log('quote',quote_details);
+        //   // //});
+        // });
 
-        console.log('promises',promises);
+        // console.log('promises',promises);
+
+        const promises = await getAllQuotesPromises();
+        console.log("getAllQuotes, promises",promises);
 
 
         // execute each call to each promise, i.e getQuotesbyOwner(author).call() for all authors
         Promise.allSettled(promises).then((results) => {
+          console.log("results",results);
+          
           // results is array that store all the subsequent result of each call to getQuotesbyOwner(author).call() 
           // memorize the attribute value which is an object with the author and all his quotes of each result 
           results.forEach((result) =>  allQuotes.push(result.value))
@@ -592,34 +685,6 @@ const fetchAccount = async () => {
         ,
 
         )
-
-      //   Promise.allSettled(promises).then((results) => {
-
-      //   results.forEach((result) =>  allQuotes.push(result.value))
-      //   //return results
-      
-      // })
-
-
-        console.log('allQuotes',allQuotes);
-          
-        
-        // allAuthors.map((author,i) => async function()
-        // {
-        //     const quote_details = await contract.methods.getQuotesbyOwner(author).call()
-        //     // await  contract.methods.getQuotesbyOwner(author).call({from: ""},function(error, result){
-        //     // allQuotes[author] = result;
-        //     console.log('quote',quote_details);
-        //   //});
-        // })
-
-        // for(let i=0;i<allAuthors.length;i++)
-        // {
-        //     //await  contract.methods.getQuotesbyOwner(allAuthors[i]).call({from: address_backend},function(error, result){
-        //     await  contract.methods.getQuotesbyOwner(allAuthors[i]).call({from: ""},function(error, result){
-        //       allQuotes[allAuthors[i]] =result;
-        //     });
-        // }
 
         console.log('showAllQuotes',allQuotes);
         
@@ -738,6 +803,9 @@ const fetchAccount = async () => {
       <Form 
 
             // ########### GetQuote api ################ //
+
+
+            // ########### GetQuote api ################ //
             quote={currentQuote} //last quote
             activateReadQuote={activateReadQuote} // indicate that last quote has been fetched and stored
             SetShowCurrentQuote={SetShowCurrentQuote} // set user flag in Form to trigger a call to getQuote api from App
@@ -768,9 +836,18 @@ const fetchAccount = async () => {
             SetActivateOwnerSetByUserFromList={SetActivateOwnerSetByUserFromList}
             quotesOwnerSetByUserFromList={quotesOwnerSetByUserFromList}
             SetOwnerSetByUserFromList={SetOwnerSetByUserFromList}
+            
+            // ########### WriteQuote api ################ //
+            SetUserQuote={SetUserQuote}
+            userAuthor={account}
+
+
+            
+            
             // ######## Smart contract Interface availability ###### //
             contractAvailable={contract !=null ? true:false}
             
+
             />
     </>
   );

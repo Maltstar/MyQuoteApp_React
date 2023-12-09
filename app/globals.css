@@ -104,6 +104,20 @@ h2
   width: 33%;
 }
 
+#select_menu
+{
+  margin-bottom: 5%;
+}
+
+.form-control::placeholder {
+  color: white;
+  opacity: 1; /* Firefox */
+}
+
+::-ms-input-placeholder { /* Edge 12 -18 */
+  color: white;
+}
+
 .button_color
 {
   color: var(--color-3);
@@ -359,6 +373,7 @@ h2
     vertical-align: middle;
     margin-bottom: 0%;
     display: inline;
+    color:white;
     
   }
 

@@ -45,7 +45,7 @@ export default function GetQuoteByOwnerList({authors,
     return(
 
         //  <label>List of Authors
-        <>
+        <div id="select_menu">
         <h5 className="button_color"> Or <br></br>choose an author from the list to read his quotes</h5>
          <Select isDisabled={disable} id="select" options={options} onChange={handleChange} 
          styles={customStylesSelect}/>
@@ -67,7 +67,7 @@ export default function GetQuoteByOwnerList({authors,
                 /> 
             }
          </Suspense>
-        </>
+        </div>
          
     //   </label>
 

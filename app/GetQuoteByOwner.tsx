@@ -75,7 +75,15 @@ export default function GetQuoteByOwner({quotes,
     <div id="menu_get_author">
     {/* <form id="quotesform" onSubmit={handleSubmit}> */}
         <input id="author_input" type="text" alt="text field to enter the author" placeholder="type the author address"/>
-        <Button_with_hover disable={disable} v_align={true} onClick={handleSubmit} display="inline" text={"Read quotes from author"} alt="button to submit the author" type="submit" value="Read quotes from author"/>    
+        <Button_with_hover 
+            disable={disable}
+            v_align={true}
+            onClick={handleSubmit}
+            display="inline"
+            text={"Read quotes from author"}
+            alt="button to submit the author"
+            type="submit"
+            value="Read quotes from author"/>    
         {/* <input alt="button to submit the author" type="submit" placeholder="Read quotes from author"/> */}
     {/* </form> */}
 
@@ -106,10 +114,14 @@ export default function GetQuoteByOwner({quotes,
         !emptyInput  /* The user input is not empty */ &&
         quotes.quotes.length == 0 &&
         /* no quotes were found since the author does not exist */
-        <div className="alert alert-warning"  style={ {width:"50%",margin:"auto"}} >
+        <div className="alert alert-warning alert-dismissible fade show"  role="alert" style={ {width:"50%",margin:"auto"}} >
             Author not found. <br></br>
             Please enter a valid address for the author. <br></br>
             You may want to use "List all authors"
+            <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close">
+			  	<span aria-hidden="True">&times;</span>
+			</button>
+
         </div>
     }
     
@@ -117,10 +129,18 @@ export default function GetQuoteByOwner({quotes,
     {
     activateOwnerSetByUser &&   /* The user made a request. i.e clicked on the button */   
     emptyInput  /* The user input is not empty */  &&
-    <div className="alert alert-warning" role="alert"  style={ {width:"50%",margin:"auto"}}>
+    <>
+        <div className="alert alert-warning alert-dismissible fade show" role="alert"  style={ {width:"50%",margin:"auto"}}>
         No author was entered. Please enter an address for the author.
+        <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close">
+			{/* <span aria-hidden="True">&times;</span> */}
+		</button>
+        
     </div>
-    }
+
+    </>
+
+        }
 
     </div>
 

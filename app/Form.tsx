@@ -6,6 +6,7 @@
 import { useState, lazy, Suspense } from 'react';
 //import GetAllQuotes from './GetAllQuotes';
 import GetQuoteByOwner from './GetQuoteByOwner'
+import WriteQuote from './WriteQuote'
 import Button_with_hover from './Style';
 import {lazyRetry} from './utils'
 //import GetQuoteByOwnerList from './GetQuoteByOwnerList';
@@ -52,6 +53,15 @@ export default function Form(
         SetActivateOwnerSetByUserFromList,
         quotesOwnerSetByUserFromList,
         SetOwnerSetByUserFromList,
+
+
+        // ########### api WriteQuote ################ //
+        //authors
+        SetUserQuote,
+        userAuthor,
+
+
+
         // common
         contractAvailable //inform the availability of the contract
 
@@ -101,8 +111,9 @@ export default function Form(
 <div id="menu">
 
 {/* api GetQuote  */}
-<Button_with_hover disable={!contractAvailable} // disable button if smart contract is not avaialable
-text={"Read current quote on Blockchain"} 
+<Button_with_hover 
+disable={!contractAvailable} // disable button if smart contract is not avaialable
+text={"Read last quote of new author on Blockchain"} 
 onClick={handleGetQuote}/>
 <Suspense fallback={ // display spinner until component is loaded
 <div className="spinner-border text-warning" role="status">
@@ -114,7 +125,8 @@ onClick={handleGetQuote}/>
 
 
 {/* api GetAllQuotes */}
-<Button_with_hover disable={!contractAvailable} // disable button if smart contract is not avaialable
+<Button_with_hover 
+disable={!contractAvailable} // disable button if smart contract is not avaialable
 text={"Read all quotes"} 
 onClick={handleGetAllQuotes}/>
 <Suspense fallback={ // display spinner until component is loaded
@@ -161,6 +173,14 @@ onClick={handleGetAllQuotes}/>
                                 SetOwnerSetByUserFromList={SetOwnerSetByUserFromList}/>}
     </Suspense>
     
+    {/* api WriteQuote */}
+    </div>
+    <WriteQuote SetUserQuote={SetUserQuote}
+                disable={!contractAvailable}
+    />
+
+    <div>
+
     </div>
 
 </div>
