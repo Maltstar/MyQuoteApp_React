@@ -2,7 +2,7 @@
 import './App.scss';   // stylesheet
 import { SetStateAction, useEffect, useState } from 'react';
 import { Head } from 'next/document';
-import {default_bytes20} from './utils'
+import {default_bytes20, findMostRecentQuote} from './utils'
 import {Web3} from 'web3'
 import Form from './Form';
 
@@ -54,6 +54,15 @@ export default function App(){
   const [showCurrentQuote,SetShowCurrentQuote] = useState(false)
   // flag to indicate that the current has been read and is ready to be displayed
   const [activateReadQuote,SetActivateReadQuote] = useState(false)
+
+
+  //#####################
+  // api GetLastQuote()
+  //#####################
+  // user request to read the most recent quote on the blockchain
+  const [showMostRecentQuote,SetShowMostRecentQuote] = useState(false)
+  // memorize most recent quote
+  const [mostRecentQuote,SetMostRecentQuote] = useState({})
 
 
   //#####################
@@ -483,7 +492,7 @@ const fetchAccount = async () => {
         const data = await contract.methods.getQuote().call();
         console.log('showCurrentQuote',data);
         const quote = {
-            'quote': data.currentQuote,
+            'myQuote': data.currentQuote,
             'owner': data.currentOwner,
             'timestamp':data.currentTimestamp
         }
@@ -504,6 +513,51 @@ const fetchAccount = async () => {
     }
 
   },[showCurrentQuote])
+
+
+  // call getQuote method of smart contract with RPC
+  // each time the user click on the button "Read Quote on Blockchain"
+  useEffect(() =>
+  {
+    if(showMostRecentQuote)
+    {
+      console.log('showCurrentQuote 1');
+      const getMostRecentQuote = async () => {
+        const promises = await getAllQuotesPromises();
+        const allQuotes = []
+        // execute each call to each promise, i.e getQuotesbyOwner(author).call() for all authors
+        Promise.allSettled(promises).then((results) => {
+          console.log("results",results);
+          
+          // results is array that store all the subsequent result of each call to getQuotesbyOwner(author).call() 
+          // memorize the attribute value which is an object with the author and all his quotes of each result 
+          results.forEach((result) =>  allQuotes.push(result.value))
+        // memorize quote when the data are available
+          console.log("showMostRecentQuote",allQuotes);
+          //const quote = findMostRecentQuote(allQuotes);
+         // console.log("showMostRecentQuote",quote);
+          
+          //const quote_details = {          }
+          SetMostRecentQuote(findMostRecentQuote(allQuotes));
+          
+       // SetAllQuotes(allQuotes)
+        },)        
+        
+        // // memorize quote
+        // SetCurrentQuote(quote)
+        // // enable display of the quote since the quote has been memorized in a state
+        // SetActivateReadQuote(true)
+
+        // // reset the flag user read request
+        // SetShowCurrentQuote(false)
+        // console.log(data);
+      };
+
+      
+      getMostRecentQuote()
+    }
+
+  },[showMostRecentQuote])
 
 
     // call getAllAuthors method of smart contract with RPC
@@ -802,7 +856,7 @@ const fetchAccount = async () => {
 
       <Form 
 
-            // ########### GetQuote api ################ //
+
 
 
             // ########### GetQuote api ################ //
@@ -811,6 +865,12 @@ const fetchAccount = async () => {
             SetShowCurrentQuote={SetShowCurrentQuote} // set user flag in Form to trigger a call to getQuote api from App
             SetActivateReadQuote={SetActivateReadQuote}  // reset fetch flag once the quote has been displayed and the user request to clear the quote
             
+
+            // ########### GetMostRecentQuote api ################ //
+            mostRecentQuote={mostRecentQuote} 
+            SetShowMostRecentQuote={SetShowMostRecentQuote}
+            showMostRecentQuote={showMostRecentQuote}
+
             // ########### GetAllAuthors api ################ //
             authors={allAuthors} // list of all authors
             activateAllAuthors={activateAllAuthors} // indicate all authors have been fetched and stored

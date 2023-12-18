@@ -11,7 +11,7 @@ import {Small_Button_with_hover} from './Style'
 
             return(
                 <>
-                <h4 className="quote_title">Authors</h4>
+                <h4 className="section_title">Authors</h4>
                 {authors.map((author,i) => 
                 {
                     console.log(author,i);

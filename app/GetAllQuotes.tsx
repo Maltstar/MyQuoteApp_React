@@ -4,8 +4,7 @@ import { Small_Button_with_hover } from "./Style";
     
     
     export default function GetAllQuotes({quotes, // quotes fetched on smart contract
-                                        SetActivateAllQuotes, // button to display or remove all quotes
-                                        SetActivateReadQuote}) // button to remove a quote individually
+                                         SetActivateAllQuotes}) // button to display or remove all quotes
     {
 
         console.log('GetAllAQuotes: quotes',quotes); 

@@ -16,7 +16,13 @@
   }
 }
 
+/* @font-face {
+   font-family: 'Aspire Font';
+   src: local('../public/font/aspire-font/AspireDemibold-YaaO.ttf') url('../public/font/aspire-font/AspireDemibold-YaaO.ttf') format('truetype');
+  } */
+
 /* body {
+  src: url('/public/aspire-font/AspireDemibold-YaaO.ttf') format('ttf');
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -32,7 +38,7 @@ body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif,Aspire Font;
   color: white;
   color-scheme: dark;
   background: rgb(65, 62, 62);
@@ -46,7 +52,8 @@ body {
   --color-2 : #8df308; 
   --color-3 : #659de6; 
   --color-4 : #343436; 
-  --color-5 : #498a23; 
+  --color-5 : #f1860a; 
+  --color-7 : #e4e70c; 
  }
 
 a {
@@ -73,8 +80,8 @@ h1, .popup
  font-size: 4rem ;
  margin: 0;
  color : var(--color-2); 
- text-decoration: underline double var(--color-1);
- text-shadow: 2px 2px 15px var(--color-1) ;
+ _text-decoration: underline double var(--color-1);
+ _text-shadow: 2px 2px 15px var(--color-1) ;
 }
 
 #up_about
@@ -90,7 +97,7 @@ h2
 
 .white
 {
-  color: white;
+  color: rgba(245, 226, 226, 0.623);
   display:block;
   margin: auto;
   width: fit-content;
@@ -284,14 +291,29 @@ h2
 
 
   p,ol,ul{
-    font-style: italic;
+    _font-style: italic;
     color:var(--color-2)
   }
 
+  .info{
+    font-style: italic;
+  }
   .quote_title
   {
     /* _font-size:100%; */
+    color:var(--color-7);
+  }
+
+  .section_title
+  {
+    /* _font-size:100%; */
     color:var(--color-5);
+  }
+
+  .quote
+  {
+    _font-family:'Aspire Font';
+    text-decoration:none;
   }
 
   ul{

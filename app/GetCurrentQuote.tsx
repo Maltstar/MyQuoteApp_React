@@ -1,11 +1,13 @@
 import { Small_Button_with_hover } from "./Style";
+import Header from "./Header";
     
     
     /**
+     * Display the last quote of the last new author
      * 
      * @param quote last quote of the last new author 
      * @param title title of the section
-     * @param SetActivateReadQuote allow the display of the quote
+     * @param SetActivateReadQuote enable or disable the display of the quote fron the parent component
      * @returns 
      */
     export default function GetCurrentQuote({quote,title, SetActivateReadQuote})
@@ -38,12 +40,12 @@ import { Small_Button_with_hover } from "./Style";
                         <h4 className="quote_title">{title}</h4>
                         <ul>
                             <li>
-                                 {quote.quote}
+                                <Header>"{quote.myQuote}"</Header>
                             </li>
-                            <li>
+                            <li className='info'>
                                 Author: {quote.owner}
                             </li>
-                            <li>
+                            <li className='info'>
                                 written on: {convert_timestamp_to_date(quote.timestamp)}
                             </li>
                         </ul>

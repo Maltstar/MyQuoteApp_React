@@ -49,6 +49,9 @@ export default function GetQuoteByOwnerList({authors,
         <h5 className="button_color"> Or <br></br>choose an author from the list to read his quotes</h5>
          <Select isDisabled={disable} id="select" options={options} onChange={handleChange} 
          styles={customStylesSelect}/>
+        
+        { activateOwnerSetByUserFromList &&   /* The user made a request. i.e clicked on the button */   
+
          <Suspense fallback={ // display spinner until component is loaded
             <div className="spinner-border text-warning" role="status">
             <span className="visually-hidden">Loading...</span>
@@ -56,7 +59,6 @@ export default function GetQuoteByOwnerList({authors,
             >
             {       
 
-                activateOwnerSetByUserFromList &&   /* The user made a request. i.e clicked on the button */   
 
                 //Object.keys(quotes).length != 0 && /* quotes is not empty*/
                 quotes.quotes.length > 0 && /* There is at least 1 quote to display */
@@ -67,6 +69,7 @@ export default function GetQuoteByOwnerList({authors,
                 /> 
             }
          </Suspense>
+         }
         </div>
          
     //   </label>

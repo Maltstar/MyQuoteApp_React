@@ -58,3 +58,79 @@ export const lazyRetry = function(componentImport, name) {
         });
     });
 }
+
+/**
+ * 
+ * @param {*} arr 
+ * [    
+ *      {
+ *       author:"0x.." ,
+ *       lastQuote: {
+ *                      myQuote: "abc..."
+ *                      timestamp: "1215..."
+ *                  } 
+ *      }
+ * ]
+ */
+function getMax(arr) {
+    const sortedArray = arr.sort((a, b) => {
+        console.log("a",a );
+        console.log("b",b );
+        console.log("timestamps",a.timestamp);
+        const ta = Number(a.timestamp)
+        const tb = Number(b.timestamp)
+        console.log("ta",ta);
+        console.log("typeof ta",typeof(ta));
+        return (ta - tb)
+    })
+    console.log("getMax arr",arr );
+    console.log("getMax sortedArray",sortedArray);
+
+
+    return sortedArray[sortedArray.length - 1]
+    }
+  
+  
+
+/**
+ * Return the most recent quotes from all quotes fetched
+ * 
+ * @param {*} allQuotes array of objects 
+ * [    
+ *      {
+ *       author:"0x.."" ,
+ *       quotes: [  
+ *                  {
+ *                      myQuote: "quote...",
+ *                      timestamp: number
+ *                      
+ *                  }
+ *               ]
+ *      }
+ * ]
+ */
+export function findMostRecentQuote(allQuotes)
+{
+    // find the most recent quote of an author
+    // the most recent quote of an author is the last element of quotes
+    const allRecentQuotes = []
+    console.log("findMostRecentQuote",allQuotes);
+
+    allQuotes.forEach(quotesDetails => {
+        const author = quotesDetails.author
+        const mostRecentQuote = quotesDetails.quotes[quotesDetails.quotes.length-1]
+        //const mostRecentQuoteDetails = {author:author, lastQuote:mostRecentQuote}
+        const mostRecentQuoteDetails = {owner:author,myQuote:mostRecentQuote.myQuote,timestamp:mostRecentQuote.timestamp}
+        allRecentQuotes.push(mostRecentQuoteDetails)
+        
+    });
+
+    console.log("allRecentQuotes",allRecentQuotes);
+    const mostRecentQuote = getMax(allRecentQuotes)
+    console.log("mostRecentQuote",mostRecentQuote);
+    return mostRecentQuote;
+
+
+
+
+}

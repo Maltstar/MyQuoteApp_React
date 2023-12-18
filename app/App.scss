@@ -9,6 +9,7 @@ $body-bg: rgb(65, 62, 62);
     --color-4 : #343436; 
     --color-5 : #498a23; 
     --color-6: #ffffff; 
+    --color-7 : #e4e70c; 
     --bs-btn-hover-color:var(--color-2);
     --bs-btn-hover-bg: var(--color-1);
 }
@@ -19,3 +20,4 @@ $body-bg: rgb(65, 62, 62);
 
 @import '~bootstrap/scss/bootstrap';
 @import './globals.css';
+@import '../public/font/fonts_style.css';

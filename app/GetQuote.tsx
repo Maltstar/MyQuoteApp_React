@@ -1,17 +1,21 @@
 import { useState } from "react";
 import {Small_Button_with_hover} from './Style'
-
-    //export default function GetQuote({quote,title, SetActivateReadQuote})
-    export default function GetQuote({quote,title})
+import Header from "./Header";
+    /**
+     *  Display a quote fetched
+     * 
+     * @param quote last quote of the last new author 
+     * @param title title of the section
+     * @returns 
+     */
+    export default function GetQuote({quote,title,changeColor=false})
     {
 
         //const copy = Object.values(quote)
 
         console.log('GetQuote: quote',quote);
         console.log('GetQuote: quote',typeof(quote));
-        //console.log('GetQuote: copy',copy);
-       // console.log('GetQuote: quote.currentQuote',quote.myQuote);
-       // console.log('GetQuote: quote.timestamp',quote.timestamp);
+
        const [activateReadQuote,SetActivateReadQuote] = useState(true)
 
         function convert_timestamp_to_date(timestamp)
@@ -34,13 +38,16 @@ import {Small_Button_with_hover} from './Style'
             return( activateReadQuote &&
                 <div className="result">
                     <article>
-                        <h5 className="quote_title">{title}</h5>
+                       {changeColor ? <h5 className="quote_title">{title}</h5> 
+                       : <h5 className="section_title">{title}</h5> }
                         <ul>
                             <li>
-                                 "{quote.myQuote}"
+                                 {/* <span className="quote">"{quote.myQuote}"</span> */}
+                                 <Header>"{quote.myQuote}"</Header>
+
                             </li>
 
-                            <li>
+                            <li className='info'>
                                 written on: {convert_timestamp_to_date(quote.timestamp)}
                             </li>
                         </ul>

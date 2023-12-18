@@ -1,0 +1,25 @@
+@font-face {
+    font-family: 'Aspire Font';
+    src: local('./aspire-font/AspireDemibold-YaaO.ttf') url('./aspire-font/AspireDemibold-YaaO.ttf') format('truetype');
+   }
+
+   @font-face {
+    font-family: 'Playball Font';
+    src: local('./playball-font/Playball-q6o1.ttf') url('./playball-font/Playball-q6o1.ttf') format('truetype');
+   }
+
+   @font-face {
+    font-family: 'CherryCocktail Font';
+    src: local('./cherry-cocktail-font/CherryCocktail-DOpY9.ttf') url('./cherry-cocktail-font/CherryCocktail-DOpY9.ttf') format('truetype');
+   }
+
+
+   @font-face {
+    font-family: 'Comfortaa Font';
+    src: local('./comfortaa-font/Comfortaa-YJnL.ttf') url('./comfortaa-font/Comfortaa-YJnL.ttf') format('truetype');
+   }
+
+   @font-face {
+    font-family: 'Cymo Font';
+    src: local('./cymo-font/Cymo-BpRw.ttf') url('./cymo-font/Cymo-BpRw.ttf') format('truetype');
+   }

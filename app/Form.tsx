@@ -9,6 +9,7 @@ import GetQuoteByOwner from './GetQuoteByOwner'
 import WriteQuote from './WriteQuote'
 import Button_with_hover from './Style';
 import {lazyRetry} from './utils'
+import GetMostRecentQuote from './GetLatestQuote';
 //import GetQuoteByOwnerList from './GetQuoteByOwnerList';
 
 const GetCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'), "GetCurrentQuote"));
@@ -26,6 +27,11 @@ export default function Form(
         activateReadQuote, // bool indicate that last quote has been fetched and stored
         SetShowCurrentQuote, // bool set user flag in Form to trigger a call to getQuote api from App
         SetActivateReadQuote, // reset fetch flag once the quote has been displayed and the user request to clear the quote
+
+        // ########### api GetMostRecentQuote parameters ################ //
+        mostRecentQuote, 
+        SetShowMostRecentQuote, // trigger fetch of the most recent quote
+        showMostRecentQuote,
 
         // ########### api GetAllAuthors parameters ################ //
         authors, // list of all authors
@@ -110,17 +116,28 @@ export default function Form(
     return (
 <div id="menu">
 
+
+
+
+{/* api GetMostRecentQuote  */}
+<GetMostRecentQuote 
+    quoteDetails={mostRecentQuote}
+    disable={!contractAvailable}
+    SetShowMostRecentQuote={SetShowMostRecentQuote}
+    showMostRecentQuote={showMostRecentQuote}
+/>
+
 {/* api GetQuote  */}
 <Button_with_hover 
 disable={!contractAvailable} // disable button if smart contract is not avaialable
-text={"Read last quote of new author on Blockchain"} 
+text={"Read latest quote of latest author on Blockchain"} 
 onClick={handleGetQuote}/>
 <Suspense fallback={ // display spinner until component is loaded
 <div className="spinner-border text-warning" role="status">
   <span className="visually-hidden">Loading...</span>
 </div>}
 >
-    {activateReadQuote && <GetCurrentQuote quote={quote} title="last quote" SetActivateReadQuote={SetActivateReadQuote}/>}  
+    {activateReadQuote && <GetCurrentQuote quote={quote} title="Latest quote of new author" SetActivateReadQuote={SetActivateReadQuote}/>}  
 </Suspense>
 
 
