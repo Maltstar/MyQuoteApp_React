@@ -3,20 +3,23 @@
 
 //import GetCurrentQuote from './GetCurrentQuote'
 //import GetAllAuthors from './GetAllAuthors';
-import { useState, lazy, Suspense } from 'react';
 //import GetAllQuotes from './GetAllQuotes';
-import GetQuoteByOwner from './GetQuoteByOwner'
+import { useState, lazy, Suspense } from 'react';
+
+/*import GetQuoteByOwner from './GetQuoteByOwner'
 import WriteQuote from './WriteQuote'
-import Button_with_hover from './Style';
-import {lazyRetry} from './utils'
+import Button_with_hover from './Style';*/
+
+//import {lazyRetry} from './utils';
 import GetMostRecentQuote from './GetLatestQuote';
 //import GetQuoteByOwnerList from './GetQuoteByOwnerList';
 
-const GetCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'), "GetCurrentQuote"));
-const GetAllQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ './GetAllQuotes'), "GetAllQuotes"));
-const GetAllAuthors = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllAuthors" */ './GetAllAuthors'), "GetAllAuthors"));
-const GetQuoteByOwnerList = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetQuoteByOwnerList" */ './GetQuoteByOwnerList'), "GetQuoteByOwnerList"));
 
+//const GetCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'), "GetCurrentQuote"));
+//const GetAllQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ './GetAllQuotes'), "GetAllQuotes"));
+//const GetAllAuthors = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllAuthors" */ './GetAllAuthors'), "GetAllAuthors"));
+//const GetQuoteByOwnerList = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetQuoteByOwnerList" */ './GetQuoteByOwnerList'), "GetQuoteByOwnerList"));
+//*/
 
 //const GetCurrentQuote = lazy(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'));;
 
@@ -119,86 +122,86 @@ export default function Form(
 
 
 
-{/* api GetMostRecentQuote  */}
-<GetMostRecentQuote 
-    quoteDetails={mostRecentQuote}
-    disable={!contractAvailable}
-    SetShowMostRecentQuote={SetShowMostRecentQuote}
-    showMostRecentQuote={showMostRecentQuote}
-/>
+    {/* api GetMostRecentQuote  */}
+    <GetMostRecentQuote 
+        quoteDetails={mostRecentQuote}
+        disable={!contractAvailable}
+        SetShowMostRecentQuote={SetShowMostRecentQuote}
+        showMostRecentQuote={showMostRecentQuote}
+    />
 
-{/* api GetQuote  */}
-<Button_with_hover 
-disable={!contractAvailable} // disable button if smart contract is not avaialable
-text={"Read latest quote of latest author on Blockchain"} 
-onClick={handleGetQuote}/>
-<Suspense fallback={ // display spinner until component is loaded
-<div className="spinner-border text-warning" role="status">
-  <span className="visually-hidden">Loading...</span>
-</div>}
->
-    {activateReadQuote && <GetCurrentQuote quote={quote} title="Latest quote of new author" SetActivateReadQuote={SetActivateReadQuote}/>}  
-</Suspense>
-
-
-{/* api GetAllQuotes */}
-<Button_with_hover 
-disable={!contractAvailable} // disable button if smart contract is not avaialable
-text={"Read all quotes"} 
-onClick={handleGetAllQuotes}/>
-<Suspense fallback={ // display spinner until component is loaded
-<div className="spinner-border text-warning" role="status">
-  <span className="visually-hidden">Loading...</span>
-</div>}
->
-    {activateAllQuotes && <GetAllQuotes quotes={quotes} SetActivateAllQuotes={SetActivateAllQuotes} SetActivateReadQuote={SetActivateReadQuote}/>} 
-</Suspense>
-
-
-{/* api GetAllAuthors */}
-<Button_with_hover disable={!contractAvailable} text={"List all authors"} onClick={handleGetAllAuthors}/>
-<Suspense fallback={ // display spinner until component is loaded
-<div className="spinner-border text-warning" role="status">
-  <span className="visually-hidden">Loading...</span>
-</div>}
->
-    {activateAllAuthors && <GetAllAuthors authors={authors} SetActivateAllAuthors={SetActivateAllAuthors}/>} 
-</Suspense>
-
-
-    {/* api GetQuoteByOwner */}
-    <div>
-    <GetQuoteByOwner disable={!contractAvailable}
-                     quotes={quotesOwnerSetByUser}
-                     SetOwnerSetByUser={SetOwnerSetByUser}
-                     activateOwnerSetByUser={activateOwnerSetByUser}
-                     SetShowOwnerSetByUser={SetShowOwnerSetByUser}
-                     SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}/>
-
-    {/* api GetQuoteByOwnerList */}
+    {/* api GetQuote  */}
+    {/* <Button_with_hover 
+    disable={!contractAvailable} // disable button if smart contract is not avaialable
+    text={"Read latest quote of latest author on Blockchain"} 
+    onClick={handleGetQuote}/>
     <Suspense fallback={ // display spinner until component is loaded
-        <div className="spinner-border text-warning" role="status">
-        <span className="visually-hidden">Loading...</span>
-        </div>}
-        >
-            {activateAllAuthorsList && 
-            <GetQuoteByOwnerList disable={!contractAvailable}
-                                quotes={quotesOwnerSetByUserFromList}
-                                authors={authors}
-                                activateOwnerSetByUserFromList={activateOwnerSetByUserFromList}
-                                SetActivateOwnerSetByUserFromList={SetActivateOwnerSetByUserFromList}
-                                SetOwnerSetByUserFromList={SetOwnerSetByUserFromList}/>}
+    <div className="spinner-border text-warning" role="status">
+    <span className="visually-hidden">Loading...</span>
+    </div>}
+    >
+        {activateReadQuote && <GetCurrentQuote quote={quote} title="Latest quote of new author" SetActivateReadQuote={SetActivateReadQuote}/>}  
     </Suspense>
+
+
+    {// api GetAllQuotes }
+    <Button_with_hover 
+    disable={!contractAvailable} // disable button if smart contract is not avaialable
+    text={"Read all quotes"} 
+    onClick={handleGetAllQuotes}/>
+    <Suspense fallback={ // display spinner until component is loaded
+    <div className="spinner-border text-warning" role="status">
+    <span className="visually-hidden">Loading...</span>
+    </div>}
+    >
+        {activateAllQuotes && <GetAllQuotes quotes={quotes} SetActivateAllQuotes={SetActivateAllQuotes} SetActivateReadQuote={SetActivateReadQuote}/>} 
+    </Suspense>
+
+
+    {// api GetAllAuthors }
+    <Button_with_hover disable={!contractAvailable} text={"List all authors"} onClick={handleGetAllAuthors}/>
+    <Suspense fallback={ // display spinner until component is loaded
+    <div className="spinner-border text-warning" role="status">
+    <span className="visually-hidden">Loading...</span>
+    </div>}
+    >
+        {activateAllAuthors && <GetAllAuthors authors={authors} SetActivateAllAuthors={SetActivateAllAuthors}/>} 
+    </Suspense>
+
+
+    {// api GetQuoteByOwner }
+    <div>
+        <GetQuoteByOwner disable={!contractAvailable}
+                        quotes={quotesOwnerSetByUser}
+                        SetOwnerSetByUser={SetOwnerSetByUser}
+                        activateOwnerSetByUser={activateOwnerSetByUser}
+                        SetShowOwnerSetByUser={SetShowOwnerSetByUser}
+                        SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}/>
+
+        {// api GetQuoteByOwnerList }
+        <Suspense fallback={ // display spinner until component is loaded
+            <div className="spinner-border text-warning" role="status">
+            <span className="visually-hidden">Loading...</span>
+            </div>}
+            >
+                {activateAllAuthorsList && 
+                <GetQuoteByOwnerList disable={!contractAvailable}
+                                    quotes={quotesOwnerSetByUserFromList}
+                                    authors={authors}
+                                    activateOwnerSetByUserFromList={activateOwnerSetByUserFromList}
+                                    SetActivateOwnerSetByUserFromList={SetActivateOwnerSetByUserFromList}
+                                    SetOwnerSetByUserFromList={SetOwnerSetByUserFromList}/>}
+        </Suspense>
+    </div>    
+        {// api WriteQuote }
     
-    {/* api WriteQuote */}
-    </div>
     <WriteQuote SetUserQuote={SetUserQuote}
                 disable={!contractAvailable}
     />
 
-    <div>
+        <div>
 
-    </div>
+    </div> */}
 
 </div>
     )
