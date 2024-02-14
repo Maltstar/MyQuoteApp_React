@@ -1,6 +1,12 @@
 import { useState } from "react";
 import {Small_Button_with_hover} from './Style'
 import Header from "./Header";
+
+interface GetQuoteProps{
+    quote:Quote,
+    title:string,
+    changeColor?:boolean
+}
     /**
      *  Display a quote fetched
      * 
@@ -8,7 +14,7 @@ import Header from "./Header";
      * @param title title of the section
      * @returns 
      */
-    export default function GetQuote({quote,title,changeColor=false})
+    export default function GetQuote({quote,title,changeColor=false}:GetQuoteProps)
     {
 
         //const copy = Object.values(quote)
@@ -18,13 +24,14 @@ import Header from "./Header";
 
        const [activateReadQuote,SetActivateReadQuote] = useState(true)
 
-        function convert_timestamp_to_date(timestamp)
+        function convert_timestamp_to_date(timestamp:BigInt)
         {
             //return new Date(timestamp*1000).toUTCString();
             console.log('convert_timestamp_to_date',timestamp.toString());
             // convert timestamp BigInt to string which is in seconds unit
             // convert the string to a number with the millisecond unit and multiply by 1000 for having the right unit in seconds
-            const writtingDate = new Date(Number(timestamp.toString())*1000)
+            //const writtingDate = new Date(Number(timestamp.toString())*1000)
+            const writtingDate = new Date(Number(timestamp)*1000)
             console.log('writtingDate',writtingDate);
             // convert the date into UTC format
             

@@ -3,7 +3,12 @@ import GetCurrentQuote from "./GetCurrentQuote"
 import { Suspense,useState } from "react"
 import GetQuote from "./GetQuote"
 
-
+interface GetMostRecentQuoteProps{
+    quoteDetails:Quote_with_Author | undefined,
+    showMostRecentQuote:boolean, 
+    disable:boolean,
+    SetShowMostRecentQuote: (flag: boolean) => void
+}
 /**
  *  Display a quote fetched
  * 
@@ -11,12 +16,12 @@ import GetQuote from "./GetQuote"
  * @param title title of the section
  * @returns 
  */
-export default function GetMostRecentQuote({quoteDetails,showMostRecentQuote, disable=true,SetShowMostRecentQuote})
+export default function GetMostRecentQuote({quoteDetails,showMostRecentQuote, disable=true,SetShowMostRecentQuote}:GetMostRecentQuoteProps)
 {
 
 
     //const [activateReadQuote,SetActivateReadQuote] = useState(true)
-    console.log("GetMostRecentQuote",quoteDetails,quoteDetails.length);
+   // console.log("GetMostRecentQuote",quoteDetails,quoteDetails.length);
     
 
     function handleGetMostRecentQuote()
@@ -30,20 +35,23 @@ export default function GetMostRecentQuote({quoteDetails,showMostRecentQuote, di
         <div>
             <Button_with_hover 
             disable={disable} // disable button if smart contract is not avaialable
-            text={"Read latest quote on Blockchain"} 
+            text={"Read most recent quote on Blockchain"} 
             onClick={handleGetMostRecentQuote}/>
             <Suspense fallback={ // display spinner until component is loaded
             <div className="spinner-border text-warning" role="status">
                 <span className="visually-hidden">Loading...</span>
             </div>}
             >
-              {Object.keys(quoteDetails).length > 0 && // the last quote was fetched
-              showMostRecentQuote && 
-              <>
-                <GetCurrentQuote quote={quoteDetails} title={"Latest Quote"} SetActivateReadQuote={SetShowMostRecentQuote}/>
-                {/* <GetQuote quote={quoteDetails.lastQuote} title={"Author: " + quoteDetails.author} changeColor={true}/> */}
-              </>
-}  
+                
+              {
+
+                quoteDetails != undefined && Object.keys(quoteDetails).length > 0 && // the last quote was fetched
+                showMostRecentQuote && 
+                <>
+                    <GetCurrentQuote quote={quoteDetails} title={"Most Recent Quote"} SetActivateReadQuote={SetShowMostRecentQuote}/>
+                
+                </>
+                }  
             </Suspense>
         </div>
         )

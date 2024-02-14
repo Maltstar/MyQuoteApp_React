@@ -1,28 +1,80 @@
 'use client'
 
 
-//import GetCurrentQuote from './GetCurrentQuote'
-//import GetAllAuthors from './GetAllAuthors';
-//import GetAllQuotes from './GetAllQuotes';
+ //import GetCurrentQuote from './GetCurrentQuote'
+ //import GetAllAuthors from './GetAllAuthors';
+ //import GetAllQuotes from './GetAllQuotes';
 import { useState, lazy, Suspense } from 'react';
 
-/*import GetQuoteByOwner from './GetQuoteByOwner'
+import GetQuoteByOwner from './GetQuoteByOwner'
 import WriteQuote from './WriteQuote'
-import Button_with_hover from './Style';*/
+import Button_with_hover from './Style';
 
-//import {lazyRetry} from './utils';
-import GetMostRecentQuote from './GetLatestQuote';
+import {lazyRetry} from './utils';
+import GetMostRecentQuote from './GetMostRecentQuote';
 //import GetQuoteByOwnerList from './GetQuoteByOwnerList';
 
 
-//const GetCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'), "GetCurrentQuote"));
-//const GetAllQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ './GetAllQuotes'), "GetAllQuotes"));
-//const GetAllAuthors = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllAuthors" */ './GetAllAuthors'), "GetAllAuthors"));
-//const GetQuoteByOwnerList = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetQuoteByOwnerList" */ './GetQuoteByOwnerList'), "GetQuoteByOwnerList"));
-//*/
+ const GetCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'), "GetCurrentQuote"));
+ const GetAllQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ './GetAllQuotes'), "GetAllQuotes"));
+ const GetAllAuthors = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllAuthors" */ './GetAllAuthors'), "GetAllAuthors"));
+ //const GetMostRecentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetMostRecentQuote" */ './GetMostRecentQuote'), "GetMostRecentQuote"));
+ const GetQuoteByOwnerList = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetQuoteByOwnerList" */ './GetQuoteByOwnerList'), "GetQuoteByOwnerList"));
+
 
 //const GetCurrentQuote = lazy(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'));;
+interface FormProps{
+    // ########### api GetQuote parameters ################ //
+    quote:Quote_with_Author|undefined, //last quote
+    activateReadQuote:boolean, // bool indicate that last quote has been fetched and stored
+    SetShowCurrentQuote:(flag :boolean) => void, // bool set user flag in Form to trigger a call to getQuote api from App
+    SetActivateReadQuote:(flag :boolean) => void, // reset fetch flag once the quote has been displayed and the user request to clear the quote
 
+    // ########### api GetMostRecentQuote parameters ################ //
+    mostRecentQuote:Quote_with_Author|undefined, 
+    showMostRecentQuote:boolean,
+    SetShowMostRecentQuote:(flag :boolean) => void, // trigger fetch of the most recent quote
+
+
+    // ########### api GetAllAuthors parameters ################ //
+    authors:Authors|undefined, // list of all authors
+    activateAllAuthors:boolean, // indicate all authors have been fetched and stored
+    SetShowAllAuthors:(flag :boolean) => void, // set user flag in Form to trigger a call to GetAllAuthors api from App
+    SetActivateAllAuthors:(flag :boolean) => void,  // reset fetch flag once all authors have been displayed and the user request to clear all authors
+
+    // ########### api GetAllQuotes parameters ################ //
+    quotes:(QuoteAuthorList | undefined)[], // list of all quotes
+    activateAllQuotes:boolean, // indicate all quotes have been fetched and stored
+    SetShowAllQuotes:(flag :boolean) => void, // set user flag in Form to trigger a call to GetAllQuotes api from App
+    SetActivateAllQuotes:(flag :boolean) => void, // reset fetch flag once all quotes have been displayed and the user request to clear all quotes
+
+    // ########### api GetQuotesByOwner parameters ################ //
+    quotesOwnerSetByUser:QuoteAuthorList | undefined, // author/owner set by user
+    activateOwnerSetByUser:boolean, // indicate all quotes for the author have been fetched and stored
+    SetOwnerSetByUser:(author :string) => void, // memorize the author set by the user in App
+    SetShowOwnerSetByUser:(flag :boolean) => void, // set user flag in Form to trigger a call to GetQuotesByOwner api from App
+    SetActivateOwnerSetByUser:(flag :boolean) => void,// reset fetch flag once all quotes for the author have been displayed and the user request to clear all quotes
+
+    // ########### api GetQuotesByOwnerList parameters ################ //
+    //authors
+    activateAllAuthorsList:boolean,
+    activateOwnerSetByUserFromList:boolean,
+    SetActivateOwnerSetByUserFromList:(flag :boolean) => void,
+    quotesOwnerSetByUserFromList:QuoteAuthorList | undefined,
+    SetOwnerSetByUserFromList:(author :string) => void,
+
+
+    // ########### api WriteQuote ################ //
+    //authors
+    SetUserQuote:(quote :string) => void,
+    userAuthor:string | undefined,
+
+
+
+    // common
+    contractAvailable:boolean //inform the availability of the contract
+
+}
 export default function Form(
     {
         // ########### api GetQuote parameters ################ //
@@ -76,7 +128,7 @@ export default function Form(
 
         
     
-    }) {
+    }: FormProps) {
 
     const [showGetQuote,SetShowGetQuote] = useState(false)
     const [isHover, setIsHover] = useState(false);
@@ -131,20 +183,20 @@ export default function Form(
     />
 
     {/* api GetQuote  */}
-    {/* <Button_with_hover 
+    <Button_with_hover 
     disable={!contractAvailable} // disable button if smart contract is not avaialable
-    text={"Read latest quote of latest author on Blockchain"} 
+    text={"Read latest quote of last author on Blockchain"} 
     onClick={handleGetQuote}/>
     <Suspense fallback={ // display spinner until component is loaded
     <div className="spinner-border text-warning" role="status">
     <span className="visually-hidden">Loading...</span>
     </div>}
     >
-        {activateReadQuote && <GetCurrentQuote quote={quote} title="Latest quote of new author" SetActivateReadQuote={SetActivateReadQuote}/>}  
+        {activateReadQuote && <GetCurrentQuote quote={quote} title="Latest quote of last author" SetActivateReadQuote={SetActivateReadQuote}/>}  
     </Suspense>
 
 
-    {// api GetAllQuotes }
+    {/* api GetAllQuotes*/ }
     <Button_with_hover 
     disable={!contractAvailable} // disable button if smart contract is not avaialable
     text={"Read all quotes"} 
@@ -154,11 +206,11 @@ export default function Form(
     <span className="visually-hidden">Loading...</span>
     </div>}
     >
-        {activateAllQuotes && <GetAllQuotes quotes={quotes} SetActivateAllQuotes={SetActivateAllQuotes} SetActivateReadQuote={SetActivateReadQuote}/>} 
+        {activateAllQuotes && <GetAllQuotes quotes={quotes} SetActivateAllQuotes={SetActivateAllQuotes} />} 
     </Suspense>
 
 
-    {// api GetAllAuthors }
+    {/* api GetAllAuthors */}
     <Button_with_hover disable={!contractAvailable} text={"List all authors"} onClick={handleGetAllAuthors}/>
     <Suspense fallback={ // display spinner until component is loaded
     <div className="spinner-border text-warning" role="status">
@@ -169,7 +221,7 @@ export default function Form(
     </Suspense>
 
 
-    {// api GetQuoteByOwner }
+    {/* api GetQuoteByOwner */ }
     <div>
         <GetQuoteByOwner disable={!contractAvailable}
                         quotes={quotesOwnerSetByUser}
@@ -178,7 +230,7 @@ export default function Form(
                         SetShowOwnerSetByUser={SetShowOwnerSetByUser}
                         SetActivateOwnerSetByUser={SetActivateOwnerSetByUser}/>
 
-        {// api GetQuoteByOwnerList }
+        {/* api GetQuoteByOwnerList */ }
         <Suspense fallback={ // display spinner until component is loaded
             <div className="spinner-border text-warning" role="status">
             <span className="visually-hidden">Loading...</span>
@@ -193,7 +245,7 @@ export default function Form(
                                     SetOwnerSetByUserFromList={SetOwnerSetByUserFromList}/>}
         </Suspense>
     </div>    
-        {// api WriteQuote }
+        {/* api WriteQuote */ }
     
     <WriteQuote SetUserQuote={SetUserQuote}
                 disable={!contractAvailable}
@@ -201,7 +253,7 @@ export default function Form(
 
         <div>
 
-    </div> */}
+    </div> 
 
 </div>
     )

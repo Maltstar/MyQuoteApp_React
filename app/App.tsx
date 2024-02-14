@@ -1,10 +1,11 @@
 'use client'
-//import './App.scss';   // stylesheet
+import './App.scss';   // stylesheet
 import { SetStateAction, useEffect, useState } from 'react';
 //import { Head } from 'next/document';
 import {default_bytes20, findMostRecentQuote} from './utils'
-import {Web3} from 'web3'
-//import Form from './Form';
+import {Contract, ContractAbi, Web3} from 'web3'
+import Form from './Form';
+import { error } from 'console';
 
 
 export default function App(){
@@ -35,12 +36,108 @@ export default function App(){
    * 
    **/
 
-  // store web3 object
-  const [web3Gateway,setWeb3Gateway] = useState()
+  // store web3 object created from window object
+  const [web3Gateway,setWeb3Gateway] = useState<Web3 | undefined>()
   // store contract interface json
-  const [contractJson,setContractJson] = useState()
-  // store contract interface 
-  const [contract,setContract] = useState(null)
+  const [contractJson,setContractJson] = useState<ContractJson | null>(null)
+
+  const abiTest = [
+    {
+        "inputs": [],
+        "name": "getAllAuthors",
+        "outputs": [
+            {
+                "internalType": "bytes20[]",
+                "name": "allAuthors",
+                "type": "bytes20[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getLengthQuote",
+        "outputs": [
+            {
+                "internalType": "uint256",
+                "name": "length",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "getQuote",
+        "outputs": [
+            {
+                "internalType": "string",
+                "name": "currentQuote",
+                "type": "string"
+            },
+            {
+                "internalType": "bytes20",
+                "name": "currentOwner",
+                "type": "bytes20"
+            },
+            {
+                "internalType": "uint256",
+                "name": "currentTimestamp",
+                "type": "uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "bytes20",
+                "name": "author",
+                "type": "bytes20"
+            }
+        ],
+        "name": "getQuotesbyOwner",
+        "outputs": [
+            {
+                "components": [
+                    {
+                        "internalType": "uint256",
+                        "name": "timestamp",
+                        "type": "uint256"
+                    },
+                    {
+                        "internalType": "string",
+                        "name": "myQuote",
+                        "type": "string"
+                    }
+                ],
+                "internalType": "struct Quote.QuoteDetails[]",
+                "name": "authorQuotes",
+                "type": "tuple[]"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "internalType": "string",
+                "name": "newQuote",
+                "type": "string"
+            }
+        ],
+        "name": "setQuote",
+        "outputs": [],
+        "stateMutability": "nonpayable",
+        "type": "function"
+    }
+] as const
+  // store contract interface derived from web3 object
+  const [contract,setContract] = useState<Contract<typeof abiTest> | null>(null)
 
   // handling connection status to metamask
   const [connectWallet,SetConnectWallet] = useState(false)
@@ -51,7 +148,7 @@ export default function App(){
 
 
   // store result from GetQuote()
-  const [currentQuote,SetCurrentQuote] = useState({})
+  const [currentQuote,SetCurrentQuote] = useState<Quote_with_Author|undefined>(undefined)
   // user request to read GetQuote()
   const [showCurrentQuote,SetShowCurrentQuote] = useState(false)
   // flag to indicate that the current has been read and is ready to be displayed
@@ -64,7 +161,7 @@ export default function App(){
   // user request to read the most recent quote on the blockchain
   const [showMostRecentQuote,SetShowMostRecentQuote] = useState(false)
   // memorize most recent quote
-  const [mostRecentQuote,SetMostRecentQuote] = useState({})
+  const [mostRecentQuote,SetMostRecentQuote] = useState<Quote_with_Author | undefined>()
 
 
   //#####################
@@ -72,7 +169,7 @@ export default function App(){
   //#####################
 
   // store result from GetAllAuthors()
-  const [allAuthors,SetAllAuthors] = useState({})
+  const [allAuthors,SetAllAuthors] = useState<Authors|undefined>([])
   // user request to read AllAuthors
   const [showAllAuthors,SetShowAllAuthors] = useState(false)
   // flag to indicate that the current has been read and is ready to be displayed
@@ -85,7 +182,7 @@ export default function App(){
   //#####################
 
   // store result from GetAllQuotes()
-  const [allQuotes,SetAllQuotes] = useState({})
+  const [allQuotes,SetAllQuotes] = useState<(QuoteAuthorList | undefined)[]>([])
   // user request to read all quotes
   const [showAllQuotes,SetShowAllQuotes] = useState(false)
   // flag to indicate that the all the quotes have been read and are ready to be displayed
@@ -98,23 +195,26 @@ export default function App(){
 
   // store user input as author/owner
   // call the smart contract with a default 20 bytes since they are no record for a bad formated input
-  const [ownerSetByUser,SetOwnerSetByUser] = useState(default_bytes20)
+  const [ownerSetByUser,SetOwnerSetByUser] = useState<string>(default_bytes20)
      // user request to read quotes from a specific author
   const [showOwnerSetByUser,SetShowOwnerSetByUser] = useState(false)
     // flag to indicate that the current has been read and is ready to be displayed
   const [activateOwnerSetByUser,SetActivateOwnerSetByUser] = useState(false)
    // store the quotes of the request author
-   const [quotesOwnerSetByUser,SetQuotesOwnerSetByUser] = useState({})
+//   const [quotesOwnerSetByUser,SetQuotesOwnerSetByUser] = useState<Quote[]>([])
+const [quotesOwnerSetByUser,SetQuotesOwnerSetByUser] = useState<QuoteAuthorList | undefined>()
+
+   
 
   //#####################
   // api GetQuoteByOwnerList()
   //#####################
   // call the smart contract with a default 20 bytes since they are no record for a bad formated input
-  const [ownerSetByUserFromList,SetOwnerSetByUserFromList] = useState(default_bytes20)
+  const [ownerSetByUserFromList,SetOwnerSetByUserFromList] = useState<string>(default_bytes20)
  // flag to indicate that the authors list has been read and is ready to be displayed
   const [activateAllAuthorsList,SetActivateAllAuthorsList] = useState(false)
     // user request to read quotes from a specific author from the select list
-  const [quotesOwnerSetByUserFromList,SetQuotesOwnerSetByUserFromList] = useState({})
+  const [quotesOwnerSetByUserFromList,SetQuotesOwnerSetByUserFromList] = useState<QuoteAuthorList|undefined>(undefined)
    // flag to indicate that the current has been read and is ready to be displayed
   const [activateOwnerSetByUserFromList,SetActivateOwnerSetByUserFromList] = useState(false)
   
@@ -123,10 +223,10 @@ export default function App(){
   //#####################
 
   // store account, wallet address of the current user
-  const [account, setAccount] = useState();
+  const [account, setAccount] = useState<string | undefined>("");
 
   // memorize quote from user input
-  const [userQuote,SetUserQuote] = useState("")
+  const [userQuote,SetUserQuote] = useState<string>("")
 
 
 
@@ -134,517 +234,667 @@ export default function App(){
 //   const [currentTimestamp,SetCurrentTimestamp] = useState('')
 
 
-  let accounts;
+  //let accounts;
  // let privateKey = process.env.PRIVATE_KEY;
-  let contract_json 
+  //let contract_json 
 
 //   const disconnectWallet =  async () => 
 //   {
-//     await window.ethereum.request({
-//     method: "wallet_requestPermissions",
-//     params: [
-//       {
-//         eth_accounts: {}
-//       }
-//     ]
-//   });
+//     let  account;
+//     if (window.ethereum)
+//     {
+//        account = await window.ethereum.request({
+//         method: "wallet_requestPermissions",
+//         params: [
+//           {
+//             eth_accounts: {}
+//           }
+//         ]
+//       });
+//     }
+//     console.log(account);
+    
 // }
 
-const removeWeb3 = () =>{
-  //setWeb3Gateway(undefined);
+const removeWeb3 = async () =>{
+  setWeb3Gateway(undefined);
 }
 
+// eth_accounts always returns an array.
+function handleAccountsChanged(accounts:Array<string>) {
+  if (accounts.length === 0) {
+    // MetaMask is locked or the user has not connected any accounts.
+    console.log('Please connect to MetaMask.');
+  } else if (accounts[0] !== account) {
+    // Reload your interface with accounts[0].
+    setAccount(accounts[0]);
+
+  }
+}
 // connect to MetaMask and fetch user account
-// const fetchAccount = async () => {
-//       try {
-//         // pop up metamask and waiting for the user to login
-//         window.ethereum.enable().then(async () => {
-//           // get a getaway from metamask to web3
-//           const web3 = new Web3(window.ethereum);
-//           // fetching accounts list on metamask
-//           accounts = await web3.eth.getAccounts();
-//           // take the first address on the list
-//           const userAddress = accounts[0];
-//           //// console.log("account",account);
-//           // memorize address
-//           setAccount(userAddress);
-//           // memorize web3 object
-//           setWeb3Gateway(web3)
-//           // memorizing the connection state
-//           SetConnectWallet(true)
+const fetchAccount = async () => {
+      // try {
+      //   // pop up metamask and waiting for the user to login
+      //   window.ethereum.enable().then(async () => {
+      //     // get a getaway from metamask to web3
+      //     const web3 = new Web3(window.ethereum);
+      //     // fetching accounts list on metamask
+      //     const accounts = await web3.eth.getAccounts();
+      //     // take the first address on the list
+      //     const userAddress = accounts[0];
+      //     //// console.log("account",account);
+      //     // memorize address
+      //     setAccount(userAddress);
+      //     // memorize web3 object
+      //     setWeb3Gateway(web3)
+      //     // memorizing the connection state
+      //     SetConnectWallet(true)
 
-//           // window.ethereum.on("accountsChanged", async (accounts) => {
-//           //   // handle account change
-//           //   accounts = await web3.eth.getAccounts();
-//           //   const userAddress = accounts[0];
-//           //   // console.log("userAddress",userAddress);
-//           //   setAccount(userAddress);
-//           // });
+      //     // window.ethereum.on("accountsChanged", async (accounts) => {
+      //     //   // handle account change
+      //     //   accounts = await web3.eth.getAccounts();
+      //     //   const userAddress = accounts[0];
+      //     //   // console.log("userAddress",userAddress);
+      //     //   setAccount(userAddress);
+      //     // });
 
-//           // window.ethereum.on("disconnect", () => {
-//           //   // handle metamask logout
-//           //   // console.log("disconnect");
-//           //   setAccount(null);
-//           // });
-//         });
-//       } catch (error) {
-//         if (error.message === "User denied account authorization") {
-//           // handle the case where the user denied the connection request
-//         } else if (error.message === "MetaMask is not enabled") {
-//           // handle the case where MetaMask is not available
-//         } else {
-//           // handle other errors
-//         }
-//       }
-//     };
+      //     // window.ethereum.on("disconnect", () => {
+      //     //   // handle metamask logout
+      //     //   // console.log("disconnect");
+      //     //   setAccount(null);
+      //     // });
+      //   });
+      // } 
+      if (window.ethereum)
+      {
+        try{
+          const web3 = new Web3(window.ethereum);
+          // fetching accounts list on metamask
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+          // take the first address on the list
+          const userAddress = accounts[0];
+          setAccount(userAddress);
+          // memorize web3 object
+          setWeb3Gateway(web3)
+          // memorizing the connection state
+          SetConnectWallet(true)
 
-  //  fetch smart contract interface from json file
-  // const fetchContractInterface= async () => {
-  //   try {
-  //     await fetch('/contracts/infos_contract.json')
-  //     .then((response) => response.json())
-  //     .then((json_contract_interface) => 
-  //     {
-  //       setContractJson(json_contract_interface)
-  //       //// console.log('after setContractJson', json_contract_interface);
-  //   })
+          window.ethereum.on('accountsChanged', handleAccountsChanged);
 
-  // }
-  // catch(error)
-  // {
-  //   // console.log(error);
+
+
+        }catch (error) {
+          if (error instanceof Error)
+          {
+            if (error.message === "User denied account authorization") {
+              // handle the case where the user denied the connection request
+            } else if (error.message === "MetaMask is not enabled") {
+              // handle the case where MetaMask is not available
+            } else {
+              // handle other errors
+            }
+          }
+  
+        }
+      }  
+      
+    };
+
+   //fetch smart contract interface from json file
+  const fetchContractInterface= async () => {
+    try {
+      await fetch('/contracts/infos_contract.json')
+      .then((response) => response.json())
+      .then((json_contract_interface) => 
+      {
+        setContractJson(json_contract_interface)
+        //// console.log('after setContractJson', json_contract_interface);
+    })
+
+  }
+  catch(error)
+  {
+    // console.log(error);
     
-  // }
-  // }
+  }
+ }
 
+    /**
+     * Gateway to web3 by :
+     *  - fetching account (wallet) on blockchain node provider (e.g MetaMask)
+     *  - fetching the ABI to the quote smart contract
+     */
   const connectToWeb3 = () => {
-        // fetch account
-      //  fetchAccount()
+        // fetch account on MetaMask
+        fetchAccount()
 
         //fetch smart contract interface
-      //  fetchContractInterface()
+        fetchContractInterface()
   }
 
-  // useEffect(() => {
+  /**
+   * fetch all authors from smart contract
+   * @returns allAuthors : array of strings
+   */
+  const getAllAuthorsWrapper = async () => 
+  {
+    // console.log('getAllAuthors');
+    if(contract !=null)
+    {
+      const allAuthors:Authors= await contract.methods.getAllAuthors().call()
+      return allAuthors;
+    }
+   
+  }
 
-  //   if(contract != null)
-  //   {
-  //       // fetch authors list for display as a list
+  // fetch all author as soon as the interface to smart contract is available
+  useEffect(() => {
 
-  //       const getAllAuthors = async () => {
-  //       // const data = await contract.methods.getAllAuthors().call();
-  //         const data = await getAllAuthorsWrapper();
-  //       //const allAuthors = await getAllAuthors();
-  //         const allAuthors = data
-  //        // // console.log('getAllAuthors',allAuthors);
+    if(contract != null)
+    {
+        // fetch authors list for display as a list
+
+        const getAllAuthors = async () => {
+        // const data = await contract.methods.getAllAuthors().call();
+          const data = await getAllAuthorsWrapper();
+        //const allAuthors = await getAllAuthors();
+          const allAuthors = data
+         // // console.log('getAllAuthors',allAuthors);
           
-  //         // memorize quote
-  //         SetAllAuthors(allAuthors)
-  //         // enable display of the quote since the quote has been memorized in a state
-  //         SetActivateAllAuthorsList(true)
+          // memorize quote
+          SetAllAuthors(allAuthors)
+          // enable display of the quote since the quote has been memorized in a state
+          SetActivateAllAuthorsList(true)
 
-  //         // reset the flag user read request
-  //         //SetShowAllAuthors(false)
-  //         //// console.log(data);
-  //       };
+          // reset the flag user read request
+          SetShowAllAuthors(false)
+          //// console.log(data);
+        };
 
 
-  //       getAllAuthors()
+        getAllAuthors()
       
-  //   }
+    }
 
-  // },[contract])
+  },[contract])
 
 
   // remove all state derived from web3 object
-  // useEffect(() => {
+  useEffect(() => {
 
 
-  //   // web3 object was removed but MetaMask wallet is connected
-  //   if(web3Gateway == undefined && connectWallet)
-  //   {
-  //     setAccount(undefined) // reset account
-  //     setContract(null) // remove connection between web3 object and smart contract
-  //     SetConnectWallet(false) // indicate that wallet is not anymore connected
-  //   }
-  // }, [web3Gateway]);
+    // web3 object was removed but MetaMask wallet is connected
+    if(web3Gateway == undefined && connectWallet)
+    {
+      setAccount(undefined) // reset account
+      setContract(null) // remove connection between web3 object and smart contract
+      SetConnectWallet(false) // indicate that wallet is not anymore connected
+    }
+  }, [web3Gateway]);
 
 
-  /// fetch smart contract on the blockchain via a web3 object and contract object
-  // useEffect(() => {
-  //   const fetchContract= async () => {
+  // fetch smart contract on the blockchain via a web3 object and contract object
+  useEffect(() => {
+    const fetchContract= async () => {
 
-  //       // the web3 instance was created and the json data for the smart contract are available
-  //       if((web3Gateway != null) && (contractJson != null))
-  //       {
-  //         // fetch gateway to smart contract
-  //         const contract = new web3Gateway.eth.Contract(
-  //           contractJson['abi'],
-  //           contractJson['address'])
+        // the web3 instance was created and the json data for the smart contract are available
+        if((web3Gateway != null) && (contractJson != null))
+        {
+          // fetch gateway to smart contract
+          // const contract = new web3Gateway.eth.Contract<typeof abiTest>(
+          //   //contractJson['abi'],
+          //   abiTest,
+          //   contractJson['address'])
+
+
+            const contract = new Contract<typeof abiTest>(
+              //contractJson['abi'],
+              abiTest,
+              contractJson['address'],web3Gateway)
           
-  //         setContract(contract)
-  //         // enable the button
+          setContract(contract)
+          // enable the button
           
-  //         // // console.log('web3Gateway',web3Gateway);
-  //         // console.log('contractJson',contractJson);
-  //         // console.log("account",account);
-  //         // console.log("contract",contract);
-  //       }
-  //       else
-  //       {
-  //         // console.log('Either not metamask or no json interface for smart contract');
-  //         // console.log('web3Gateway',web3Gateway);
-  //         // console.log('contractJson',contractJson);
+          // // console.log('web3Gateway',web3Gateway); 
+          // console.log('contractJson',contractJson);
+          // console.log("account",account);
+          // console.log("contract",contract);
+        }
+        else
+        {
+          // console.log('Either not metamask or no json interface for smart contract');
+          // console.log('web3Gateway',web3Gateway);
+          // console.log('contractJson',contractJson);
           
           
-  //       }
+        }
 
-  //   }
+    }
 
-  //   // fetch smart contract
-  //   fetchContract();
-  //  // getQuote();
-  // },[web3Gateway,contractJson])
+    // fetch smart contract
+    fetchContract();
+   // getQuote();
+  },[web3Gateway,contractJson])
 
 
   /* call to getQuotesbyOwner() from the user input */
-//   useEffect( () =>
-//   {
-//     if(showOwnerSetByUser)
-//     {
-//       const fetchAuthorQuote = async () =>
-//       {
-//         const data = await getQuotesbyOwnerWrapper(ownerSetByUser);
+  useEffect( () =>
+  {
+    if(showOwnerSetByUser)
+    {
+      const fetchAuthorQuote = async () =>
+      {
+        const data = await getQuotesbyOwnerWrapper(ownerSetByUser);
         
-//         // memorizing for the authors requested
-//         SetQuotesOwnerSetByUser(data)
-//         // indicating that the quotes are ready to be displayed
-//         SetActivateOwnerSetByUser(true)
-//         // reset flag for next request
-//         SetShowOwnerSetByUser(false)
+        // memorizing for the authors requested
+        SetQuotesOwnerSetByUser(data)
+        // indicating that the quotes are ready to be displayed
+        SetActivateOwnerSetByUser(true)
+        // reset flag for next request
+        SetShowOwnerSetByUser(false)
 
 
-//       }
+      }
 
 
-//       fetchAuthorQuote();
+      fetchAuthorQuote();
       
-//     }
-//     else
-//     {
-//      //  SetActivateOwnerSetByUser(false)
-//     }
-// // when author changed or the read quote by author was clicked
-//   },[ownerSetByUser,showOwnerSetByUser]) 
+    }
+    else
+    {
+     //  SetActivateOwnerSetByUser(false)
+    }
+// when author changed or the read quote by author was clicked
+  },[ownerSetByUser,showOwnerSetByUser]) 
 
 
    /* call to getQuotesbyOwner() from the user input */
-//    useEffect( () =>
-//    {
-//     // if(showOwnerSetByUserFromList)
-//     // {
+   useEffect( () =>
+   {
+    // if(showOwnerSetByUserFromList)
+    // {
 
-//       if(ownerSetByUserFromList != default_bytes20)
-//       {
-//         const fetchAuthorQuote = async () =>
-//         {
-//           const data = await getQuotesbyOwnerWrapper(ownerSetByUserFromList);
+      if(ownerSetByUserFromList != default_bytes20)
+      {
+        const fetchAuthorQuote = async () =>
+        {
+          const data = await getQuotesbyOwnerWrapper(ownerSetByUserFromList);
           
-//           // memorizing for the authors requested
-//           SetQuotesOwnerSetByUserFromList(data)
-//           // indicating that the quotes are ready to be displayed
-//           SetActivateOwnerSetByUserFromList(true)
-//           // console.log('ownerSetByUserFromList');
+          // memorizing for the authors requested
+          SetQuotesOwnerSetByUserFromList(data)
+          // indicating that the quotes are ready to be displayed
+          SetActivateOwnerSetByUserFromList(true)
+          // console.log('ownerSetByUserFromList');
           
   
   
-//         }
+        }
   
   
-//         fetchAuthorQuote();
+        fetchAuthorQuote();
         
-//       //}
-//     }
+      //}
+    }
 
-//  // when author changed or the read quote by author was clicked
-//    },[ownerSetByUserFromList]) 
+ // when author changed or the read quote by author was clicked
+   },[ownerSetByUserFromList]) 
 
   // call getQuote method of smart contract with RPC
   // each time the user click on the button "Read Quote on Blockchain"
-  // useEffect(() =>
-  // {
-  //   if(showCurrentQuote)
-  //   {
-  //     // console.log('showCurrentQuote 1');
-  //     const getQuote = async () => {
-  //       // console.log('showCurrentQuote 2');
-  //       const data = await contract.methods.getQuote().call();
-  //       // console.log('showCurrentQuote',data);
-  //       const quote = {
-  //           'myQuote': data.currentQuote,
-  //           'owner': data.currentOwner,
-  //           'timestamp':data.currentTimestamp
-  //       }
-  //       // console.log('showCurrentQuote',quote);
-        
-  //       // memorize quote
-  //       SetCurrentQuote(quote)
-  //       // enable display of the quote since the quote has been memorized in a state
-  //       SetActivateReadQuote(true)
-
-  //       // reset the flag user read request
-  //       SetShowCurrentQuote(false)
-  //       // console.log(data);
-  //     };
+  useEffect(() =>
+  {
+    if(showCurrentQuote)
+    {
+      // console.log('showCurrentQuote 1');
+      const getQuote = async () => {
+        // console.log('showCurrentQuote 2');
+        if(contract != null)
+        {
+          const data = await contract.methods.getQuote().call();
+          // console.log('showCurrentQuote',data);
+          const quote = {
+              'myQuote': data.currentQuote,
+              'owner': data.currentOwner,
+              'timestamp':data.currentTimestamp
+          }
+          // console.log('showCurrentQuote',quote);
+          
+          // memorize quote
+          SetCurrentQuote(quote)
+          // enable display of the quote since the quote has been memorized in a state
+          SetActivateReadQuote(true)
+  
+          // reset the flag user read request
+          SetShowCurrentQuote(false)
+        }
+       
+        // console.log(data);
+      };
 
       
-  //    getQuote()
-  //   }
+     getQuote()
+    }
 
-  // },[showCurrentQuote])
+  },[showCurrentQuote])
 
 
-  // call getQuote method of smart contract with RPC
-  // each time the user click on the button "Read Quote on Blockchain"
-  // useEffect(() =>
-  // {
-  //   if(showMostRecentQuote)
-  //   {
-  //     // console.log('showCurrentQuote 1');
-  //     const getMostRecentQuote = async () => {
-  //       const promises = await getAllQuotesPromises();
-  //       const allQuotes = []
-  //       // execute each call to each promise, i.e getQuotesbyOwner(author).call() for all authors
-  //       Promise.allSettled(promises).then((results) => {
-  //         // console.log("results",results);
+
+
+  // Handle ReadAllQuotes
+  useEffect(() =>
+  {
+    if(showMostRecentQuote)
+    {
+      // console.log('showCurrentQuote 1');
+      const getMostRecentQuote = async () => {
+        const allQuotes = await getAllQuotesWrapper();
+        // const promises = await getAllQuotesPromises();
+        // const allQuotes:Array<QuoteAuthorList | undefined> = []
+        // // execute each call to each promise, i.e getQuotesbyOwner(author).call() for all authors
+        // Promise.allSettled(promises).then((results) => {
+        //   // console.log("results",results);
           
-  //         // results is array that store all the subsequent result of each call to getQuotesbyOwner(author).call() 
-  //         // memorize the attribute value which is an object with the author and all his quotes of each result 
-  //         results.forEach((result) =>  allQuotes.push(result.value))
-  //       // memorize quote when the data are available
-  //         // console.log("showMostRecentQuote",allQuotes);
-  //         //const quote = findMostRecentQuote(allQuotes);
-  //        // // console.log("showMostRecentQuote",quote);
-          
-  //         //const quote_details = {          }
-  //         SetMostRecentQuote(findMostRecentQuote(allQuotes));
-          
-  //      // SetAllQuotes(allQuotes)
-  //       },)        
+        //   // results is array that store all the subsequent result of each call to getQuotesbyOwner(author).call() 
+        //   // memorize the attribute value which is an object with the author and all his quotes of each result 
         
-  //       // // memorize quote
-  //       // SetCurrentQuote(quote)
-  //       // // enable display of the quote since the quote has been memorized in a state
-  //       // SetActivateReadQuote(true)
+        
+        //   //results.forEach((result) =>  allQuotes.push(result.value))
+        //   // filter resolved promised and work with then
+        //   results.filter((val): val is PromiseFulfilledResult<QuoteAuthorList | undefined> => val.status === 'fulfilled').forEach(result => allQuotes.push(result.value))
 
-  //       // // reset the flag user read request
-  //       // SetShowCurrentQuote(false)
-  //       // // console.log(data);
-  //     };
+          //results.forEach((result) =>  allQuotes.push(result.value))
+        // memorize quote when the data are available
+          // console.log("showMostRecentQuote",allQuotes);
+          //const quote = findMostRecentQuote(allQuotes);
+         // // console.log("showMostRecentQuote",quote);
+          
+          //const quote_details = {          }
+          SetMostRecentQuote(findMostRecentQuote(allQuotes));
+          
+       // SetAllQuotes(allQuotes)
+        }       
+        
+        // // memorize quote
+        // SetCurrentQuote(quote)
+        // // enable display of the quote since the quote has been memorized in a state
+        // SetActivateReadQuote(true)
 
-      
-  //     getMostRecentQuote()
-  //   }
+        // // reset the flag user read request
+        // SetShowCurrentQuote(false)
+        // // console.log(data);
+        getMostRecentQuote()
+      }
 
-  // },[showMostRecentQuote])
+  },[showMostRecentQuote])
 
 
     // call getAllAuthors method of smart contract with RPC
-  // each time the user click on the button "Read Quote on Blockchain"
-  // useEffect(() =>
-  // {
-  //   if(showAllAuthors)
-  //   {
-  //     const getAllAuthors = async () => {
-  //      // const data = await contract.methods.getAllAuthors().call();
-  //       const data = await getAllAuthorsWrapper();
-  //      //const allAuthors = await getAllAuthors();
-  //       const allAuthors = data
-  //       // console.log('showCurrentQuote',allAuthors);
+  useEffect(() =>
+  {
+    if(showAllAuthors)
+    {
+      const getAllAuthors = async () => {
+       // const data = await contract.methods.getAllAuthors().call();
+        const data = await getAllAuthorsWrapper();
+       //const allAuthors = await getAllAuthors();
+        const allAuthors = data
+        // console.log('showCurrentQuote',allAuthors);
         
-  //       // memorize quote
-  //       SetAllAuthors(allAuthors)
-  //       // enable display of the quote since the quote has been memorized in a state
-  //       SetActivateAllAuthors(true)
+        // memorize quote
+        SetAllAuthors(allAuthors)
+        // enable display of the quote since the quote has been memorized in a state
+        SetActivateAllAuthors(true)
 
-  //       // reset the flag user read request
-  //       SetShowAllAuthors(false)
-  //       //// console.log(data);
-  //     };
-
-
-  //     getAllAuthors()
-  //   }
-
-  // },[showAllAuthors])
+        // reset the flag user read request
+        SetShowAllAuthors(false)
+        //// console.log(data);
+      };
 
 
+      getAllAuthors()
+    }
+
+  },[showAllAuthors])
+
+  const setQuoteWrapper = async () => 
+  {
+    // console.log('setQuoteWrapper',userQuote,account);
+
+    if(contract != null)
+    {
+      // write quote on blockchain
+      try{
+
+        await contract.methods.setQuote(userQuote).send({from:account});
+
+      }
+      catch(error){
+      if (error instanceof Error)
+      {
+          // console.log(error.message);
+          
+      }
+      }
+    }
+    
+ }
   // call setQuote method of smart contract with RPC
-  // useEffect(() =>
-  // {
-  //   if(userQuote.length != 0)
-  //   {
-  //     const writeQuote = async () => {
-  //      // const data = await contract.methods.getAllAuthors().call();
-  //       await setQuoteWrapper();
-  //      //const allAuthors = await getAllAuthors();
-        
-  //       // reset quote
-  //       SetUserQuote("")
+  useEffect(() =>
+  {
+    if(userQuote != "")
+    {
+      if(userQuote.length != 0)
+      {
+        const writeQuote = async () => {
+         // const data = await contract.methods.getAllAuthors().call();
+          await setQuoteWrapper();
+         //const allAuthors = await getAllAuthors();
+          
+          // reset quote
+          SetUserQuote("")
+  
+        };
+  
+  
+        writeQuote()
+      }
+    }
 
-  //     };
 
-
-  //     writeQuote()
-  //   }
-
-  // },[userQuote])
+  },[userQuote])
 
  
-  // const getAllAuthorsWrapper = async () => 
-  // {
-  //   // console.log('getAllAuthors');
-  //   const allAuthors = await contract.methods.getAllAuthors().call()
-  //   return allAuthors;
-  // }
+  
 
-  // const getQuotesbyOwnerWrapper = async (author) =>
-  // {
-  //     // console.log('getQuotesbyOwnerWrapper');
-  //     // console.log('author',author);
-  //     const quote_details = await contract.methods.getQuotesbyOwner(author).call()
-  //     //const array_author = 
-  //     const quote_with_author = { 'quotes': quote_details, 'author': author}
-  //     return quote_with_author
-  // }
+  const getQuotesbyOwnerWrapper = async (author:Author) =>
+  {
+      // console.log('getQuotesbyOwnerWrapper');
+      // console.log('author',author);
+      if(contract != null)
+      {
+        const quote_details = await contract.methods.getQuotesbyOwner(author).call()
+        //const array_author = 
+        const quote_with_author = { 'quotes': quote_details, 'author': author}
+        return quote_with_author
+      }
 
-
-  // const setQuoteWrapper = async () => 
-  // {
-  //   // console.log('setQuoteWrapper',userQuote,account);
-
-  //   // write quote on blockchain
-  //   try{
-
-  //      await contract.methods.setQuote(userQuote).send({from:account});
-
-  //   }
-  //   catch(error){
-  //     if (error.name === "ResponseError")
-  //     {
-  //         // console.log(error.message);
-          
-  //     }
-  //   }
-  // }
+  }
 
 
-  // const getAllQuotesPromises = async () => {
+  
+
+
+  const getAllQuotesPromises = async () => {
         
-  //   // console.log('getAllQuotesPromises')
-  //   // fetch all authors
-  //   const allAuthors = await getAllAuthorsWrapper();
-  //   // console.log('allAuthors',allAuthors);
-  //   const allQuotesdummy: Array<String> = []
-  //   // console.log('allAuthors',allAuthors);
+    // console.log('getAllQuotesPromises')
+    // fetch all authors
+    const allAuthors = await getAllAuthorsWrapper();
+    // console.log('allAuthors',allAuthors);
+    const allQuotesdummy: Array<String> = []
+    // console.log('allAuthors',allAuthors);
     
-  //   // for each author, collect their quotes
-  //   const allQuotes = []
-  //   //const allQuotes: Array<String> = await allAuthors.reduce(addQuotesbyOwner,allQuotesdummy)
-  //   //// console.log('allQuotes',allQuotes);
+    // for each author, collect their quotes
+    const allQuotes = []
+    //const allQuotes: Array<String> = await allAuthors.reduce(addQuotesbyOwner,allQuotesdummy)
+    //// console.log('allQuotes',allQuotes);
 
-  //   const promises = []
+    const promises:Array<Promise<QuoteAuthorList|undefined>> = []
+    if(allAuthors)
+    {
+      allAuthors.map((author) => 
+      {
+        // create an array of promise for which each promise will be a call to getQuotesbyOwner(author) for all authors
+        promises.push(getQuotesbyOwnerWrapper(author))
+        // console.log('allAuthors.map','author',author);
+        
+        //   const quote_details = await contract.methods.getQuotesbyOwner(author).call()
+        //   // await  contract.methods.getQuotesbyOwner(author).call({from: ""},function(error, result){
+        //   // allQuotes[author] = result;
+        //   // console.log('quote',quote_details);
+        // //});
+      });
+    }
 
-  //   allAuthors.map((author) => 
-  //   {
-  //     // create an array of promise for which each promise will be a call to getQuotesbyOwner(author) for all authors
-  //     promises.push(getQuotesbyOwnerWrapper(author))
-  //     // console.log('allAuthors.map','author',author);
+
+
+    // console.log("getAllQuotesPromises, promises",promises);
+    
+
+    return promises
+  }
+
+
+  const getAllQuotesWrapper = async () => {
+        
+    const promises = await getAllQuotesPromises();
+    const allQuotes:Array<QuoteAuthorList | undefined> = []
+    // execute each call to each promise, i.e getQuotesbyOwner(author).call() for all authors
+    await Promise.allSettled(promises).then((results) => {
+      // filter resolved promised and work with then
+      results.filter((val): val is PromiseFulfilledResult<QuoteAuthorList | undefined> => val.status === 'fulfilled').forEach(result => allQuotes.push(result.value));
+      //results.filter((val): val is PromiseFulfilledResult<QuoteAuthorList | undefined> => val.status === 'rejected').forEach(result => allQuotes.push(result.reason));
       
-  //     //   const quote_details = await contract.methods.getQuotesbyOwner(author).call()
-  //     //   // await  contract.methods.getQuotesbyOwner(author).call({from: ""},function(error, result){
-  //     //   // allQuotes[author] = result;
-  //     //   // console.log('quote',quote_details);
-  //     // //});
-  //   });
+      console.log("getAllQuotesWrapper - allQuotes",allQuotes)
+      //return allQuotes
+    },)
+    // .catch(resaon)
+    // {
+    //   return allQuotes
+    // }
+    console.log("getAllQuotesWrapper - allQuotes 2nd return",allQuotes)
 
-  //   // console.log("getAllQuotesPromises, promises",promises);
-    
+    return allQuotes
+  }
 
-  //   return promises
-  // }
   // call getAllQuotes method of smart contract with RPC
   // each time the user click on the button "Read All Quote on Blockchain"
-  // useEffect(() =>
-  // {
-  //   if(showAllQuotes)
-  //   {
+  useEffect(() =>
+  {
+    if(showAllQuotes)
+    {
 
-  //     const getAllQuotes = async () => {
-        
-  //       // // console.log('getAllQuotes')
-  //       // // fetch all authors
-  //       // const allAuthors = await getAllAuthorsWrapper();
-  //       // // console.log('allAuthors',allAuthors);
-  //       // const allQuotesdummy: Array<String> = []
-  //       // // console.log('allAuthors',allAuthors);
-        
-  //       // for each author, collect their quotes
-  //       const allQuotes = []
-  //       // //const allQuotes: Array<String> = await allAuthors.reduce(addQuotesbyOwner,allQuotesdummy)
-  //       // //// console.log('allQuotes',allQuotes);
 
-  //       // const promises = []
+      const getAllQuotes = async () => {
 
-  //       // allAuthors.map((author) => 
-  //       // {
-  //       //   // create an array of promise for which each promise will be a call to getQuotesbyOwner(author) for all authors
-  //       //   promises.push(getQuotesbyOwnerWrapper(author))
-  //       //   // console.log('allAuthors.map','author',author);
+        //const allQuotes: Array<(QuoteAuthorList | undefined)> = [];
+        const allQuotes:Array<QuoteAuthorList | undefined> = await getAllQuotesWrapper();
+        // const json = JSON.stringify(allQuotes);
+        // const Quotes = JSON.parse(json);
+        //allQuotes.fromAsync(getAllQuotesWrapper()) ;
+        console.log("getAllQuotes- allQuotes",allQuotes);
+       // console.log("getAllQuotes- Quotes[0]",Quotes['0']);
+        console.log("getAllQuotes- Quotes[1]",allQuotes[1]);
+       // console.log("getAllQuotes- Quotes[2]",allQuotes['2']);
+
+        if (allQuotes[0] != undefined)
+        {
+          // memorize quote when the data are available
+          SetAllQuotes(allQuotes)
+          console.log("getAllQuotes- allQuotes",allQuotes);
           
-  //       //   //   const quote_details = await contract.methods.getQuotesbyOwner(author).call()
-  //       //   //   // await  contract.methods.getQuotesbyOwner(author).call({from: ""},function(error, result){
-  //       //   //   // allQuotes[author] = result;
-  //       //   //   // console.log('quote',quote_details);
-  //       //   // //});
-  //       // });
-
-  //       // // console.log('promises',promises);
-
-  //       const promises = await getAllQuotesPromises();
-  //       // console.log("getAllQuotes, promises",promises);
-
-
-  //       // execute each call to each promise, i.e getQuotesbyOwner(author).call() for all authors
-  //       Promise.allSettled(promises).then((results) => {
-  //         // console.log("results",results);
+          // enable display of the quote since the quote has been memorized in a state
+          SetActivateAllQuotes(true)
+        }
+        
+      //   const promises = await getAllQuotesPromises();
+      //   const allQuotes:Array<QuoteAuthorList | undefined> = []
+      //   // execute each call to each promise, i.e getQuotesbyOwner(author).call() for all authors
+      //   Promise.allSettled(promises).then((results) => {
+      //     // filter resolved promised and work with then
+      //     results.filter((val): val is PromiseFulfilledResult<QuoteAuthorList | undefined> => val.status === 'fulfilled').forEach(result => allQuotes.push(result.value))
           
-  //         // results is array that store all the subsequent result of each call to getQuotesbyOwner(author).call() 
-  //         // memorize the attribute value which is an object with the author and all his quotes of each result 
-  //         results.forEach((result) =>  allQuotes.push(result.value))
-  //       // memorize quote when the data are available
-  //       SetAllQuotes(allQuotes)
-  //       }
-  //       ,
+      //   },)
+      //   return allQuotes
 
-  //       )
+        // // console.log('getAllQuotes')
+        // // fetch all authors
+        // const allAuthors = await getAllAuthorsWrapper();
+        // // console.log('allAuthors',allAuthors);
+        // const allQuotesdummy: Array<String> = []
+        // // console.log('allAuthors',allAuthors);
+        
+        // // for each author, collect their quotes
+        // const allQuotes:Array<QuoteAuthorList | undefined> = []
+        // // //const allQuotes: Array<String> = await allAuthors.reduce(addQuotesbyOwner,allQuotesdummy)
+        // // //// console.log('allQuotes',allQuotes);
 
-  //       // console.log('showAllQuotes',allQuotes);
+        // const promises = []
+        // if(allAuthors != undefined)
+        // {
+        //     allAuthors.map((author) => 
+        //   {
+        //     // create an array of promise for which each promise will be a call to getQuotesbyOwner(author) for all authors
+        //     promises.push(getQuotesbyOwnerWrapper(author))
+        //     // console.log('allAuthors.map','author',author);
+            
+        //     //   const quote_details = await contract.methods.getQuotesbyOwner(author).call()
+        //     //   // await  contract.methods.getQuotesbyOwner(author).call({from: ""},function(error, result){
+        //     //   // allQuotes[author] = result;
+        //     //   // console.log('quote',quote_details);
+        //     // //});
+        //   });
+
+        //   // // console.log('promises',promises);
+
+        //   const promises = await getAllQuotesPromises();
+        //   // console.log("getAllQuotes, promises",promises);
+
+
+        //   // execute each call to each promise, i.e getQuotesbyOwner(author).call() for all authors
+        //   Promise.allSettled(promises).then((results) => {
+        //     // console.log("results",results);
+            
+        //     // results is array that store all the subsequent result of each call to getQuotesbyOwner(author).call() 
+        //     // memorize the attribute value which is an object with the author and all his quotes of each result 
+        //     //results.forEach((result) =>  allQuotes.push(result.value))
+        //     // filter resolved promised and work with then
+        //     results.filter((val): val is PromiseFulfilledResult<Quote[] | undefined> => val.status === 'fulfilled').forEach(result => allQuotes.push(result.value))
+
+
+        //     // memorize quote when the data are available
+        //     SetAllQuotes(allQuotes)
+        //   }
+        //   ,
+
+        //   )
+
+        // console.log('showAllQuotes',allQuotes);
         
         
-  //       // enable display of the quote since the quote has been memorized in a state
-  //       SetActivateAllQuotes(true)
 
-  //       // reset the flag user read request
-  //       SetShowAllQuotes(false)
         
-  //     };
+        
+
+        // reset the flag user read request
+        SetShowAllQuotes(false)
+        
+      };
 
 
-  //     getAllQuotes()
-  //   }
+      getAllQuotes()
+    }
 
-  // },[showAllQuotes])
+  },[showAllQuotes])
 
   // useEffect(() =>
   // {
@@ -743,7 +993,7 @@ const removeWeb3 = () =>{
         ) :  <div></div>}
       </div>
 
-      {/* <Form 
+      { <Form 
 
 
 
@@ -773,7 +1023,7 @@ const removeWeb3 = () =>{
             SetActivateAllQuotes={SetActivateAllQuotes} // reset fetch flag once all quotes have been displayed and the user request to clear all quotes
 
             // ########### GetQuotesByOwner api ################ //
-            quotesOwnerSetByUser={quotesOwnerSetByUser} // author/owner set by user
+            quotesOwnerSetByUser={quotesOwnerSetByUser} // list of quotes fetched for the author/owner set by user
             activateOwnerSetByUser={activateOwnerSetByUser} // indicate all quotes for the author have been fetched and stored
             SetOwnerSetByUser={SetOwnerSetByUser} // memorize the author set by the user
             SetShowOwnerSetByUser={SetShowOwnerSetByUser} // set user flag in Form to trigger a call to GetQuotesByOwner api from App
@@ -797,7 +1047,7 @@ const removeWeb3 = () =>{
             contractAvailable={contract !=null ? true:false}
             
 
-            /> */}
+            /> }
     </>
   );
 };

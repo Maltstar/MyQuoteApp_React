@@ -80,8 +80,8 @@ h1, .popup
  font-size: 4rem ;
  margin: 0;
  color : var(--color-2); 
- _text-decoration: underline double var(--color-1);
- _text-shadow: 2px 2px 15px var(--color-1) ;
+ /* _text-decoration: underline double var(--color-1);
+ _text-shadow: 2px 2px 15px var(--color-1) ; */
 }
 
 #up_about
@@ -162,8 +162,8 @@ h2
 {
   width: 25%;
   text-align: center;
-  _padding-left: 4%;
-  _padding-right: 4%;
+  /* _padding-left: 4%;
+  _padding-right: 4%; */
   color: white;
 }
 
@@ -197,8 +197,8 @@ h2
     background:black;
     color: var(--color-3);
     margin:1%;
-    _display: block;
-    _text-align: center;
+    /* _display: block; */
+    /* _text-align: center; */
 
   }
 
@@ -248,7 +248,7 @@ h2
 
   .navipunkt
 {
-	_background: var(--color-1);
+	/* _background: var(--color-1); */
 	border:2px solid var(--color-1) ;
 	border-radius: 10px;
 	padding:10px;
@@ -264,7 +264,7 @@ h2
 
 #dabinich
 {
-	_background:#062F53;
+	/* _background:#062F53; */
   background:black;
 }
 
@@ -291,7 +291,7 @@ h2
 
 
   p,ol,ul{
-    _font-style: italic;
+    /* _font-style: italic; */
     color:var(--color-2)
   }
 
@@ -312,12 +312,12 @@ h2
 
   .quote
   {
-    _font-family:'Aspire Font';
+    /* _font-family:'Aspire Font'; */
     text-decoration:none;
   }
 
   ul{
-    _list-style: none;
+    /* _list-style: none; */
   }
 
   .list_instructions
@@ -334,7 +334,7 @@ h2
 
  h1
   {
-    _display:inline;
+    /* _display:inline; */
     width: fit-content;
     margin-left: 0%;
   }
@@ -348,7 +348,7 @@ h2
   {
     margin-left: 34%;
     margin-right: 1%;
-    _display:inline-block;
+    /* _display:inline-block; */
   }
 
 
@@ -366,10 +366,10 @@ h2
 
   #write{
 
-    _display: inline-grid;
+    /* _display: inline-grid; */
     justify-content: center;
-    _vertical-align: middle;
-    _line-height: normal;
+    /* _vertical-align: middle;
+    _line-height: normal; */
 
   }
 

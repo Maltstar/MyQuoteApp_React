@@ -2,7 +2,14 @@ import { Small_Button_with_hover } from "./Style";
 import Header from "./Header";
     
     
-    /**
+
+    interface GetCurrentQuoteProps{
+        quote: Quote_with_Author | undefined,
+        title:string,
+        SetActivateReadQuote: (flag: boolean) => void
+    }
+
+        /**
      * Display the last quote of the last new author
      * 
      * @param quote last quote of the last new author 
@@ -10,14 +17,14 @@ import Header from "./Header";
      * @param SetActivateReadQuote enable or disable the display of the quote fron the parent component
      * @returns 
      */
-    export default function GetCurrentQuote({quote,title, SetActivateReadQuote})
+    export default function GetCurrentQuote({quote,title, SetActivateReadQuote}:GetCurrentQuoteProps)
     {
 
         console.log('GetCurrentQuote: quote',quote);
-        console.log('GetQuote: quote.currentQuote',quote.quote);
-        console.log('GetQuote: quote.timestamp',quote.timestamp);
+        // console.log('GetQuote: quote.currentQuote',quote.myQuote);
+        // console.log('GetQuote: quote.timestamp',quote.timestamp);
 
-        function convert_timestamp_to_date(timestamp)
+        function convert_timestamp_to_date(timestamp: BigInt)
         {
             //return new Date(timestamp*1000).toUTCString();
             console.log('convert_timestamp_to_date',timestamp.toString());
@@ -35,6 +42,7 @@ import Header from "./Header";
            
 
             return(
+                quote != undefined &&
                 <div className="result">
                     <article>
                         <h4 className="quote_title">{title}</h4>

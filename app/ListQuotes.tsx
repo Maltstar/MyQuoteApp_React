@@ -1,11 +1,17 @@
 import GetQuote from "./GetQuote"; 
 import { useState } from "react";
 import { Small_Button_with_hover } from "./Style";
-    
+
+ 
+interface GetListQuotesProps{
+    quoteslist: Quote[],
+    title:string,
+    SetActivateOwnerSetByUser?: ((flag: boolean) => void) | null
+}
     
     export default function ListQuotes({quoteslist, // quotes fetched on smart contract
                                         title,
-                                        SetActivateOwnerSetByUser=null}) // button to remove a quote individually
+                                        SetActivateOwnerSetByUser=null}:GetListQuotesProps) // button to remove a quote individually
     {
 
         console.log('ListQuotes: quotes',quoteslist); 

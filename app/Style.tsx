@@ -1,5 +1,10 @@
 import { useState } from "react";
 import Button from 'react-bootstrap/Button';
+//import StateManagedSelect from 'react-select';
+//import { PropsWithChildren,ReactNode } from "react";
+import { StylesConfig } from "react-select";
+import { ButtonProps } from "react-bootstrap/Button";
+
 
 const colors = {
     "color-1" : "#0c09c7",
@@ -9,12 +14,25 @@ const colors = {
   "color-5" : "#498a23", 
   }
 
-export default function Button_with_hover({text,onClick,display="block",v_align=false, disable=false},props)
+interface Button_with_hoverProps{
+   // props: PropsWithChildren<ButtonProps>,
+    //props: Props & React.ComponentPropsWithoutRef<typeof Button>;
+    onClick: () => void,
+    display?:string,
+    text:string,
+    v_align?: boolean,
+    value?: string,
+    disable: boolean
+
+}
+
+//export default function Button_with_hover({props,display="block",v_align=false, disable=false}:Button_with_hoverProps)
+export default function Button_with_hover({display="block",v_align=false, disable=false, text,onClick}:Button_with_hoverProps)
 {
 
     const [isHover, setIsHover] = useState(false);
     console.log("display",display);
-    console.log("Button_with_hover props",props);
+    //console.log("Button_with_hover props",props);
     
     
 
@@ -26,7 +44,7 @@ export default function Button_with_hover({text,onClick,display="block",v_align=
      };
 
 
-    const default_button_style = 
+    const default_button_style: MyCustomCSS = 
     {
         "fontSize": "110%",
         "fontWeight":"bold",
@@ -50,12 +68,24 @@ export default function Button_with_hover({text,onClick,display="block",v_align=
         // "transform": 'translate(-50%, -50%)',
     };
 
-    return <Button {...props} disabled={disable} variant="primary" size="lg" onClick={onClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
+    //return <Button {...props} disabled={disable} variant="primary" size="lg" onClick={onClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
+    return <Button disabled={disable} variant="primary" size="lg" onClick={onClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
 
 }
 
+interface Small_Button_with_hoverProps{
+    // props: PropsWithChildren<ButtonProps>,
+     //props: Props & React.ComponentPropsWithoutRef<typeof Button>;
+     onClick: (flag:boolean) => void,
+     display?:string,
+     text:string,
+     v_align?: boolean,
+     value?: string,
+     disable?: boolean
+ 
+ }
 
-export function Small_Button_with_hover({text,onClick,disable=false},props)
+export function Small_Button_with_hover({text,onClick,disable=false}:Small_Button_with_hoverProps)
 {
 
     const [isHover, setIsHover] = useState(false);
@@ -68,7 +98,7 @@ export function Small_Button_with_hover({text,onClick,disable=false},props)
      };
 
 
-    const default_button_style = 
+    const default_button_style:MyCustomCSS = 
     {
         "fontSize": "95%",
         //"font-weight":"bold",
@@ -89,12 +119,13 @@ export function Small_Button_with_hover({text,onClick,disable=false},props)
         // "transform": 'translate(-50%, -50%)',
     };
 
-    return <Button {...props} disabled={disable} variant="primary" size="sm" onClick={() => onClick(false)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
-
+    //return <Button {...props} disabled={disable} variant="primary" size="sm" onClick={() => onClick(false)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
+    return <Button disabled={disable} variant="primary" size="sm" onClick={() => onClick(false)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
 }
 
 // doc https://react-select.com/styles
-export const customStylesSelect = {
+// https://stackoverflow.com/questions/63696310/how-to-use-typescript-with-the-definition-of-custom-styles-for-a-select-using-re
+export const customStylesSelect: StylesConfig<MyOptionType, IsMulti>= {
     control: (baseStyles, state) => ({
     ...baseStyles,
     borderColor: state.isFocused ? colors["color-3"] : "#0a58ca",
@@ -103,7 +134,7 @@ export const customStylesSelect = {
 
 
     }),
-    singleValue: (provided:any,state) => (
+    singleValue: (provided,state) => (
         {
             ...provided,
             color:  'whitesmoke',
@@ -113,7 +144,7 @@ export const customStylesSelect = {
 
         }
     ),
-    option:(provided:any,state) =>
+    option:(provided,state) =>
     ({
         ...provided,
         backgroundColor: state.isSelected ? colors["color-1"] :"black",

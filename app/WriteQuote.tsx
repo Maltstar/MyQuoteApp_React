@@ -1,9 +1,14 @@
 import { useState } from "react";
 import Button_with_hover from "./Style";
 
+interface WriteQuoteProps{
+    SetUserQuote: (quote:string) => void,
+    disable: boolean
+}
+
 export default function WriteQuote({
     SetUserQuote,
-    disable=false})
+    disable=false}: WriteQuoteProps)
 
 {
 
@@ -12,20 +17,23 @@ export default function WriteQuote({
 
     const handleSubmit = () =>
     {
-        const quote_input = document.getElementById("quote_input");
-        const value = quote_input.value;
-        console.log("handleSubmit",value);
+        const quote_input = document.getElementById("quote_input") as HTMLTextAreaElement | null;
+        //const value = quote_input?.value;
+        //console.log("handleSubmit",value);
         
+        if(quote_input != null)
+        {
+            if(quote_input.value.length != 0)
+            {
+                SetWarningQuoteEmpty(false)
+                SetUserQuote(quote_input.value);
+            }
+            else
+            {
+                SetWarningQuoteEmpty(true)
+            }
+        }
 
-        if(value.length != 0)
-        {
-            SetWarningQuoteEmpty(false)
-            SetUserQuote(value);
-        }
-        else
-        {
-            SetWarningQuoteEmpty(true)
-        }
         
     }
 
@@ -50,8 +58,8 @@ export default function WriteQuote({
                 onClick={handleSubmit}
                 display="inline"
                 text={"Write quote on blockchain"}
-                alt="button to write quote"
-                type="submit"
+               // alt="button to write quote"
+                //type="submit"
                 value="Write quote on blockchain"/>  
 
 

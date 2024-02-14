@@ -5,6 +5,15 @@ import {check_input_author,default_bytes20,lazyRetry} from './utils.js'
 
 const ListQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "ListQuotes" */ './ListQuotes'), "ListQuotes"));
 
+interface GetQuoteByOwnerProps{
+    quotes: QuoteAuthorList | undefined,
+    SetOwnerSetByUser: (owner:string) => void,
+    activateOwnerSetByUser:  boolean,
+    SetShowOwnerSetByUser: (flag: boolean) => void ,
+    SetActivateOwnerSetByUser: (flag: boolean) => void,
+    disable:boolean
+}
+
 /**
  * 
  * @param quotes list of quotes of a specific author
@@ -21,7 +30,7 @@ export default function GetQuoteByOwner({quotes,
                                         activateOwnerSetByUser,
                                         SetShowOwnerSetByUser,
                                         SetActivateOwnerSetByUser,
-                                        disable=false})
+                                        disable=false}:GetQuoteByOwnerProps)
 {
 
     
@@ -33,38 +42,47 @@ export default function GetQuoteByOwner({quotes,
     const handleSubmit = () =>
     {
             // get author from user input
-            const author_input = document.getElementById("author_input");
-            const value = author_input.value;
-            console.log("value",value,);
+            const author_input = document.getElementById("author_input") as HTMLInputElement | null;;
+            let value: string;
+            if(author_input != null)
+            {
+                value = author_input.value;
+            }
+            
+            //console.log("value",value);
 
 
             // indicate that the user made a request for reading quotes
             SetShowOwnerSetByUser(true);
 
-            // the user typed something
-            if(author_input.value.length != 0)
+            if(author_input != null)
             {
-                // the input is right formated
-                if(check_input_author(value))
+
+                // the user typed something
+                if(author_input.value.length != 0)
                 {
-                    console.log("value",value,);
-                    // memorizing author set by user
-                    SetOwnerSetByUser(value);
-                    //setEmptyInput(false);
+                    // the input is right formated
+                    if(check_input_author(author_input.value))
+                    {
+                        console.log("value",author_input.value,);
+                        // memorizing author set by user
+                        SetOwnerSetByUser(author_input.value);
+                        //setEmptyInput(false);
+                    }
+                    else
+                    {
+                        // memorizing author set by user
+                        // call the smart contract with a default 20 bytes since they are no record for a bad formated input
+                        SetOwnerSetByUser(default_bytes20);
+                    }
+
+                    setEmptyInput(false);
+
                 }
                 else
                 {
-                    // memorizing author set by user
-                    // call the smart contract with a default 20 bytes since they are no record for a bad formated input
-                    SetOwnerSetByUser(default_bytes20);
+                    setEmptyInput(true);
                 }
-
-                setEmptyInput(false);
-
-            }
-            else
-            {
-                setEmptyInput(true);
             }
 
 
@@ -81,8 +99,8 @@ export default function GetQuoteByOwner({quotes,
             onClick={handleSubmit}
             display="inline"
             text={"Read quotes from author"}
-            alt="button to submit the author"
-            type="submit"
+            //alt="button to submit the author"
+           // type="submit"
             value="Read quotes from author"/>    
         {/* <input alt="button to submit the author" type="submit" placeholder="Read quotes from author"/> */}
     {/* </form> */}
@@ -96,7 +114,7 @@ export default function GetQuoteByOwner({quotes,
             {
                 activateOwnerSetByUser &&   /* The user made a request. i.e clicked on the button */   
                 !emptyInput  /* The user input is not empty */ &&
-               // Object.keys(quotes).length != 0 && /* quotes is not empty*/
+                quotes != undefined &&
                 quotes.quotes.length > 0 && /* There is at least 1 quote to display */
                 <ListQuotes /* The list of quotes fetched for the user input */ 
                     quoteslist={quotes.quotes}
@@ -112,6 +130,7 @@ export default function GetQuoteByOwner({quotes,
     {
         activateOwnerSetByUser &&   /* The user made a request. i.e clicked on the button */   
         !emptyInput  /* The user input is not empty */ &&
+        quotes != undefined &&
         quotes.quotes.length == 0 &&
         /* no quotes were found since the author does not exist */
         <div className="alert alert-warning alert-dismissible fade show"  role="alert" style={ {width:"50%",margin:"auto"}} >
@@ -119,7 +138,7 @@ export default function GetQuoteByOwner({quotes,
             Please enter a valid address for the author. <br></br>
             You may want to use "List all authors"
             <button type="button" className="btn-close" data-bs-dismiss="alert" aria-label="Close">
-			  	<span aria-hidden="True">&times;</span>
+			  	<span aria-hidden="true">&times;</span>
 			</button>
 
         </div>

@@ -1,5 +1,4 @@
 /* The following line can be included in a src/App.scss */
-$body-bg: rgb(65, 62, 62);
 
 .root
 {
@@ -12,10 +11,12 @@ $body-bg: rgb(65, 62, 62);
     --color-7 : #e4e70c; 
     --bs-btn-hover-color:var(--color-2);
     --bs-btn-hover-bg: var(--color-1);
+    
+
 }
 
 
-
+$body-bg: rgb(65, 62, 62);
 
 
 @import '~bootstrap/scss/bootstrap';
