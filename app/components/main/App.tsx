@@ -2,9 +2,9 @@
 import './App.scss';   // stylesheet
 import { SetStateAction, useEffect, useState } from 'react';
 //import { Head } from 'next/document';
-import {default_bytes20, findMostRecentQuote} from './utils'
+import {default_bytes20, findMostRecentQuote} from '../../lib/utils'
 import {Contract, ContractAbi, Web3} from 'web3'
-import Form from './Form';
+import Form from '../UI_menu/Form';
 import { error } from 'console';
 
 

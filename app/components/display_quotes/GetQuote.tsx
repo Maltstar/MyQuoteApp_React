@@ -1,6 +1,6 @@
 import { useState } from "react";
-import {Small_Button_with_hover} from './Style'
-import Header from "./Header";
+import {Small_Button_with_hover} from '../style/Style'
+import Header from "../../lib/Header";
 
 interface GetQuoteProps{
     quote:Quote,

@@ -1,5 +1,5 @@
 import ListQuotes from './ListQuotes'
-import { Small_Button_with_hover } from "./Style";
+import { Small_Button_with_hover } from "../style/Style";
 
 interface GetAllQuotesProps{
     quotes: (QuoteAuthorList | undefined)[], // quotes fetched on smart contract

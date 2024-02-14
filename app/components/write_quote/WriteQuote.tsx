@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Button_with_hover from "./Style";
+import Button_with_hover from "../style/Style";
 
 interface WriteQuoteProps{
     SetUserQuote: (quote:string) => void,

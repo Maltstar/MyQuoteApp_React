@@ -6,20 +6,20 @@
  //import GetAllQuotes from './GetAllQuotes';
 import { useState, lazy, Suspense } from 'react';
 
-import GetQuoteByOwner from './GetQuoteByOwner'
-import WriteQuote from './WriteQuote'
-import Button_with_hover from './Style';
+import GetQuoteByOwner from '../display_quotes/GetQuoteByOwner'
+import WriteQuote from '../write_quote/WriteQuote'
+import Button_with_hover from '../style/Style';
 
-import {lazyRetry} from './utils';
-import GetMostRecentQuote from './GetMostRecentQuote';
+import {lazyRetry} from '../../lib/utils';
+import GetMostRecentQuote from '../display_quotes/GetMostRecentQuote';
 //import GetQuoteByOwnerList from './GetQuoteByOwnerList';
 
 
- const GetCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'), "GetCurrentQuote"));
- const GetAllQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ './GetAllQuotes'), "GetAllQuotes"));
- const GetAllAuthors = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllAuthors" */ './GetAllAuthors'), "GetAllAuthors"));
+ const GetCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ '../display_quotes/GetCurrentQuote'), "GetCurrentQuote"));
+ const GetAllQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ '../display_quotes/GetAllQuotes'), "GetAllQuotes"));
+ const GetAllAuthors = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllAuthors" */ '../display_authors/GetAllAuthors'), "GetAllAuthors"));
  //const GetMostRecentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetMostRecentQuote" */ './GetMostRecentQuote'), "GetMostRecentQuote"));
- const GetQuoteByOwnerList = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetQuoteByOwnerList" */ './GetQuoteByOwnerList'), "GetQuoteByOwnerList"));
+ const GetQuoteByOwnerList = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetQuoteByOwnerList" */ '../display_quotes/GetQuoteByOwnerList'), "GetQuoteByOwnerList"));
 
 
 //const GetCurrentQuote = lazy(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'));;

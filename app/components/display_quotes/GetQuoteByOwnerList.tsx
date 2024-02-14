@@ -2,8 +2,8 @@ import Select from 'react-select';
 import {SingleValue} from 'react-select';
 //import ListQuotes from './ListQuotes';
 import { useState, lazy, Suspense } from 'react';
-import { customStylesSelect } from './Style';
-import {lazyRetry} from './utils'
+import { customStylesSelect } from '../style/Style';
+import {lazyRetry} from '../../lib/utils'
 import { Author } from 'next/dist/lib/metadata/types/metadata-types';
 //import GetQuoteByOwnerList from './GetQuoteByOwnerList';
 

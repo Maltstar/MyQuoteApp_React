@@ -1,4 +1,4 @@
-import Button_with_hover from "./Style"
+import Button_with_hover from "../style/Style"
 import GetCurrentQuote from "./GetCurrentQuote"
 import { Suspense,useState } from "react"
 import GetQuote from "./GetQuote"

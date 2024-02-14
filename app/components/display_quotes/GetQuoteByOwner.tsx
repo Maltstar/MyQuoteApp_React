@@ -1,7 +1,7 @@
 import { useState, lazy, Suspense } from "react";
 //import ListQuotes from "./ListQuotes";
-import Button_with_hover from './Style';
-import {check_input_author,default_bytes20,lazyRetry} from './utils.js'
+import Button_with_hover from '../style/Style';
+import {check_input_author,default_bytes20,lazyRetry} from '../../lib/utils.js'
 
 const ListQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "ListQuotes" */ './ListQuotes'), "ListQuotes"));
 

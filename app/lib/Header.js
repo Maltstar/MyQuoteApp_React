@@ -5,7 +5,7 @@ import localFont from 'next/font/local'
 //const myFont = localFont({ src: '../public/font/aspire-font/AspireDemibold-YaaO.ttf' })
 //const myFont = localFont({ src: '../public/font/playball-font/Playball-q6o1.ttf' })
 //const myFont = localFont({ src: '../public/font/cherry-cocktail-font/CherryCocktail-DOpY9.ttf' })
-const myFont = localFont({ src: '../public/font/comfortaa-font/Comfortaa-YJnL.ttf' })
+const myFont = localFont({ src: '../../public/font/comfortaa-font/Comfortaa-YJnL.ttf' })
 //const myFont = localFont({ src: '../public/font/cymo-font/Cymo-BpRw.ttf' })
 
 // const myFont = localFont({ src: '../public/font/gihun-font/Gihun-DORdR.ttf' })
