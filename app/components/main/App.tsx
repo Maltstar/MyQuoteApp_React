@@ -41,6 +41,7 @@ export default function App(){
   // store contract interface json
   const [contractJson,setContractJson] = useState<ContractJson | null>(null)
 
+  // redefining abi for typescript
   const abiTest = [
     {
         "inputs": [],
@@ -328,14 +329,23 @@ const fetchAccount = async () => {
           {
             if (error.message === "User denied account authorization") {
               // handle the case where the user denied the connection request
+                console.log("Please authorize the connection to your account");
+                
             } else if (error.message === "MetaMask is not enabled") {
               // handle the case where MetaMask is not available
+              console.log("Please authorize the connection to your account");
             } else {
               // handle other errors
+              console.log(error)
             }
           }
   
         }
+      }
+      else
+      {
+        console.log("Please install MetaMask on your browser before using this webapp")
+        alert("MetaMask is not installed, please install metamask before using the webapp")
       }  
       
     };
