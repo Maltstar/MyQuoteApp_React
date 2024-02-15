@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 //import { Inter } from 'next/font/google'
 import './css/globals.css'
 import Head from 'next/head'
+import Nav from './components/navigation/Nav'
 
 //const inter = Inter({ subsets: ['latin'], display: 'swap'})
 
@@ -28,7 +29,10 @@ export default function RootLayout({
   </Head>
     <html lang="en">
       {/* <body className={inter.className}>{children}</body> */}
-      <body>{children}</body>
+      <body>
+      <h1 id='main_title'>Quote App</h1>
+      <Nav/>
+      {children}</body>
     </html>
     </>
   )

@@ -73,6 +73,18 @@ html,body
 	
 }
 
+#main_title
+{
+ text-align: center;
+ font-family:  'Impact' ;
+ font-size: 4rem ;
+ margin:auto;
+ margin-bottom: 2%;
+ color : var(--color-2); 
+ text-decoration: underline double var(--color-1);
+ text-shadow: 2px 2px 15px var(--color-1) ;
+}
+
 h1, .popup
 {
  text-align: center;
@@ -244,6 +256,7 @@ h2
     display: flex;
     justify-content: center;
     gap:1%;
+    margin-bottom: 3%;
   }
 
   .navipunkt
@@ -253,6 +266,8 @@ h2
 	border-radius: 10px;
 	padding:10px;
 	font-size: 200%;
+  color: var(--color-2);
+  text-decoration-line:none;
 }
 
 .navipunkt:hover
@@ -322,7 +337,26 @@ h2
 
   .list_instructions
   {
-    list-style:none
+    list-style:none;
+    margin-bottom: 4%;
+  }
+
+  .list_instructions_about
+  {
+    list-style:none;
+    margin-bottom: 1%;
+  }
+
+  .about_title
+  {
+    color: var(--color-7);
+    margin-bottom: 1%;
+  }
+
+  .instructions_title
+  {
+    color: var(--color-2);
+    margin-bottom: 2%;
   }
 
   #up
