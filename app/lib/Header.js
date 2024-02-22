@@ -15,7 +15,7 @@ const myFont = localFont({ src: '../../public/font/comfortaa-font/Comfortaa-YJnL
 //const myFont = localFont({ src: '../public/font/symca-font/Symcapersonaluse-Ad66.ttf' })
 //const myFont = localFont({ src: '../public/font/thinhand-font/Thinhand-MdXv.ttf' })
 
-
+/* customizing font for nextjs */
 export default function Header({ children }) {
   //👇 Add our local font as a className
   return <span className={`${myFont.className} `}>{children}</span>

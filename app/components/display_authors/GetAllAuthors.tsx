@@ -24,9 +24,6 @@ interface GetAllAuthorsProps{
                    return <Author key={author} position={i+1} address={author}/>
                 })}
                        
-                {/* <button onClick={() => SetActivateAllAuthors(false)}>
-                    clear authors
-                </button> */}
                 <Small_Button_with_hover text={"clear authors"} onClick={SetActivateAllAuthors} />
                 </>
 

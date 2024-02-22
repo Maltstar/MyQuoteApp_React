@@ -18,8 +18,6 @@ export default function WriteQuote({
     const handleSubmit = () =>
     {
         const quote_input = document.getElementById("quote_input") as HTMLTextAreaElement | null;
-        //const value = quote_input?.value;
-        //console.log("handleSubmit",value);
         
         if(quote_input != null)
         {

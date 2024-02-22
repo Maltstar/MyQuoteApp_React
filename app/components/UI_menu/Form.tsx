@@ -1,9 +1,6 @@
 'use client'
 
 
- //import GetCurrentQuote from './GetCurrentQuote'
- //import GetAllAuthors from './GetAllAuthors';
- //import GetAllQuotes from './GetAllQuotes';
 import { useState, lazy, Suspense } from 'react';
 
 import GetQuoteByOwner from '../display_quotes/GetQuoteByOwner'
@@ -12,9 +9,9 @@ import Button_with_hover from '../style/Style';
 
 import {lazyRetry} from '../../lib/utils';
 import GetMostRecentQuote from '../display_quotes/GetMostRecentQuote';
-//import GetQuoteByOwnerList from './GetQuoteByOwnerList';
 
 
+/* for better performance lazy loading of components*/
  const GetCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ '../display_quotes/GetCurrentQuote'), "GetCurrentQuote"));
  const GetAllQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ '../display_quotes/GetAllQuotes'), "GetAllQuotes"));
  const GetAllAuthors = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllAuthors" */ '../display_authors/GetAllAuthors'), "GetAllAuthors"));
@@ -22,7 +19,6 @@ import GetMostRecentQuote from '../display_quotes/GetMostRecentQuote';
  const GetQuoteByOwnerList = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetQuoteByOwnerList" */ '../display_quotes/GetQuoteByOwnerList'), "GetQuoteByOwnerList"));
 
 
-//const GetCurrentQuote = lazy(() => import(/* webpackChunkName: "GetCurrentQuote" */ './GetCurrentQuote'));;
 interface FormProps{
     // ########### api GetQuote parameters ################ //
     quote:Quote_with_Author|undefined, //last quote
@@ -56,7 +52,6 @@ interface FormProps{
     SetActivateOwnerSetByUser:(flag :boolean) => void,// reset fetch flag once all quotes for the author have been displayed and the user request to clear all quotes
 
     // ########### api GetQuotesByOwnerList parameters ################ //
-    //authors
     activateAllAuthorsList:boolean,
     activateOwnerSetByUserFromList:boolean,
     SetActivateOwnerSetByUserFromList:(flag :boolean) => void,
@@ -65,7 +60,6 @@ interface FormProps{
 
 
     // ########### api WriteQuote ################ //
-    //authors
     SetUserQuote:(quote :string) => void,
     userAuthor:string | undefined,
 
@@ -121,8 +115,6 @@ export default function Form(
         SetUserQuote,
         userAuthor,
 
-
-
         // common
         contractAvailable //inform the availability of the contract
 
@@ -132,12 +124,6 @@ export default function Form(
 
     const [showGetQuote,SetShowGetQuote] = useState(false)
     const [isHover, setIsHover] = useState(false);
-    async function create(formData: FormData) {
-    //  'use server'
-   
-      // mutate data
-      // revalidate cache
-    }
 
     function handleGetQuote()
     {
@@ -257,32 +243,6 @@ export default function Form(
 
 </div>
     )
-
-
-    {/* <form id="quotesform">
-    <div id="current_quote">
-        <button className="submit_read" onClick={handleRead} >Read current quote on Blockchain <button/>
-        <div id="result_read_current"className="result"></div>
-    </div>
-    <div id="all_quotes">
-        <input id="read_all_quotes" className="submit_read" type="submit" value="Read all quotes"/>
-        <div id="result_all_quotes"className="result"></div>
-    </div>
-    <div id="all_authors">
-        <input id="read_all_authors" className="submit_read" type="submit" value="List all authors"/>
-        <div id="result_all_authors"className="result"></div>
-    </div>
-    <div id="write">
-        <textarea rows="4" cols="60" id="quote_input" name="user_quote"> </textarea>
-        <input id="submit_write" alt="button to submit the quote" type="submit" value="Write quote on Blockchain"/>
-    </div>
-    <div id="quote_by_author">
-        <input id="author_input" type="text" alt="text field to enter the author" placeholder="type the address of an author"/>
-        <input id="read_quotes_from_author" className="submit_read" alt="button to submit the author" type="submit" value="Read quotes from author"/>
-        <div id="result_quote_by_author" className="result" alt="quotes of the author with timestamps"></div>
-    </div>
-
-    </form>    */}
 
     
   }

@@ -10,7 +10,6 @@ function Instructions(){
             <li>  <strong>Note:</strong> the writing of a quote costs a fee to compute and store your quote on the blockchain network, make sure to have some <a href="https://goerlifaucet.org/">Goerli</a><a href="https://goerli-faucet.pk910.de/">ETH</a> before writing </li>
             <li>  <strong>In case of writing a quote :</strong> after paying the transaction, wait for the transaction confirmation (MetaMask Popup "Confirmed transaction") for the availability of your quote on the blockchain </li>         
         </ul>
-    {/* </p> */}
     </article>)
 }
 

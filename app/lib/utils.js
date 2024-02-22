@@ -114,20 +114,19 @@ export function findMostRecentQuote(allQuotes)
     // find the most recent quote of an author
     // the most recent quote of an author is the last element of quotes
     const allRecentQuotes = []
-    console.log("findMostRecentQuote",allQuotes);
+   // console.log("findMostRecentQuote",allQuotes);
 
     allQuotes.forEach(quotesDetails => {
         const author = quotesDetails.author
         const mostRecentQuote = quotesDetails.quotes[quotesDetails.quotes.length-1]
-        //const mostRecentQuoteDetails = {author:author, lastQuote:mostRecentQuote}
         const mostRecentQuoteDetails = {owner:author,myQuote:mostRecentQuote.myQuote,timestamp:mostRecentQuote.timestamp}
         allRecentQuotes.push(mostRecentQuoteDetails)
         
     });
 
-    console.log("allRecentQuotes",allRecentQuotes);
+    //console.log("allRecentQuotes",allRecentQuotes);
     const mostRecentQuote = getMax(allRecentQuotes)
-    console.log("mostRecentQuote",mostRecentQuote);
+   // console.log("mostRecentQuote",mostRecentQuote);
     return mostRecentQuote;
 
 
