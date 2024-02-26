@@ -23,6 +23,7 @@
     "react-select": "^5.8.0",
     "sass": "^1.69.5",
     "utf-8-validate": "^6.0.3",
+    "viem": "^1.21.4",
     "web3": "^4.2.0"
   },
   "devDependencies": {
