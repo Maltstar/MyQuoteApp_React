@@ -170,6 +170,7 @@ export default function Form(
 
     {/* api GetQuote  */}
     <Button_with_hover 
+    className='responsive'
     disable={!contractAvailable} // disable button if smart contract is not avaialable
     text={"Read latest quote of last author on Blockchain"} 
     onClick={handleGetQuote}/>
@@ -184,6 +185,7 @@ export default function Form(
 
     {/* api GetAllQuotes*/ }
     <Button_with_hover 
+    className='responsive'
     disable={!contractAvailable} // disable button if smart contract is not avaialable
     text={"Read all quotes"} 
     onClick={handleGetAllQuotes}/>

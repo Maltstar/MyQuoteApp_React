@@ -1,12 +1,13 @@
 import { useState } from "react";
 import Button_with_hover from "../style/Style";
+import TextArea from '../style/TextArea'
 
 interface WriteQuoteProps{
     SetUserQuote: (quote:string) => void,
     disable: boolean
 }
 
-export default function WriteQuote({
+export default function WriteQuote(this: any, {
     SetUserQuote,
     disable=false}: WriteQuoteProps)
 
@@ -35,20 +36,28 @@ export default function WriteQuote({
         
     }
 
+    
 
     return (
 
         <div id="write_quote_menu">
-            {/* <input id="quote_input" type="text" alt="text field to enter the author" placeholder="type your quote"/> rows="2" cols="60" */}
-            <textarea 
-             placeholder="enter your quote"
-             style={
-                {"height": "4rem",
-                "width":"30%",
-                "color":"white"
-                }}
+            {/* https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/*/}
+            {/* <div className="grow-wrap">  */}
+            <TextArea placeholder='enter your quote, e.g “But I know, somehow, that only when it is dark enough can you see the stars.” ― Martin Luther King, Jr.'/>
                 
-                id="quote_input" ></textarea>
+
+                {/* <textarea 
+                placeholder="enter your quote, e.g “But I know, somehow, that only when it is dark enough can you see the stars.” ― Martin Luther King, Jr."
+                style={
+                    {"height": "4rem",
+                    "width":"30%",
+                    "color":"white"
+                    }}
+                    onChange={copy_value}
+                    
+                    id="quote_input">
+                </textarea> */}
+            {/* </div> */}
 
             <Button_with_hover 
                 disable={disable}

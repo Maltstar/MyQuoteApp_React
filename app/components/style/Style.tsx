@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ButtonHTMLAttributes, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import { StylesConfig } from "react-select";
 
@@ -11,13 +11,14 @@ const colors = {
   "color-5" : "#498a23", 
   }
 
-interface Button_with_hoverProps{
+interface Button_with_hoverProps extends ButtonHTMLAttributes<HTMLButtonElement>{
     onClick: () => void,
     display?:string,
     text:string,
     v_align?: boolean,
     value?: string,
-    disable: boolean
+    disable?: boolean,
+    color?: string
 
 }
 
@@ -31,7 +32,7 @@ interface Button_with_hoverProps{
  * of the button element
  * @returns 
  */
-export default function Button_with_hover({display="block",v_align=false, disable=false, text,onClick}:Button_with_hoverProps)
+export default function Button_with_hover({display="block",v_align=false, disable=false, text,onClick,color,...rest}:Button_with_hoverProps)
 {
 
     const [isHover, setIsHover] = useState(false);
@@ -52,8 +53,8 @@ export default function Button_with_hover({display="block",v_align=false, disabl
     {
         "fontSize": "110%",
         "fontWeight":"bold",
-        "background":isHover ? colors["color-1" ] :"black",
-        "color": isHover ? colors["color-2"] : colors["color-3"],
+        "background":isHover ?   colors["color-1" ] : (color ? color: "black"),
+        "color": isHover ? colors["color-2"] : color  ? "black":colors["color-3"],
         "display":display,
         "margin": "auto",
         "marginBottom":"4%",
@@ -65,7 +66,7 @@ export default function Button_with_hover({display="block",v_align=false, disabl
 
     };
 
-    return <Button disabled={disable} variant="primary" size="lg" onClick={onClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
+    return <Button disabled={disable} variant="primary" size="lg" onClick={onClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style} {...rest}>{text}</Button>
 
 }
 
@@ -76,10 +77,11 @@ interface Small_Button_with_hoverProps{
      v_align?: boolean,
      value?: string,
      disable?: boolean
+     color?: string
  
  }
 
-export function Small_Button_with_hover({text,onClick,disable=false}:Small_Button_with_hoverProps)
+export function Small_Button_with_hover({text,onClick,disable=false,color}:Small_Button_with_hoverProps)
 {
 
     const [isHover, setIsHover] = useState(false);
@@ -96,7 +98,7 @@ export function Small_Button_with_hover({text,onClick,disable=false}:Small_Butto
     {
         "fontSize": "95%",
         "background":isHover ? colors["color-1" ] :'black',
-        "color": isHover ? colors["color-2"] : colors["color-3"],
+        "color": isHover ? color ? color: colors["color-2"] : colors["color-3"],
         "display":"block",
         "margin": "auto",
         "marginBottom":"2%",

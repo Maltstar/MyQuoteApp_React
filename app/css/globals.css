@@ -424,14 +424,18 @@ h2
 
   #quote_input
   {
-    width: fit-content;
+    /* width: fit-content;
     height: fit-content;
     vertical-align: middle;
+    margin:auto;
     margin-bottom: 0%;
     display: inline;
-    color:white;
+    color:white; */
     
   }
+
+
+
 
   #menu_nav_home
   {
@@ -512,8 +516,16 @@ h2
    {
   
       margin: 0%;
-    
-    
+   }
+
+   #metamask_button_mobile
+   {
+     display: none;
+   }
+
+   .responsive
+   {
+    display: block;
    }
 
 
@@ -524,9 +536,39 @@ h2
 @media screen and (max-width:800px) {
 
   #quote_input{
-    width: fit-content;
+    /* display: block;
+    margin:auto; */
+    /* margin-bottom:1%;
+    text-align: center;*/
+    width:fit-content; 
+    _height: 100%;
   }
 
+  #write_quote_menu{
+    display: block;
+    height: fit-content;
+  }
+
+  #metamask_button_desktop
+  {
+    display: none;
+  }
+
+  #metamask_button_mobile
+  {
+    display: block;
+    margin: auto;
+    margin-bottom: 4%;
+  }
+
+
+
+
+
+  #author_input
+  {
+    width: fit-content;
+  }
 }
 
    /* #NFT_data{

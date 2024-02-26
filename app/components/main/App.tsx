@@ -5,7 +5,9 @@ import { SetStateAction, useEffect, useState } from 'react';
 import {default_bytes20, findMostRecentQuote} from '../../lib/utils'
 import {Contract, ContractAbi, Web3} from 'web3'
 import Form from '../UI_menu/Form';
+import fetch_ens_test from '../../lib/ens'
 import { error } from 'console';
+import Button_with_hover from '../style/Style';
 
 
 export default function App(){
@@ -247,6 +249,7 @@ function handleAccountsChanged(accounts:Array<string>) {
 const fetchAccount = async () => {
       if (window.ethereum)
       {
+        fetch_ens_test()
         try{
           const web3 = new Web3(window.ethereum);
           // fetching accounts list on metamask
@@ -260,6 +263,8 @@ const fetchAccount = async () => {
           SetConnectWallet(true)
 
           window.ethereum.on('accountsChanged', handleAccountsChanged);
+          console.log(await web3.eth.ens.getAddress('maltstar.eth'));
+          fetch_ens_test()
 
 
 
@@ -308,7 +313,7 @@ const fetchAccount = async () => {
         fetchAccount()
 
         //fetch smart contract interface
-        fetchContractInterface()
+       // fetchContractInterface()
   }
 
   /**
@@ -348,6 +353,7 @@ const fetchAccount = async () => {
 
 
         getAllAuthors()
+        
       
     }
 
@@ -613,7 +619,6 @@ const fetchAccount = async () => {
         
     // fetch all authors
     const allAuthors = await getAllAuthorsWrapper();
-    const allQuotesdummy: Array<String> = []
     
     // for each author, collect their quotes
     const allQuotes = []
@@ -687,13 +692,34 @@ const fetchAccount = async () => {
     <>
       <div >
         {!account ? (
+          <>
+          
           <button 
-            className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded position-absolute top-0 end-0"
+            id="metamask_button_desktop"
+            className="bg-orange-500 hover:bg-green-500 text-black font-medium py-2 px-4 rounded position-absolute top-10 end-0"
             onClick={() => connectToWeb3()}//window.ethereum.enable()}
           >
             Connect to MetaMask
           </button>
-        ) : <div></div>}
+
+          <button 
+            id="metamask_button_mobile"
+            className="bg-orange-500 hover:bg-green-500 text-black font-medium py-2 px-4 rounded"
+            onClick={() => connectToWeb3()}//window.ethereum.enable()}
+          >
+            Connect to MetaMask
+          </button>
+
+          {/* <button 
+            id="metamask_button_mobile"
+            // className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded position-absolute top-0 end-0"
+            text="Connect to MetaMask"
+            color="#f1860a"
+            // display='none'
+            onClick={() => connectToWeb3()}//window.ethereum.enable()}
+          > 
+          </Button_with_hover> */}
+          </>) : <div></div>}
 
         {account && window.ethereum.isConnected()? (
           <div >
