@@ -5,7 +5,7 @@ import { SetStateAction, useEffect, useState } from 'react';
 import {default_bytes20, findMostRecentQuote} from '../../lib/utils'
 import {Contract, ContractAbi, Web3} from 'web3'
 import Form from '../UI_menu/Form';
-import fetch_ens_test from '../../lib/ens'
+// import fetch_ens_test from '../../lib/ens'
 import { error } from 'console';
 import Button_with_hover from '../style/Style';
 
@@ -262,9 +262,10 @@ const fetchAccount = async () => {
           // memorizing the connection state
           SetConnectWallet(true)
 
-          window.ethereum.on('accountsChanged', handleAccountsChanged);
-          console.log(await web3.eth.ens.getAddress('maltstar.eth'));
-          fetch_ens_test()
+          // test ens
+          // window.ethereum.on('accountsChanged', handleAccountsChanged);
+          // console.log(await web3.eth.ens.getAddress('maltstar.eth'));
+          // fetch_ens_test()
 
 
 
