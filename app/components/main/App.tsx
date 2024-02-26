@@ -249,7 +249,7 @@ function handleAccountsChanged(accounts:Array<string>) {
 const fetchAccount = async () => {
       if (window.ethereum)
       {
-        fetch_ens_test()
+        //fetch_ens_test()
         try{
           const web3 = new Web3(window.ethereum);
           // fetching accounts list on metamask
