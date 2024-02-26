@@ -706,7 +706,7 @@ const fetchAccount = async () => {
           <>
           
           <button 
-            id="metamask_button_desktop"
+            id="connect_button_desktop"
             className="bg-orange-500 hover:bg-green-500 text-black font-medium py-2 px-4 rounded position-absolute top-10 end-0"
             onClick={() => connectToWeb3()}//window.ethereum.enable()}
           >
@@ -714,7 +714,7 @@ const fetchAccount = async () => {
           </button>
 
           <button 
-            id="metamask_button_mobile"
+            id="connect_button_mobile"
             className="bg-orange-500 hover:bg-green-500 text-black font-medium py-2 px-4 rounded"
             onClick={() => connectToWeb3()}//window.ethereum.enable()}
           >
@@ -735,9 +735,21 @@ const fetchAccount = async () => {
         {account && window.ethereum.isConnected()? (
           <div >
            
-            <p className="badge rounded-pill bg-dark text-success position-absolute fs-6 top-0 end-0" >Your account address: <br></br>{account}</p>
+            <p id="user_wallet_desktop" 
+              className="badge rounded-pill bg-dark text-success position-absolute fs-6 top-0 end-0" >Your account address: <br></br>{account}</p>
             <button 
-            className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded position-absolute top-10 end-0"
+            id="disconnect_button_desktop"
+            className="bg-orange-500 hover:bg-green-500 text-black  font-medium py-2 px-4 rounded position-absolute top-10 end-0"
+            onClick={() => removeWeb3()}//window.ethereum.enable()}
+          >
+            Disconnect
+          </button>
+
+          <p id="user_wallet_mobile" 
+              className="badge rounded-pill bg-dark text-success" >Your account address: <br></br>{account}</p>
+            <button 
+            id="disconnect_button_mobile"
+            className="bg-orange-500 hover:bg-green-500 text-black font-medium py-2 px-4 rounded"
             onClick={() => removeWeb3()}//window.ethereum.enable()}
           >
             Disconnect

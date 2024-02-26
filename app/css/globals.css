@@ -518,11 +518,20 @@ h2
       margin: 0%;
    }
 
-   #metamask_button_mobile
+   #connect_button_mobile
    {
      display: none;
    }
 
+   #disconnect_button_mobile
+   {
+    display: none;
+   }
+
+   #user_wallet_mobile
+   {
+    display: none;
+   }
 
 
 /***************************************************************/
@@ -545,12 +554,34 @@ h2
     height: fit-content;
   }
 
-  #metamask_button_desktop
+  #connect_button_desktop
   {
     display: none;
   }
 
-  #metamask_button_mobile
+  #user_wallet_desktop
+  {
+    display: none;
+  }
+  #disconnect_button_desktop
+  {
+    display: none;
+  }
+
+  #user_wallet_mobile
+  {
+    display: block;
+    margin: auto;
+  }
+
+  #connect_button_mobile
+  {
+    display: block;
+    margin: auto;
+    margin-bottom: 4%;
+  }
+
+  #disconnect_button_mobile
   {
     display: block;
     margin: auto;
