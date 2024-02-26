@@ -5,9 +5,10 @@ import { SetStateAction, useEffect, useState } from 'react';
 import {default_bytes20, findMostRecentQuote} from '../../lib/utils'
 import {Contract, ContractAbi, Web3} from 'web3'
 import Form from '../UI_menu/Form';
+import detectEthereumProvider from '@metamask/detect-provider'
 // import fetch_ens_test from '../../lib/ens'
-import { error } from 'console';
-import Button_with_hover from '../style/Style';
+// import { error } from 'console';
+// import Button_with_hover from '../style/Style';
 
 
 export default function App(){
@@ -247,8 +248,13 @@ function handleAccountsChanged(accounts:Array<string>) {
 }
 // connect to MetaMask and fetch user account
 const fetchAccount = async () => {
-      if (window.ethereum)
+
+      const provider = await detectEthereumProvider()
+      // desktop
+      //if (window.ethereum)
+      if(provider)
       {
+        console.log('Ethereum successfully detected!')
         //fetch_ens_test()
         try{
           const web3 = new Web3(window.ethereum);
@@ -282,6 +288,10 @@ const fetchAccount = async () => {
           }
   
         }
+      }
+      else //mobile
+      {
+        alert('Please install MetaMask!')
       }  
       
     };
