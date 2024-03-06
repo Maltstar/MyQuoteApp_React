@@ -10,7 +10,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ensdomains/ensjs": "^3.4.4",
     "@metamask/detect-provider": "^2.0.0",
     "@tanstack/react-query": "^5.25.0",
     "@types/react-helmet": "^6.1.11",

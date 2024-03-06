@@ -16,7 +16,7 @@ const projectId = 'efc3c7fc3d9dab0817cdead6a77b09f8'
 const metadata = {
   name: 'Web3Modal',
   description: 'Web3Modal QuoteApp',
-  url: 'http://localhost:3000',//'https://web3modal.com', // origin must match your domain & subdomain
+  url: 'https://my-quote-app-react.vercel.app/',//'http://localhost:3000',//'https://web3modal.com', // origin must match your domain & subdomain
   icons: ['https://avatars.githubusercontent.com/u/37784886']
 }
 
