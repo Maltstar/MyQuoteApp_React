@@ -12,8 +12,10 @@
   "dependencies": {
     "@ensdomains/ensjs": "^3.4.4",
     "@metamask/detect-provider": "^2.0.0",
+    "@tanstack/react-query": "^5.25.0",
     "@types/react-helmet": "^6.1.11",
     "@types/react-select": "^5.0.1",
+    "@web3modal/wagmi": "^4.0.13",
     "bootstrap": "^5.3.2",
     "bufferutil": "^4.0.8",
     "encoding": "^0.1.13",
@@ -24,7 +26,8 @@
     "react-select": "^5.8.0",
     "sass": "^1.69.5",
     "utf-8-validate": "^6.0.3",
-    "viem": "^1.21.4",
+    "viem": "^2.7.19",
+    "wagmi": "^2.5.7",
     "web3": "^4.2.0"
   },
   "devDependencies": {

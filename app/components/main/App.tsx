@@ -247,6 +247,15 @@ function handleAccountsChanged(accounts:Array<string>) {
   }
 }
 // connect to MetaMask and fetch user account
+
+/**
+ * replace the connection to metamask via window.ethereum with WalletConnet web3modal to connect to several wallets for desktop 
+ * as for mobile, https://docs.metamask.io/wallet/how-to/detect-wallet/multiple-wallets/  https://web3modal.com/  ,
+ *  https://docs.walletconnect.com/web3modal/react/about?platform=wagmi , 
+ * https://wagmi.sh/react/api/hooks/useWriteContract, https://wagmi.sh/react/api/hooks/useReadContract
+ * also migrate the smart contract on sepolia since Goerli net is deprecated
+ */
+
 const fetchAccount = async () => {
 
       const provider = await detectEthereumProvider()
