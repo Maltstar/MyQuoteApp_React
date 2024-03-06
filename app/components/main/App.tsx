@@ -6,6 +6,7 @@ import {default_bytes20, findMostRecentQuote} from '../../lib/utils'
 import {Contract, ContractAbi, Web3} from 'web3'
 import Form from '../UI_menu/Form';
 import detectEthereumProvider from '@metamask/detect-provider'
+import ConnectButton from '../web3modal/Web3Modal'
 // import fetch_ens_test from '../../lib/ens'
 // import { error } from 'console';
 // import Button_with_hover from '../style/Style';
@@ -711,6 +712,8 @@ const fetchAccount = async () => {
   return (
     <>
       <div >
+
+      <ConnectButton/>
         {!account ? (
           <>
           
