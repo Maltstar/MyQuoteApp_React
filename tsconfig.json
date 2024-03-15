@@ -26,6 +26,7 @@
       "@/context/*":["./src/context/*"],
       "@/lib/*": ["src/lib/*"],
       "@/gen/*": ["./src/gen/*"],
+      "@/public/*":["./public/*"]
     },
     "baseUrl": "."
   },

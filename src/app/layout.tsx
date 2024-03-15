@@ -6,6 +6,7 @@ import { cookieToInitialState } from 'wagmi'
 
 import { config } from '@/config'
 import { ContextProvider } from '@/context'
+import Nav from './ui_menu/Nav'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -21,8 +22,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <h1 id='main_title'>Quote App</h1>
+        <Nav/>
         <ContextProvider initialState={initialState}>{children}</ContextProvider>
-        {/* {children} */}
       </body>
     </html>
   )

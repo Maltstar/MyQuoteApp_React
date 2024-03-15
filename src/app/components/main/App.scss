@@ -1,0 +1,24 @@
+/* The following line can be included in a src/App.scss */
+
+.root
+{
+    --color-1 : #0c09c7;
+    --color-2 : #8df308; 
+    --color-3 : #659de6; 
+    --color-4 : #343436; 
+    --color-5 : #498a23; 
+    --color-6: #ffffff; 
+    --color-7 : #e4e70c; 
+    --bs-btn-hover-color:var(--color-2);
+    --bs-btn-hover-bg: var(--color-1);
+    
+
+}
+
+
+$body-bg: rgb(65, 62, 62);
+
+
+@import '~bootstrap/scss/bootstrap';
+@import '@/css/globals.css';
+@import '@/public/font/fonts_style.css';

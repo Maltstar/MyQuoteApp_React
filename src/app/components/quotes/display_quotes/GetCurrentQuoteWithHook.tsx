@@ -11,17 +11,10 @@ import { useEffect, useMemo, useState } from "react";
     
 
 
-    
-
-    // interface GetCurrentQuoteProps{
-    //     quote: Quote_with_Author | undefined,
-    //     title:string,
-    //     SetActivateReadQuote: (flag: boolean) => void
-    // }
-
     interface GetCurrentQuoteWithHook{
-        RefreshQuote:boolean,
-        SetRefreshQuote: (flag: boolean) => void
+        refreshQuote:boolean,
+        SetRefreshQuote: (flag: boolean) => void, 
+        SetDisplayQuote: (flag: boolean) => void
     }
 
         /**
@@ -32,12 +25,10 @@ import { useEffect, useMemo, useState } from "react";
      * @param SetActivateReadQuote enable or disable the display of the quote fron the parent component
      * @returns 
      */
-    export default function GetCurrentQuoteWithHook({RefreshQuote,SetRefreshQuote}:GetCurrentQuoteWithHook)
+    export default function GetCurrentQuoteWithHook({refreshQuote,SetRefreshQuote,SetDisplayQuote}:GetCurrentQuoteWithHook)
     {
 
-         console.log('GetCurrentQuoteWithHook: RefreshQuote',RefreshQuote);
-        // console.log('GetQuote: quote.currentQuote',quote.myQuote);
-        // console.log('GetQuote: quote.timestamp',quote.timestamp);
+         console.log('GetCurrentQuoteWithHook: RefreshQuote',refreshQuote);
         const [Quote,SetQuote] = useState<Quote_with_Author|undefined>(undefined)
         const fetchedQuoteData = useGetQuote()
 
@@ -161,9 +152,9 @@ import { useEffect, useMemo, useState } from "react";
 
         useEffect(() => {
             console.log("useEffect fetchedQuoteData",fetchedQuoteData)
-            console.log("useEffect RefreshQuote",RefreshQuote)
+            console.log("useEffect RefreshQuote",refreshQuote)
 
-        if(RefreshQuote)
+        if(refreshQuote)
         {
             if(fetchedQuoteData != undefined)
             {
@@ -183,7 +174,7 @@ import { useEffect, useMemo, useState } from "react";
         }
             
 
-        },[RefreshQuote,fetchedQuoteData,SetQuote,SetRefreshQuote])
+        },[refreshQuote,fetchedQuoteData,SetQuote,SetRefreshQuote])
         //fetchGetQuote()
         //fetchGetQuote2()
         // console.log("result",result);
@@ -208,8 +199,8 @@ import { useEffect, useMemo, useState } from "react";
            
 
             return(
-                Quote != undefined ?
-                (<div className="result">
+                Quote != undefined &&
+                <div className="result">
                     <article>
                         <h4 className="quote_title">{title}</h4>
                         <ul>
@@ -224,13 +215,12 @@ import { useEffect, useMemo, useState } from "react";
                             </li>
                         </ul>
 
-                        {/* <Small_Button_with_hover onClick={() => SetActivateReadQuote(false)} text={"clear quote"}/> */}
+                        <Small_Button_with_hover onClick={() => SetDisplayQuote(false)} text={"clear quote"}/>
                     </article>
 
 
-                </div>)
-                :
-                <div>no result</div>
+                </div>
+
             )
 
     }
