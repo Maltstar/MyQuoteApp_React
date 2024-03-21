@@ -324,7 +324,7 @@ const fetchAccount = async () => {
         fetchAccount()
 
         //fetch smart contract interface
-       // fetchContractInterface()
+        fetchContractInterface()
   }
 
   /**
