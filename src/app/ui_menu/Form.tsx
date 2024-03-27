@@ -1,19 +1,56 @@
-// doc https://docs.walletconnect.com/web3modal/react/hooks#useweb3modalstate
-import { useWeb3ModalState } from '@web3modal/wagmi/react'
-import { useState,lazy } from 'react';
-import {lazyRetry} from '@/lib/utils';
+ 'use client'
 
-const GetQuoteButton = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ '@/components/button/GetQuoteButton'), "GetQuoteButton"));
+
+// doc https://docs.walletconnect.com/web3modal/react/hooks#useweb3modalstate
+import { useState,lazy, useEffect } from 'react';
+import {lazyRetry} from '@/lib/utils';
+import { config, projectId } from '@/config/index'
+
+import { useAccount } from 'wagmi'
+
+
+import { createWeb3Modal, useWeb3ModalEvents } from '@web3modal/wagmi/react'
+import GetQuoteButton from '@/components/button/GetQuoteButton';
+import GetCurrentQuote from '../components/quotes/display_quotes/highlevel/GetCurrentQuote';
+
+//const GetQuoteButton = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ '@/components/button/GetQuoteButton'), "GetQuoteButton"));
 
 
 export default function Form()
 {
-    const { open, selectedNetworkId } = useWeb3ModalState()
-    console.log("Web3ModalState",open);
+    
+    // fetch the connection status of modal connector
+    const { status } = useAccount({
+        config, 
+      }) 
+
+    const [ActivateForm,SetActivateForm] = useState(false)
+
+    useEffect( ()=> {
+        
+        console.log('status connector',status);
+        
+        switch(status)
+        {
+            
+            case 'connected':
+                // enable buttons on the form
+                SetActivateForm(true)
+                break;
+           
+            case 'disconnected':
+                 // disable buttons on the form
+                SetActivateForm(false)
+                break;
+            default: // connecting or reconnecting
+                break;
+        }
+        
+    },[status,SetActivateForm])
     
 
     return(
-        <GetQuoteButton disable={!open}/>
+        <GetCurrentQuote disable={!ActivateForm}/>
     )
 
 

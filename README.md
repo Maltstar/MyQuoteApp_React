@@ -18,9 +18,9 @@ Web App to consume smart contract ABI and output blockchain data.
    - Make your quote resistant to censorship, nobody can filter your quote.
 
 ### How?
-   - Using an existing blockchain network : e.g Ethereum on testnet Goerli 
+   - Using an existing blockchain network : e.g Ethereum on testnet Sepolia 
    - Programing a smart contract to interact with the blockchain network and store the quote  
-   - Contract [0x869eb73925b91e230c2e6b6541cffcca2eb35103](https://goerli.etherscan.io/address/0x869eb73925b91e230c2e6b6541cffcca2eb35103/)
+   - Contract [0x6A4D382239F8BAb7A481e59A0A4A67CA33D3BBF2](https://sepolia.etherscan.io/address/0x6a4d382239f8bab7a481e59a0a4a67ca33d3bbf2)
    - Programing a backend to interact with the smart contract and retrieve quotes.
    - Programing a frontend to display the quotes.
 

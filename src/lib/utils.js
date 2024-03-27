@@ -129,7 +129,19 @@ export function findMostRecentQuote(allQuotes)
    // console.log("mostRecentQuote",mostRecentQuote);
     return mostRecentQuote;
 
+}
 
-
-
+export function convert_timestamp_to_date(timestamp)
+{
+    //return new Date(timestamp*1000).toUTCString();
+    console.log('convert_timestamp_to_date',timestamp.toString());
+    // convert timestamp BigInt to string which is in seconds unit
+    // convert the string to a number with the millisecond unit and multiply by 1000 for having the right unit in seconds
+    const writtingDate = new Date(Number(timestamp.toString())*1000)
+    console.log('writtingDate',writtingDate);
+    // convert the date into UTC format
+    
+    return writtingDate.toUTCString();
+    // return new Date(timestamp.toString()).toUTCString();
+    // return new Date(timestamp.toString()*1000).toUTCString();
 }

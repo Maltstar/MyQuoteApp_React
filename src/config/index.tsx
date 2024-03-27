@@ -24,11 +24,10 @@ const metadata = {
 }
 
 export const config = createConfig({
-  chains: [mainnet, sepolia, goerli],
+  chains: [mainnet, sepolia],
   transports: {
     [mainnet.id]: http(),
-    [sepolia.id]: http(),
-    [goerli.id]: http()
+    [sepolia.id]: http()
   },
   connectors: [
     walletConnect({ projectId, metadata, showQrModal: false }),

@@ -11,7 +11,7 @@ const colors = {
   "color-5" : "#498a23", 
   }
 
-interface Button_with_hoverProps extends ButtonHTMLAttributes<HTMLButtonElement>{
+export interface Button_with_hoverProps extends ButtonHTMLAttributes<HTMLButtonElement>{
     onClick: () => void,
     display?:string,
     text:string,

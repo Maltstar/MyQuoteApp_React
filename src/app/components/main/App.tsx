@@ -8,8 +8,8 @@ export default function App()
     return (
         <>
             <ConnectButton/>
-            <GetQuoteButton disable={false}/>
-            {/* <Form/> */}
+            {/* <GetQuoteButton disable={false}/> */}
+            <Form/>
         </>
     )
 }

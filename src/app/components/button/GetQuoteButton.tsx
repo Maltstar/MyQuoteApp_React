@@ -3,10 +3,11 @@
  import Button_with_hover from '@/components/style/Style'
  import { Suspense, useState,lazy } from 'react';
  import {lazyRetry} from '@/lib/utils';
+ import { Generic } from '../generic/Generic';
 
 //import GetCurrentQuoteWithHook from '@/components/quotes/display_quotes/GetCurrentQuoteWithHook';
 
-const GetCurrentQuoteWithHook = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ '@/components/quotes/display_quotes/GetCurrentQuoteWithHook'), "GetCurrentQuoteWithHook"));
+const GetCurrentQuoteWithHook = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ '@/components/quotes/display_quotes/middleware/GetCurrentQuoteWithHook'), "GetCurrentQuoteWithHook"));
 
 interface GetQuoteButtonProps{
     disable:boolean,
@@ -31,9 +32,11 @@ interface GetQuoteButtonProps{
 
     
     
+    
  
     return ( 
     <>
+        {/* <Generic as="Button_with_hover" >Hello World!</Generic>  */}
         {/* api GetQuote  */}
         <Button_with_hover 
         disable={disable} // disable button if smart contract is not avaialable
