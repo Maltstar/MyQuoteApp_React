@@ -1,6 +1,7 @@
 import Button_with_hover, {Button_with_hoverProps} from "@/components/style/Style"
 import { Suspense, useState } from "react"
 import React from "react"
+import { CommonProps } from "../components/quotes/display/middleware/type"
 
 export type ChildrenProps  <C extends React.ReactElement> =  {
     refreshResult?: boolean,
@@ -12,7 +13,7 @@ type Props <C extends React.ReactElement> =
 React.PropsWithChildren<ChildrenProps<C>> &
 SectionProps
 
-interface SectionProps
+export interface SectionProps extends CommonProps
 {
     children: ChildrenProps<React.ReactElement>, // the component to display in result of the api call
     button_props:Omit<Button_with_hoverProps, 'onClick'>, 

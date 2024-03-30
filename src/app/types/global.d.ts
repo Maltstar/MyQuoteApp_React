@@ -64,6 +64,21 @@ declare global {
 
     type Author = string
 
+    type ResultGetQuoteType = [string, `0x${string}`, bigint] // result type for 'getQuote'
+    type ResultGetAllAuthorsType = `0x${string}`[]  // result type for 'getAllAuthors'
+    type ResultGetQuoteLengthType = Number
+    type ResultGetQuotebyOwner =[bigint, string][] // result type for 'getQuotesbyOwner'
+
+    type ResultType = 
+    ResultGetQuoteType |
+    ResultGetAllAuthorsType |
+    ResultGetQuoteLengthType |
+    undefined
+
+    /* function name taken from the abi of the smart contract*/
+    type FunctionNameSmartContract = "getAllAuthors" | "getLengthQuote" | 
+    "getQuote" | "getQuotesbyOwner" //| "setQuote"
+
 
     interface MyCustomCSS extends CSSProperties {
 }
