@@ -6,27 +6,44 @@ import { config } from '@/config/index'
 const abi = artifact["abi"]
 const contractAddress = artifact["address"]
 
+// interface useSmartContractFunctionReadProps  {
+//   functionName:FunctionNameSmartContract,
+//   params ?: Address
+// }
 
-
-export function useSmartContractFunction(functionName:FunctionNameSmartContract)
+//export function useSmartContractFunctionRead({functionName,params}:useSmartContractFunctionReadProps)
+export function useSmartContractFunctionRead(functionName:FunctionNameSmartContract,params?: Address)
 {
-  let result:ResultGetQuoteType|ResultGetAllAuthorsType|undefined = undefined
+  let result:ResultType = undefined
+  console.log("useSmartContractFunctionRead functionName, params",functionName, params );
+  
 
-  const resultReadContract =  useReadContract({
+  // either there are input parameter for the api (call to getQuotesbyOwner)
+  const resultReadContract = params != undefined ? useReadContract({
     abi: abi,
     address: contractAddress,
-    //functionName: functionName,
     functionName: functionName,
+     args: [params],
+  
     //chainId:goerli.id
     config,
   })
+  : // or none
+  useReadContract({
+    abi: abi,
+    address: contractAddress,
+    functionName: functionName,
+    config,
+  })
+
+
 
 //  let result:[string, `0x${string}`, bigint]|[] = ["no quote fetched yet",'0x00',BigInt(0)]
 
   
-  if(resultReadContract != undefined) 
+  if(resultReadContract)
     {
-        if(resultReadContract.data != undefined)
+        if(resultReadContract.data != undefined ) 
         {
           result = Object.assign([], resultReadContract.data)
           console.log("result",result);

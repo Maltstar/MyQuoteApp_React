@@ -13,27 +13,28 @@ type Props <C extends React.ReactElement> =
 React.PropsWithChildren<ChildrenProps<C>> &
 SectionProps
 
-export interface SectionProps extends CommonProps
+export interface SectionProps
 {
     children: ChildrenProps<React.ReactElement>, // the component to display in result of the api call
     button_props:Omit<Button_with_hoverProps, 'onClick'>, 
-    DisplayResult: boolean, // enable/disable the display of the result
-    SetDisplayResult:(flag: boolean) => void, // manage the flag to display the result
-    SetRefreshResult:(flag: boolean) => void, // manage the update of the result
-
+    //DisplayResult: boolean, // enable/disable the display of the result
+    // SetDisplayResult:(flag: boolean) => void, // manage the flag to display the result
+    // SetRefreshResult:(flag: boolean) => void, // manage the update of the result
+    handleUserClick:() => void
 
 }
 
 
-export default function Section({children,button_props,DisplayResult,SetDisplayResult,SetRefreshResult}:Props<React.ReactElement>)
+export default function Section({children,button_props,//DisplayResult,
+    handleUserClick}:Props<React.ReactElement>)
 {
 
-    const handleGetQuote = () => {
-        // enable the display of the quote
-        SetDisplayResult(true)
-        // a user made a request to display the quote
-        SetRefreshResult(true)
-    }
+    // const handleGetQuote = () => {
+    //     // enable the display of the quote
+    //     SetDisplayResult(true)
+    //     // a user made a request to display the quote
+    //     SetRefreshResult(true)
+    // }
 
     console.log("Section children",children);  
     
@@ -42,10 +43,11 @@ export default function Section({children,button_props,DisplayResult,SetDisplayR
     return ( 
         <>
             {/* Button to request a call to a smart contract api */}
-            <Button_with_hover onClick={handleGetQuote}
+            <Button_with_hover onClick={handleUserClick}
              {...button_props}/>
             {/* result provided by the api */}
-                { DisplayResult && children} 
+                {/* { DisplayResult && children}  */}
+                {children}
         </>
         )   
 

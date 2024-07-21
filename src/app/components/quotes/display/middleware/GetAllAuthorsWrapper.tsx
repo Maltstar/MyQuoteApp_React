@@ -1,13 +1,11 @@
 
 import { useEffect, useState } from "react";
-import DisplayCurrentQuote from "../lowlevel/DisplayCurrentQuote";
 import {CommonWithHookProps} from "./type"
 import DisplayAuthors from "../lowlevel/DisplayAuthors";
+import { useSmartContractFunctionRead } from "@/app/components/hooks/SmartContractHooks";
 
 
 export interface GetAllAuthorsWrapperProps extends CommonWithHookProps{
-    fetchedData:ResultGetAllAuthorsType, // the name of the smart contract function to call
-
     }
 
         /**
@@ -18,10 +16,13 @@ export interface GetAllAuthorsWrapperProps extends CommonWithHookProps{
      * @param SetActivateReadQuote enable or disable the display of the quote fron the parent component
      * @returns 
      */
-    export default function GetAllAuthorsWrapper({refreshResult,fetchedData,SetRefreshResult,SetDisplayResult}:GetAllAuthorsWrapperProps)
+    export default function GetAllAuthorsWrapper({refreshResult,SetRefreshResult,SetDisplayResult}:GetAllAuthorsWrapperProps)
     {
 
         const [AllAuthors,SetAllAuthors] = useState<Authors|undefined>(undefined)
+        const apiName:FunctionNameSmartContract = "getAllAuthors"
+        const fetchedData = useSmartContractFunctionRead(apiName) as ResultGetAllAuthorsType
+
        // const fetchedData:ResultType = useGetQuote('getQuote')
         const title = "List of all authors"        
 

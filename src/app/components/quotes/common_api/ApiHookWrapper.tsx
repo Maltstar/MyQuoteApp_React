@@ -1,16 +1,13 @@
 
-import {useSmartContractFunction} from '@/components/hooks/SmartContractHooks'
-import { useEffect, useState } from "react";
-import DisplayCurrentQuote from "../display/lowlevel/DisplayCurrentQuote";
 import GetCurrentQuoteWrapper from '../display/middleware/GetCurrentQuoteWrapper';
-import {GetCurrentQuoteWrapperProps} from '@/app/components/quotes/display/middleware/GetCurrentQuoteWrapper';
 import { CommonWithHookProps } from '../display/middleware/type';
 import GetAllAuthorsWrapper from '../display/middleware/GetAllAuthorsWrapper';
+import GetQuotesbyOwnerWrapper from '../display/middleware/GetQuotesbyOwnerWrapper';
     
 
 
 export interface ApiHookWrapperProps extends CommonWithHookProps{
-        apiName:FunctionNameSmartContract, // the name of the smart contract function to call
+        apiName:FunctionName, // the name of the smart contract function to call
 
     }
 
@@ -28,8 +25,10 @@ export interface ApiHookWrapperProps extends CommonWithHookProps{
     {
 
        // const [Quote,SetQuote] = useState<Quote_with_Author|undefined>(undefined)
-        const fetchedQuoteData = useSmartContractFunction(apiName)
+        // const fetchedQuoteData =// params!=undefined ? useSmartContractFunctionRead(apiName) 
+        //                                   useSmartContractFunctionRead(apiName,params)
 
+        // console.log("ApiHookWrapper params",params);
           
 
 
@@ -82,10 +81,16 @@ export interface ApiHookWrapperProps extends CommonWithHookProps{
                 <>
                     {(() => {
                     switch (apiName) {
+                    
                       case 'getQuote':
-                        return <GetCurrentQuoteWrapper {...rest } fetchedData={fetchedQuoteData as ResultGetQuoteType}/>
+                        return <GetCurrentQuoteWrapper {...rest } />
+                      
                       case 'getAllAuthors':
-                        return <GetAllAuthorsWrapper {...rest } fetchedData={fetchedQuoteData as ResultGetAllAuthorsType}/> 
+                        return <GetAllAuthorsWrapper {...rest } /> 
+                      
+                      case 'getQuotesbyOwner': case 'getQuotesbyOwnerList':
+                        return <GetQuotesbyOwnerWrapper {...rest }/>                         
+
                       default:
                         return null
                     }

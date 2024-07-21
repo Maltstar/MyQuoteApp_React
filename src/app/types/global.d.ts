@@ -14,7 +14,6 @@ declare global {
 
     interface ContractJson {
       address: string,
-      //abi:Array<Abi>
       abi:ContractAbi
     }
     
@@ -24,15 +23,16 @@ declare global {
     //   timestamp: MatchPrimitiveType<"uint256", unknown>
     // }
 
+    type Address = `0x${string}`
     // format of GetQuote result with wagmi hook readContract [string, `0x${string}`, bigint]
     interface Quote_with_Author {
       myQuote: string,
-      owner: `0x${string}`,
+      owner: Address,
       timestamp: bigint
     }
 
     interface Quote {
-        timestamp: MatchPrimitiveType<"uint256", unknown>;
+        timestamp: bigint;
         myQuote: string;
     };
 
@@ -67,17 +67,23 @@ declare global {
     type ResultGetQuoteType = [string, `0x${string}`, bigint] // result type for 'getQuote'
     type ResultGetAllAuthorsType = `0x${string}`[]  // result type for 'getAllAuthors'
     type ResultGetQuoteLengthType = Number
-    type ResultGetQuotebyOwner =[bigint, string][] // result type for 'getQuotesbyOwner'
-
+    //type ResultGetQuotebyOwner =[bigint, string][] // result type for 'getQuotesbyOwner'
+    type ResultGetQuotebyOwner = Quote[]
     type ResultType = 
     ResultGetQuoteType |
     ResultGetAllAuthorsType |
     ResultGetQuoteLengthType |
+    ResultGetQuotebyOwner |
     undefined
 
     /* function name taken from the abi of the smart contract*/
     type FunctionNameSmartContract = "getAllAuthors" | "getLengthQuote" | 
-    "getQuote" | "getQuotesbyOwner" //| "setQuote"
+    "getQuote" | "getQuotesbyOwner"  //| "setQuote"
+
+    type FunctionName = FunctionNameSmartContract | "getQuotesbyOwnerList"
+
+
+ 
 
 
     interface MyCustomCSS extends CSSProperties {
