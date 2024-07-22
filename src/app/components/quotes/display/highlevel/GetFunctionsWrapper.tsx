@@ -24,6 +24,17 @@ export function GetAllAuthors({disable}:DisableProps)
 }
 
 
+export function GetAllQuotes({disable}:DisableProps)
+{
+    const functionName = "getAllQuotes"
+    
+
+    return(
+        <GetFunctions disable={disable} functionName={functionName}/>
+    )
+}
+
+
 export function GetCurrentQuote({disable}:DisableProps)
 {
     const functionName = "getQuote"
@@ -53,3 +64,5 @@ export function GetQuotesbyOwnerList ({disable}:DisableProps)
         <GetFunctions disable={disable} functionName={functionName}/>
     )
 }
+
+

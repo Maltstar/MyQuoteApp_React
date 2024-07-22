@@ -69,7 +69,8 @@ export function SelectOwnerList({...rest}:SelectOwnerListProps)
 }
 
 export interface GetQuotesbyOwnerInputCheckedProps extends CommonWithHookProps{
-    owner:Author
+    owner:Author,
+    rank?:number,
     }
 
     /**
@@ -80,7 +81,7 @@ export interface GetQuotesbyOwnerInputCheckedProps extends CommonWithHookProps{
  * @param SetActivateReadQuote enable or disable the display of the quote fron the parent component
  * @returns 
  */
-function GetQuotesbyOwnerInputChecked({owner,SetDisplayResult,refreshResult,SetRefreshResult}:GetQuotesbyOwnerInputCheckedProps)
+export function GetQuotesbyOwnerInputChecked({owner,SetDisplayResult,refreshResult,SetRefreshResult,rank=0}:GetQuotesbyOwnerInputCheckedProps)
 {
 
     const [quotes,SetQuotes] = useState<QuoteAuthorList|undefined>(undefined)
@@ -97,10 +98,13 @@ function GetQuotesbyOwnerInputChecked({owner,SetDisplayResult,refreshResult,SetR
 
 
     useEffect(() => {
-        console.log("useEffect fetchedData",fetchedData)
+        console.log(" GetQuotesbyOwnerInputChecked useEffect fetchedData",fetchedData)
+        console.log(" GetQuotesbyOwnerInputChecked useEffect refreshResult",refreshResult)
         // console.log("useEffect refreshResult",refreshResult)
 
     const manageResult = (fetchedData:ResultGetQuotebyOwner) => {
+
+        console.log(" GetQuotesbyOwnerInputChecked manageResult  fetchedData",fetchedData)
 
         const result  = fetchedData 
         // construct an array of Quote from the array of quotes fetched as result
@@ -142,8 +146,9 @@ function GetQuotesbyOwnerInputChecked({owner,SetDisplayResult,refreshResult,SetR
 
         
         return(
+
             quotes != undefined &&
-            <ListQuotes title={`Author ${quotes.author}`}  quoteslist={quotes.quotes} SetActivateOwnerSetByUser={SetDisplayResult}/>
+            <ListQuotes title={rank == 0 ? `Author : ${quotes.author}` : `Author ${rank} : ${quotes.author}`}  quoteslist={quotes.quotes} SetActivateOwnerSetByUser={SetDisplayResult}/>
             
         )
 

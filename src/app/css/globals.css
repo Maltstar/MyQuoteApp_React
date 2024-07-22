@@ -54,6 +54,7 @@ body {
   --color-4 : #343436; 
   --color-5 : #b15500ef; 
   --color-7 : #e4e70c; 
+  --color-8 : #d5e63f; 
  }
 
 a {
@@ -121,6 +122,7 @@ h2
 {
   margin: auto;
   width: 33%;
+  margin-bottom: 4%;
 }
 
 #select_menu
@@ -312,6 +314,7 @@ h2
 
   .info{
     font-style: italic;
+    color: var(--color-8);
   }
   .quote_title
   {

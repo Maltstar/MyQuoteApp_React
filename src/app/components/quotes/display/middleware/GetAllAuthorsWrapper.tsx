@@ -23,7 +23,6 @@ export interface GetAllAuthorsWrapperProps extends CommonWithHookProps{
         const apiName:FunctionNameSmartContract = "getAllAuthors"
         const fetchedData = useSmartContractFunctionRead(apiName) as ResultGetAllAuthorsType
 
-       // const fetchedData:ResultType = useGetQuote('getQuote')
         const title = "List of all authors"        
 
         useEffect(() => {
@@ -53,7 +52,7 @@ export interface GetAllAuthorsWrapperProps extends CommonWithHookProps{
   
            
             return(
-                AllAuthors != undefined &&
+                AllAuthors != undefined && SetDisplayResult != null &&
                 <DisplayAuthors title={title} authors={AllAuthors} SetDisplayAutors={SetDisplayResult}/>
               
             )

@@ -78,9 +78,9 @@ declare global {
 
     /* function name taken from the abi of the smart contract*/
     type FunctionNameSmartContract = "getAllAuthors" | "getLengthQuote" | 
-    "getQuote" | "getQuotesbyOwner"  //| "setQuote"
+    "getQuote" | "getQuotesbyOwner" //| "setQuote"
 
-    type FunctionName = FunctionNameSmartContract | "getQuotesbyOwnerList"
+    type FunctionName = FunctionNameSmartContract | "getQuotesbyOwnerList" | "getAllQuotes" 
 
 
  

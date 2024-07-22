@@ -1,7 +1,7 @@
 export interface CommonProps
 {
     SetRefreshResult: (flag: boolean) => void, 
-    SetDisplayResult: (flag: boolean) => void
+    SetDisplayResult: ((flag: boolean) => void) | null
 }
 
 

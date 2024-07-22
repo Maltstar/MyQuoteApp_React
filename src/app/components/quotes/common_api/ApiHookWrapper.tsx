@@ -3,6 +3,7 @@ import GetCurrentQuoteWrapper from '../display/middleware/GetCurrentQuoteWrapper
 import { CommonWithHookProps } from '../display/middleware/type';
 import GetAllAuthorsWrapper from '../display/middleware/GetAllAuthorsWrapper';
 import GetQuotesbyOwnerWrapper from '../display/middleware/GetQuotesbyOwnerWrapper';
+import GetAllQuotesWrapper from '../display/middleware/GetAllQuotesWrapper';
     
 
 
@@ -87,6 +88,9 @@ export interface ApiHookWrapperProps extends CommonWithHookProps{
                       
                       case 'getAllAuthors':
                         return <GetAllAuthorsWrapper {...rest } /> 
+
+                      case 'getAllQuotes':
+                          return <GetAllQuotesWrapper {...rest } /> 
                       
                       case 'getQuotesbyOwner': case 'getQuotesbyOwnerList':
                         return <GetQuotesbyOwnerWrapper {...rest }/>                         

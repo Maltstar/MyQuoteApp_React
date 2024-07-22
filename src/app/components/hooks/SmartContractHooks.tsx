@@ -11,7 +11,6 @@ const contractAddress = artifact["address"]
 //   params ?: Address
 // }
 
-//export function useSmartContractFunctionRead({functionName,params}:useSmartContractFunctionReadProps)
 export function useSmartContractFunctionRead(functionName:FunctionNameSmartContract,params?: Address)
 {
   let result:ResultType = undefined

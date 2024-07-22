@@ -10,7 +10,7 @@ import { useAccount } from 'wagmi'
 
 
 import { createWeb3Modal, useWeb3ModalEvents } from '@web3modal/wagmi/react'
-import {GetCurrentQuote,GetAllAuthors,GetQuotesbyOwner, GetQuotesbyOwnerList} from '../components/quotes/display/highlevel/GetFunctionsWrapper';
+import {GetCurrentQuote,GetAllAuthors,GetQuotesbyOwner, GetQuotesbyOwnerList, GetAllQuotes} from '../components/quotes/display/highlevel/GetFunctionsWrapper';
 
 //const GetQuoteButton = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ '@/components/button/GetQuoteButton'), "GetQuoteButton"));
 
@@ -54,7 +54,7 @@ export default function Form()
                 <GetAllAuthors disable={!ActivateForm}/>
                 <GetQuotesbyOwner disable={!ActivateForm}/>
                 <GetQuotesbyOwnerList disable={!ActivateForm}/>
-
+                <GetAllQuotes disable={!ActivateForm}/>
         </>
 
     )

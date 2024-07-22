@@ -11,7 +11,8 @@ interface GetListQuotesProps{
     
     export default function ListQuotes({quoteslist, // quotes fetched on smart contract
                                         title,
-                                        SetActivateOwnerSetByUser=null}:GetListQuotesProps) // button to remove a quote individually
+                                        SetActivateOwnerSetByUser=null,
+                                        }:GetListQuotesProps) // button to remove a quote individually
     {
 
         console.log('ListQuotes: quotes',quoteslist); 
@@ -30,15 +31,16 @@ interface GetListQuotesProps{
         // default
         // clear author will all his quotes
         SetActivateAuthor(false);
-
-        // clear ListQuotes from parent
-        // useful for the case read quote from author
+       // clear ListQuotes from parent
+       // useful for the case read quote from author
         if(SetActivateOwnerSetByUser!=null)
         {
-            SetActivateOwnerSetByUser(false)
-        }
-        
+    
+           SetActivateOwnerSetByUser(false)
+        } 
+
        }
+
 
             
  
@@ -53,17 +55,13 @@ interface GetListQuotesProps{
                         const anothercopy = Object.values(single_quote)
                         const title = `quote ${i+1}`
                         console.log('anothercopy',anothercopy);
-                       // return  activateAuthor && <GetQuote key={i} quote={single_quote} title={title} />
                         return  <DisplayQuote key={i} quote={single_quote} title={title} />
-                        //return activateReadQuote && <GetQuote key={i} quote={single_quote} title={title} SetActivateReadQuote={SetActivateReadQuote}/>
-                        //return <GetQuote key={i+10} quote={single_quote} title={title} SetActivateReadQuote={SetActivateReadQuote}/>
                     })
 
                 }
                 {/* display the button for the active author*/}
                 {/* { activateAuthor /* display the button for the active author*/ }
                   {<Small_Button_with_hover onClick={handleClick} text={"clear author"}/> }
-
                 </div>
 
             )

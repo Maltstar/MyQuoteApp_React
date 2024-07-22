@@ -19,6 +19,7 @@ interface GetFunctionsProps extends DisableProps
 
 const ButtonName = {
     "getAllAuthors": "List all authors",
+    "getAllQuotes": "List all quotes",
     "getLengthQuote": "Show the length of a quote",
     "getQuote": "Read latest quote of last author on Blockchain",
     "getQuotesbyOwner": "Read Quote from author",
@@ -34,7 +35,6 @@ export default function GetFunctions({disable,functionName}:GetFunctionsProps)
     {
         disable : disable,
         text:ButtonName[functionName]
-        //"List all authors":
     }
     : 
     {
@@ -42,7 +42,6 @@ export default function GetFunctions({disable,functionName}:GetFunctionsProps)
         text:ButtonName[functionName],
         display:"inline",
         v_align:true
-        //"List all authors":
     }
 
 
@@ -94,7 +93,7 @@ export default function GetFunctions({disable,functionName}:GetFunctionsProps)
             {(() => {
                 switch (functionName) {
                 
-                case 'getQuote': case 'getAllAuthors':
+                case 'getQuote': case 'getAllAuthors':  case 'getAllQuotes':
                     return (
                     <Section {...sectionProps}>
                         <Suspense fallback={ // display spinner until component is loaded
