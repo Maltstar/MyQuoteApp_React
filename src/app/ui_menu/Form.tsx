@@ -51,10 +51,11 @@ export default function Form()
     return(
         <>
                 <GetCurrentQuote disable={!ActivateForm}/>
+                <GetAllQuotes disable={!ActivateForm}/>
                 <GetAllAuthors disable={!ActivateForm}/>
                 <GetQuotesbyOwner disable={!ActivateForm}/>
                 <GetQuotesbyOwnerList disable={!ActivateForm}/>
-                <GetAllQuotes disable={!ActivateForm}/>
+                
         </>
 
     )
