@@ -24,7 +24,7 @@ return(
                 <li className='info'>
                     Author: {Quote.owner}
                 </li>
-                <li className='info'>
+                <li className='info_timestamp'>
                     written on: {convert_timestamp_to_date(Quote.timestamp)}
                 </li>
             </ul>

@@ -65,4 +65,11 @@ export function GetQuotesbyOwnerList ({disable}:DisableProps)
     )
 }
 
+export function GetMostRecentQuote ({disable}:DisableProps)
+{
+    const functionName = "getMostRecentQuote"
 
+    return(
+        <GetFunctions disable={disable} functionName={functionName}/>
+    )
+}

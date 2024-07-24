@@ -23,7 +23,8 @@ const ButtonName = {
     "getLengthQuote": "Show the length of a quote",
     "getQuote": "Read latest quote of last author on Blockchain",
     "getQuotesbyOwner": "Read Quote from author",
-    "getQuotesbyOwnerList": "Read Quote from author list"
+    "getQuotesbyOwnerList": "Read Quote from author list",
+    "getMostRecentQuote": "Read most recent quote"
 }
 
 /* Common component for all api of the smart contract at high level*/
@@ -93,7 +94,7 @@ export default function GetFunctions({disable,functionName}:GetFunctionsProps)
             {(() => {
                 switch (functionName) {
                 
-                case 'getQuote': case 'getAllAuthors':  case 'getAllQuotes':
+                case 'getQuote': case 'getAllAuthors':  case 'getAllQuotes': case 'getMostRecentQuote':
                     return (
                     <Section {...sectionProps}>
                         <Suspense fallback={ // display spinner until component is loaded

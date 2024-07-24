@@ -80,7 +80,7 @@ declare global {
     type FunctionNameSmartContract = "getAllAuthors" | "getLengthQuote" | 
     "getQuote" | "getQuotesbyOwner" //| "setQuote"
 
-    type FunctionName = FunctionNameSmartContract | "getQuotesbyOwnerList" | "getAllQuotes" 
+    type FunctionName = FunctionNameSmartContract | "getQuotesbyOwnerList" | "getAllQuotes" | 'getMostRecentQuote'
 
 
  

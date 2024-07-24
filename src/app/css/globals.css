@@ -55,6 +55,7 @@ body {
   --color-5 : #b15500ef; 
   --color-7 : #e4e70c; 
   --color-8 : #d5e63f; 
+  --color-9 : #e665f1; 
  }
 
 a {
@@ -313,6 +314,11 @@ h2
   }
 
   .info{
+    font-style: italic;
+    color: var(--color-9);
+  }
+
+  .info_timestamp{
     font-style: italic;
     color: var(--color-8);
   }

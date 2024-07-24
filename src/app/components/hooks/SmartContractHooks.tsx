@@ -18,7 +18,8 @@ export function useSmartContractFunctionRead(functionName:FunctionNameSmartContr
   
 
   // either there are input parameter for the api (call to getQuotesbyOwner)
-  const resultReadContract = params != undefined ? useReadContract({
+  const resultReadContract = params != undefined ? 
+  useReadContract({
     abi: abi,
     address: contractAddress,
     functionName: functionName,

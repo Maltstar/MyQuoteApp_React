@@ -34,7 +34,7 @@ interface DisplayQuoteProps{
 
                             </li>
 
-                            <li className='info'>
+                            <li className='info_timestamp'>
                                 written on: {convert_timestamp_to_date(quote.timestamp)}
                             </li>
                         </ul>
