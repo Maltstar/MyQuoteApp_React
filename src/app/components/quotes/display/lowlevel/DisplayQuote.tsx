@@ -3,6 +3,7 @@ import {convert_timestamp_to_date} from "@/lib/utils"
 
 import {Small_Button_with_hover} from '@/components/style/Style'
 import Header from "@/lib/Header";
+import FormatText from "../format/FormatText";
 
 interface DisplayQuoteProps{
     quote:Quote,
@@ -30,7 +31,9 @@ interface DisplayQuoteProps{
                         <ul>
                             <li>
                                  {/* <span className="quote">"{quote.myQuote}"</span> */}
-                                 <Header>"{quote.myQuote}"</Header>
+                                 <Header>
+                                    <FormatText text={quote.myQuote}/>
+                                </Header>
 
                             </li>
 

@@ -8,19 +8,11 @@ import { useSmartContractFunctionRead } from "@/app/components/hooks/SmartContra
 export interface GetAllAuthorsWrapperProps extends CommonWithHookProps{
     }
 
-        /**
-     * Display the last quote of the last new author
-     * 
-     * @param quote last quote of the last new author 
-     * @param title title of the section
-     * @param SetActivateReadQuote enable or disable the display of the quote fron the parent component
-     * @returns 
-     */
-    export default function GetAllAuthorsWrapper({refreshResult,SetRefreshResult,SetDisplayResult}:GetAllAuthorsWrapperProps)
+export default function GetAllAuthorsWrapper({refreshResult,SetRefreshResult,SetDisplayResult}:GetAllAuthorsWrapperProps)
     {
 
         const [AllAuthors,SetAllAuthors] = useState<Authors|undefined>(undefined)
-        const apiName:FunctionNameSmartContract = "getAllAuthors"
+        const apiName:FunctionNameSmartContractRead = "getAllAuthors"
         const fetchedData = useSmartContractFunctionRead(apiName) as ResultGetAllAuthorsType
 
         const title = "List of all authors"        

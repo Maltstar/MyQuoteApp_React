@@ -2,15 +2,11 @@
 
 
 // doc https://docs.walletconnect.com/web3modal/react/hooks#useweb3modalstate
-import { useState,lazy, useEffect } from 'react';
-import {lazyRetry} from '@/lib/utils';
-import { config, projectId } from '@/config/index'
+import { useState, useEffect } from 'react';
+import { config } from '@/config/index'
 
 import { useAccount } from 'wagmi'
-
-
-import { createWeb3Modal, useWeb3ModalEvents } from '@web3modal/wagmi/react'
-import {GetCurrentQuote,GetAllAuthors,GetQuotesbyOwner, GetQuotesbyOwnerList, GetAllQuotes, GetMostRecentQuote} from '../components/quotes/display/highlevel/GetFunctionsWrapper';
+import {GetCurrentQuote,GetAllAuthors,GetQuotesbyOwner, GetQuotesbyOwnerList, GetAllQuotes, GetMostRecentQuote, SetQuote} from '../components/quotes/display/highlevel/FunctionsWrapper';
 
 //const GetQuoteButton = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ '@/components/button/GetQuoteButton'), "GetQuoteButton"));
 
@@ -56,6 +52,7 @@ export default function Form()
                 <GetAllAuthors disable={!ActivateForm}/>
                 <GetQuotesbyOwner disable={!ActivateForm}/>
                 <GetQuotesbyOwnerList disable={!ActivateForm}/>
+                <SetQuote disable={!ActivateForm}/>
                 
         </>
 

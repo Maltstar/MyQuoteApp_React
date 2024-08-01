@@ -1,6 +1,7 @@
 import Header from "@/lib/Header";
 import {convert_timestamp_to_date} from "@/lib/utils"
 import { Small_Button_with_hover } from "@/components/style/Style";
+import FormatText from "../format/FormatText";
 
 
 
@@ -19,7 +20,10 @@ return(
             <h4 className="quote_title">{title}</h4>
             <ul>
                 <li>
-                    <Header>&#34;{Quote.myQuote}&#34;</Header>
+                    {/* <Header>&#34;{Quote.myQuote}&#34;</Header> */}
+                    <Header>
+                            <FormatText text={Quote.myQuote}/>
+                    </Header>
                 </li>
                 <li className='info'>
                     Author: {Quote.owner}

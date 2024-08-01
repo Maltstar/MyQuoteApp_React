@@ -1,32 +1,38 @@
 import Button_with_hover, {Button_with_hoverProps} from "@/components/style/Style"
-import { Suspense, useState } from "react"
 import React from "react"
-import { CommonProps } from "../components/quotes/display/middleware/type"
 
-export type ChildrenProps  <C extends React.ReactElement> =  {
-    refreshResult?: boolean,
-    SetRefreshResult?:(flag: boolean) => void,
-    SetDisplayResult?: (flag: boolean) => void
-}
 
-type Props <C extends React.ReactElement> =
-React.PropsWithChildren<ChildrenProps<C>> &
+
+// type Props <C extends React.ReactElement> =
+// React.PropsWithChildren<ChildrenProps<C>> &
+// SectionProps
+
+type Props =
+React.PropsWithChildren<ChildrenProps> &
 SectionProps
+
+export type ChildrenProps  =  {
+//export type ChildrenProps  <C extends React.ReactElement> =  {
+    refreshResult?: boolean,
+    SetRefreshResult?:(flag: boolean) => void, // manage the flag to display the result
+    SetDisplayResult?: (flag: boolean) => void // manage the update of the result
+}
 
 export interface SectionProps
 {
-    children: ChildrenProps<React.ReactElement>, // the component to display in result of the api call
+    
+    children: ChildrenProps, // the component to display in result of the api call
+    //children: ChildrenProps<React.ReactElement>, // the component to display in result of the api call
     button_props:Omit<Button_with_hoverProps, 'onClick'>, 
-    //DisplayResult: boolean, // enable/disable the display of the result
-    // SetDisplayResult:(flag: boolean) => void, // manage the flag to display the result
-    // SetRefreshResult:(flag: boolean) => void, // manage the update of the result
     handleUserClick:() => void
 
 }
 
 
 export default function Section({children,button_props,//DisplayResult,
-    handleUserClick}:Props<React.ReactElement>)
+//    handleUserClick}:Props<React.ReactElement>)
+    handleUserClick}:Props)
+
 {
 
     // const handleGetQuote = () => {

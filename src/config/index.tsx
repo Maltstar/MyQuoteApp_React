@@ -1,16 +1,14 @@
 
-import { http, createConfig, WagmiProvider } from 'wagmi'
-import { mainnet, sepolia, goerli } from 'wagmi/chains'
+import { http, createConfig } from 'wagmi'
+import { mainnet, sepolia } from 'wagmi/chains'
 import { walletConnect, injected, coinbaseWallet } from 'wagmi/connectors'
 
 import { cookieStorage, createStorage } from 'wagmi'
-import { QueryClient } from '@tanstack/react-query'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 
 // doc https://docs.walletconnect.com/web3modal/react/about
 
-// 0. Setup queryClient
-const queryClient = new QueryClient()
+
 
 // 1. Get projectId at https://cloud.walletconnect.com
 export const projectId = 'efc3c7fc3d9dab0817cdead6a77b09f8'

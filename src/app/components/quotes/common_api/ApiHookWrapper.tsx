@@ -5,11 +5,12 @@ import GetAllAuthorsWrapper from '../display/middleware/GetAllAuthorsWrapper';
 import GetQuotesbyOwnerWrapper from '../display/middleware/GetQuotesbyOwnerWrapper';
 import GetAllQuotesWrapper from '../display/middleware/GetAllQuotesWrapper';
 import { GetMostRecentQuoteWrapper } from '../display/middleware/GetMostRecentQuoteWrapper';
+import SetQuoteWrapper from '../display/middleware/SetQuoteWrapper';
     
 
 
 export interface ApiHookWrapperProps extends CommonWithHookProps{
-        apiName:FunctionName, // the name of the smart contract function to call
+        apiName:FunctionNameRead | FunctionNameWrite, // the name of the smart contract function to call
 
     }
 
@@ -98,6 +99,9 @@ export interface ApiHookWrapperProps extends CommonWithHookProps{
 
                       case 'getMostRecentQuote':
                           return <GetMostRecentQuoteWrapper {...rest } /> 
+
+                      case 'setQuote':
+                            return <SetQuoteWrapper {...rest } />
 
                       default:
                         return null

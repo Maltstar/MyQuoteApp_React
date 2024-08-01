@@ -57,7 +57,7 @@ declare global {
       author: string}
 
     interface Window {
-      ethereum: any,
+      ethereum: never,
     }
 
     type Authors = Array<string>
@@ -66,7 +66,7 @@ declare global {
 
     type ResultGetQuoteType = [string, `0x${string}`, bigint] // result type for 'getQuote'
     type ResultGetAllAuthorsType = `0x${string}`[]  // result type for 'getAllAuthors'
-    type ResultGetQuoteLengthType = Number
+    type ResultGetQuoteLengthType = number
     //type ResultGetQuotebyOwner =[bigint, string][] // result type for 'getQuotesbyOwner'
     type ResultGetQuotebyOwner = Quote[]
     type ResultType = 
@@ -77,10 +77,14 @@ declare global {
     undefined
 
     /* function name taken from the abi of the smart contract*/
-    type FunctionNameSmartContract = "getAllAuthors" | "getLengthQuote" | 
-    "getQuote" | "getQuotesbyOwner" //| "setQuote"
+    type FunctionNameSmartContractRead = "getAllAuthors" | "getLengthQuote" | 
+    "getQuote" | "getQuotesbyOwner"
 
-    type FunctionName = FunctionNameSmartContract | "getQuotesbyOwnerList" | "getAllQuotes" | 'getMostRecentQuote'
+
+    type FunctionNameSmartContractWrite = "setQuote"
+
+    type FunctionNameRead = FunctionNameSmartContractRead | "getQuotesbyOwnerList" | "getAllQuotes" | 'getMostRecentQuote'
+    type FunctionNameWrite = FunctionNameSmartContractWrite
 
 
  

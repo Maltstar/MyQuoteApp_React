@@ -1,4 +1,4 @@
-import { useReadContract } from 'wagmi'
+import { useReadContract,useWriteContract } from 'wagmi'
 import artifact from '@/gen/artifacts/infos_contract';
 import { config } from '@/config/index'
 
@@ -7,11 +7,11 @@ const abi = artifact["abi"]
 const contractAddress = artifact["address"]
 
 // interface useSmartContractFunctionReadProps  {
-//   functionName:FunctionNameSmartContract,
+//   functionName:FunctionNameSmartContractRead,
 //   params ?: Address
 // }
 
-export function useSmartContractFunctionRead(functionName:FunctionNameSmartContract,params?: Address)
+export function useSmartContractFunctionRead(functionName:FunctionNameSmartContractRead,params?: Address)
 {
   let result:ResultType = undefined
   console.log("useSmartContractFunctionRead functionName, params",functionName, params );
@@ -53,6 +53,63 @@ export function useSmartContractFunctionRead(functionName:FunctionNameSmartContr
      }
 
    return result
+}
+
+
+
+export function useSmartContractFunctionWrite(functionName:FunctionNameSmartContractWrite,params: string)
+{
+
+  const { writeContract } = useWriteContract()
+  const result = {
+    writeFunction:writeContract, 
+    param:{ 
+    abi:abi,
+    address: contractAddress,
+    functionName: functionName,
+    args:params,
+}}
+
+  
+//   const result = {
+//     writeFunction: writeContract, 
+//     param:{ 
+//     abi,
+//     address: contractAddress,
+//     functionName: functionName,
+//     args: [
+//       params
+//     ],
+// }}
+
+  // if(writeContract != undefined)
+  // {
+  //    const result = writeContract({ 
+  //       abi,
+  //       address: contractAddress,
+  //       functionName: functionName,
+  //       args: [
+  //         params
+  //       ],
+  //   })
+  // }
+
+  //   result = {
+  //         writeFunction: writeContract, 
+  //         param:{ 
+  //         abi,
+  //         address: contractAddress,
+  //         functionName: functionName,
+  //         args: [
+  //           params
+  //         ],
+  //     }}
+
+    console.log('useSmartContractFunctionWrite result',result);
+    
+  
+
+  return result
 }
 
 // export function useAllAuthors ()

@@ -1,4 +1,4 @@
-import { TextareaHTMLAttributes, useRef, useState } from "react";
+import { TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
 import useAutosizeTextArea from "@/hooks/useAutosizeTextArea";
 
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> 
@@ -8,7 +8,10 @@ interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement>
 }
 
 export default function TextArea({placeholder,...rest}:TextareaProps) {
+
+
   const [value, setValue] = useState("");
+  const [style, SetStyle] = useState<MyCustomCSS | undefined>(undefined)
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
 
   useAutosizeTextArea(textAreaRef.current, value);
@@ -19,6 +22,18 @@ export default function TextArea({placeholder,...rest}:TextareaProps) {
     setValue(val);
   };
 
+  const defaultStyle = {
+    "height":"7rem",
+    "width":"30%",
+    "color":"white",
+    "marginBottom":"4%"
+    }
+  // avoid miss match between server and client rendering
+  useEffect(() => 
+    {
+        SetStyle(defaultStyle)
+    },[])
+
   return (
     <div className="quote_input_wrap">
       <textarea
@@ -27,12 +42,7 @@ export default function TextArea({placeholder,...rest}:TextareaProps) {
         placeholder={placeholder}
         ref={textAreaRef}
         // rows={1}
-        style={
-            {
-            "height":"9rem",
-            "width":"30%",
-            "color":"white"
-            }}
+        style={style}
         value={value}
         {...rest}
       />

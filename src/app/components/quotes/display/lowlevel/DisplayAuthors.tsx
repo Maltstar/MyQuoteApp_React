@@ -1,4 +1,3 @@
-import Header from "@/lib/Header";
 import Author from "./Author";
 import { Small_Button_with_hover } from "@/app/components/style/Style";
 

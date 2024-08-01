@@ -12,15 +12,14 @@ export function check_input_author(author)
         //checking the format of the input, the smart contract expect a bytes20 
         if(author.search(regx))
         {
-            console.log(author.length);
+            //// console.log(author.length);
             if(author.length == 42)
             {
                 // call the smart contract with a default 20 bytes
                 check = true;
             }
         }
-
-        console.log('check',check);
+//        // console.log('check',check);
         return check;
 }
 
@@ -41,22 +40,32 @@ export const default_bytes20 ="0x0000000000000000000000000000000000000000"
  */
 export const lazyRetry = function(componentImport, name) {
     return new Promise((resolve, reject) => {
-        // check if the window has already been refreshed
-        const hasRefreshed = JSON.parse(
-            window.sessionStorage.getItem(`retry-${name}-refreshed`) || 'false'
-        );
-        // try to import the component
-        componentImport().then((component) => {
-            window.sessionStorage.setItem(`retry-${name}-refreshed`, 'false'); // success so reset the refresh
-            resolve(component);
-        }).catch((error) => {
-            if (!hasRefreshed) { // not been refreshed yet
-                window.sessionStorage.setItem(`retry-${name}-refreshed`, 'true'); // we are now going to refresh
-                return window.location.reload(); // refresh the page
-            }
-            reject(error); // Default error behaviour as already tried refresh
-        });
+        if(typeof window !== "undefined")
+        {
+            // check if the window has already been refreshed
+            const hasRefreshed = JSON.parse(
+                // eslint-disable-next-line no-undef
+                window.sessionStorage.getItem(`retry-${name}-refreshed`) || 'false'
+            );
+            // try to import the component
+            componentImport().then((component) => {
+                // eslint-disable-next-line no-undef
+                window.sessionStorage.setItem(`retry-${name}-refreshed`, 'false'); // success so reset the refresh
+                resolve(component);
+            }).catch((error) => {
+                if (!hasRefreshed) { // not been refreshed yet
+                    // eslint-disable-next-line no-undef
+                    window.sessionStorage.setItem(`retry-${name}-refreshed`, 'true'); // we are now going to refresh
+                    // eslint-disable-next-line no-undef
+                    return window.location.reload(); // refresh the page
+                }
+                reject(error); // Default error behaviour as already tried refresh
+            });
+            
+        }
+
     });
+       
 }
 
 /**
@@ -74,17 +83,17 @@ export const lazyRetry = function(componentImport, name) {
  */
 function getMax(arr) {
     const sortedArray = arr.sort((a, b) => {
-        console.log("a",a );
-        console.log("b",b );
-        console.log("timestamps",a.timestamp);
+        // console.log("a",a );
+        // console.log("b",b );
+        // console.log("timestamps",a.timestamp);
         const ta = Number(a.timestamp)
         const tb = Number(b.timestamp)
-        console.log("ta",ta);
-        console.log("typeof ta",typeof(ta));
+        // console.log("ta",ta);
+        // console.log("typeof ta",typeof(ta));
         return (ta - tb)
     })
-    console.log("getMax arr",arr );
-    console.log("getMax sortedArray",sortedArray);
+    // console.log("getMax arr",arr );
+    // console.log("getMax sortedArray",sortedArray);
 
 
     return sortedArray[sortedArray.length - 1]
@@ -114,7 +123,7 @@ export function findMostRecentQuote(allQuotes)
     // find the most recent quote of an author
     // the most recent quote of an author is the last element of quotes
     const allRecentQuotes = []
-   // console.log("findMostRecentQuote",allQuotes);
+   // // console.log("findMostRecentQuote",allQuotes);
 
     allQuotes.forEach(quotesDetails => {
         const author = quotesDetails.author
@@ -124,9 +133,9 @@ export function findMostRecentQuote(allQuotes)
         
     });
 
-    //console.log("allRecentQuotes",allRecentQuotes);
+    //// console.log("allRecentQuotes",allRecentQuotes);
     const mostRecentQuote = getMax(allRecentQuotes)
-   // console.log("mostRecentQuote",mostRecentQuote);
+   // // console.log("mostRecentQuote",mostRecentQuote);
     return mostRecentQuote;
 
 }
@@ -134,11 +143,11 @@ export function findMostRecentQuote(allQuotes)
 export function convert_timestamp_to_date(timestamp)
 {
     //return new Date(timestamp*1000).toUTCString();
-    console.log('convert_timestamp_to_date',timestamp.toString());
+    // console.log('convert_timestamp_to_date',timestamp.toString());
     // convert timestamp BigInt to string which is in seconds unit
     // convert the string to a number with the millisecond unit and multiply by 1000 for having the right unit in seconds
     const writtingDate = new Date(Number(timestamp.toString())*1000)
-    console.log('writtingDate',writtingDate);
+    // console.log('writtingDate',writtingDate);
     // convert the date into UTC format
     
     return writtingDate.toUTCString();

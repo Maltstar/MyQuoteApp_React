@@ -26,7 +26,8 @@
       "@/context/*":["./src/context/*"],
       "@/lib/*": ["src/lib/*"],
       "@/gen/*": ["./src/gen/*"],
-      "@/public/*":["./public/*"]
+      "@/public/*":["./public/*"],
+      "@/style/*":["./src/app/components/style/*"],
     },
     "baseUrl": "."
   },

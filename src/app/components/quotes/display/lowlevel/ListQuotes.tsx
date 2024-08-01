@@ -47,7 +47,7 @@ interface GetListQuotesProps{
             return(
                 activateAuthor && <div >
                 {/* <h4 className="quote_title">All Quotes</h4> */}
-                <h5 className="white">{title}</h5>
+                <h5 className="title_author">{title}</h5>
                 {/* extract each object {author, quotes[]}*/
 
                    quoteslist.map((single_quote,i) =>   {

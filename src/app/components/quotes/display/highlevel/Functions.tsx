@@ -1,20 +1,19 @@
 import Section from "@/app/ui_menu/Section";
 import {SectionProps} from "@/app/ui_menu/Section";
-import { Suspense, useState,lazy } from 'react';
-import {lazyRetry} from '@/lib/utils'
+import { Suspense, useState } from 'react';
 
 import {ApiHookWrapperProps} from '@/components/quotes/common_api/ApiHookWrapper';
 import {DisableProps} from  '@/components/quotes/display/middleware/type';
-import { SelectOwnerList } from "../middleware/GetQuotesbyOwnerWrapper";
 
 import ApiHookWrapper from '@/components/quotes/common_api/ApiHookWrapper'
+import TextArea from "@/app/components/style/TextArea";
 
 //const ApiHookWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ '@/components/quotes/common_api/ApiHookWrapper'), "ApiHookWrapper"));
 
 
-interface GetFunctionsProps extends DisableProps
+interface FunctionsProps extends DisableProps
 {
-    functionName: FunctionName
+    functionName: FunctionNameRead | FunctionNameWrite
 }
 
 const ButtonName = {
@@ -24,12 +23,16 @@ const ButtonName = {
     "getQuote": "Read latest quote of last author on Blockchain",
     "getQuotesbyOwner": "Read Quote from author",
     "getQuotesbyOwnerList": "Read Quote from author list",
-    "getMostRecentQuote": "Read most recent quote"
+    "getMostRecentQuote": "Read most recent quote",
+    "setQuote":"Write a quote on the blockchain"
 }
 
 /* Common component for all api of the smart contract at high level*/
 
-export default function GetFunctions({disable,functionName}:GetFunctionsProps)
+
+
+
+export default function Functions({disable,functionName}:FunctionsProps)
 {
     /* Common interface to call the function*/
     const button_props = functionName != "getQuotesbyOwner" ?
@@ -49,6 +52,7 @@ export default function GetFunctions({disable,functionName}:GetFunctionsProps)
     // flag to enable/disable the display of a quote for all components except getQuotesbyOwnerList
     const [displayResult,SetDisplayResult] =  useState(false)
     // flag to enable/disable the display of a quote for getQuotesbyOwnerList
+    // eslint-disable-next-line
     const [displayResultOwnerList,SetDisplayResultOwnerList] =  useState(true)
     // flag to indicate that a user request to display of a quote
     const [refreshResult,SetRefreshResult] =  useState(false)
@@ -70,8 +74,8 @@ export default function GetFunctions({disable,functionName}:GetFunctionsProps)
         handleUserClick: handleUserClick,
     }
 
-    const ChildrenProps:ApiHookWrapperProps = {
-        apiName:functionName,
+    const ChildrenPropsRead:ApiHookWrapperProps = {
+        apiName:functionName as FunctionNameRead,
         refreshResult: refreshResult,
         SetDisplayResult:SetDisplayResult,
         SetRefreshResult:SetRefreshResult,
@@ -80,7 +84,7 @@ export default function GetFunctions({disable,functionName}:GetFunctionsProps)
 
     // props for the case GetOwnerQuotesbyList
     const OwnerListChildrenProps : ApiHookWrapperProps & {list:boolean, disable:boolean} = {
-        apiName:functionName,
+        apiName:functionName as FunctionNameRead,
         refreshResult: refreshResult,
         SetDisplayResult:SetDisplayResultOwnerList,
         SetRefreshResult:SetRefreshResult,
@@ -94,6 +98,8 @@ export default function GetFunctions({disable,functionName}:GetFunctionsProps)
             {(() => {
                 switch (functionName) {
                 
+                /******************* Read function ************** */
+
                 case 'getQuote': case 'getAllAuthors':  case 'getAllQuotes': case 'getMostRecentQuote':
                     return (
                     <Section {...sectionProps}>
@@ -102,7 +108,7 @@ export default function GetFunctions({disable,functionName}:GetFunctionsProps)
                     <span className="visually-hidden">Loading...</span>
                     </div>}
                     >
-                        { displayResult && <ApiHookWrapper {...ChildrenProps} />}
+                        { displayResult && <ApiHookWrapper {...ChildrenPropsRead} />}
                     </Suspense>
                     </Section>
                 )
@@ -121,7 +127,7 @@ export default function GetFunctions({disable,functionName}:GetFunctionsProps)
                                         <span className="visually-hidden">Loading...</span>
                                         </div>}
                                         >
-                                            { displayResult && <ApiHookWrapper {...ChildrenProps}  />}
+                                            { displayResult && <ApiHookWrapper {...ChildrenPropsRead}  />}
                                         </Suspense>                          
                                 </Section>
                             </div>
@@ -136,8 +142,29 @@ export default function GetFunctions({disable,functionName}:GetFunctionsProps)
                         >
                             <ApiHookWrapper {...OwnerListChildrenProps}  />
                         </Suspense>
-                        ) 
-                    
+                        )
+
+                /******************* Write function ************** */
+                case 'setQuote':
+                   return(
+                    <div id="write_quote_menu">
+                        <Section {...sectionProps}>
+                           
+                            <Suspense fallback={ // display spinner until component is loaded
+                                <div className="spinner-border text-warning" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                                </div>}
+                                >
+                                    { displayResult && <ApiHookWrapper {...ChildrenPropsRead} />}
+                            </Suspense>
+
+                             {/* https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/*/}
+                            {/* <div className="grow-wrap">  */}
+                            <TextArea placeholder='enter your quote, e.g “But I know, somehow, that only when it is dark enough can you see the stars.” ― Martin Luther King, Jr.'/>
+
+                        </Section>
+                     </div>
+                   )
 
                 default:
                     return null
@@ -146,6 +173,9 @@ export default function GetFunctions({disable,functionName}:GetFunctionsProps)
         </>
     )
    
-
-   
+  
 }
+
+
+
+

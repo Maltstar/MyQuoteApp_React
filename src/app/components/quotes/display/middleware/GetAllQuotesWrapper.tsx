@@ -1,7 +1,6 @@
 
 import { useEffect, useState } from "react";
 import {CommonWithHookProps} from "./type"
-import DisplayAuthors from "../lowlevel/DisplayAuthors";
 import { useSmartContractFunctionRead } from "@/app/components/hooks/SmartContractHooks";
 import { GetQuotesbyOwnerInputChecked, GetQuotesbyOwnerInputCheckedProps } from './GetQuotesbyOwnerWrapper';
 import { Small_Button_with_hover } from "@/app/components/style/Style";
@@ -22,7 +21,7 @@ export interface GetAllQuotesWrapperProps extends CommonWithHookProps{
     {
 
         const [AllAuthors,SetAllAuthors] = useState<Authors|undefined>(undefined)
-        const apiName:FunctionNameSmartContract = "getAllAuthors"
+        const apiName:FunctionNameSmartContractRead = "getAllAuthors"
         const fetchedData = useSmartContractFunctionRead(apiName) as ResultGetAllAuthorsType
 
         const title = "List of all quotes"        
@@ -49,7 +48,7 @@ export interface GetAllQuotesWrapperProps extends CommonWithHookProps{
             }
         }
 
-       },[fetchedData,SetAllAuthors,SetRefreshResult])
+       },[refreshResult,fetchedData,SetAllAuthors,SetRefreshResult])
 
        // close component from parent
        const handleClick = () => {

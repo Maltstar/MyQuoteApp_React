@@ -1,10 +1,12 @@
 // see https://docs.web3js.org/guides/smart_contracts/infer_contract_types/
 
+// eslint-disable-next-line 
 const fs = require('fs')
+// eslint-disable-next-line 
 const path = require('path')
 
 //read destination directory submitted as first param
-var destination = process.argv.slice(2)[0];
+const destination = process.argv.slice(2)[0];
 
 //read all contract artifacts from artifacts.json which should be in the directory from where script should be executed
 const artifactContent = fs.readFileSync('./public/contracts/artifacts.json', 'utf-8');

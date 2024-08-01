@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, useState } from "react";
+import { ButtonHTMLAttributes, useEffect, useState } from "react";
 import Button from 'react-bootstrap/Button';
 import { StylesConfig } from "react-select";
 
@@ -36,6 +36,7 @@ export default function Button_with_hover({display="block",v_align=false, disabl
 {
 
     const [isHover, setIsHover] = useState(false);
+    const [style, SetStyle] = useState<MyCustomCSS | undefined>(undefined)
     console.log("display",display);
 
     
@@ -66,7 +67,14 @@ export default function Button_with_hover({display="block",v_align=false, disabl
 
     };
 
-    return <Button disabled={disable} variant="primary" size="lg" onClick={onClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style} {...rest}>{text}</Button>
+    // avoid miss match between server and client rendering
+    useEffect(() => 
+    {
+        SetStyle(default_button_style)
+    },[SetStyle])
+    
+
+    return <Button disabled={disable} variant="primary" size="lg" onClick={onClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={style} {...rest}>{text}</Button>
 
 }
 
@@ -85,6 +93,7 @@ export function Small_Button_with_hover({text,onClick,disable=false,color}:Small
 {
 
     const [isHover, setIsHover] = useState(false);
+    const [style, SetStyle] = useState<MyCustomCSS | undefined>(undefined)
 
     const handleMouseEnter = () => {
         setIsHover(true);
@@ -107,7 +116,14 @@ export function Small_Button_with_hover({text,onClick,disable=false,color}:Small
         "textAlign":"center",
     };
 
-    return <Button disabled={disable} variant="primary" size="sm" onClick={() => onClick(false)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
+
+        // avoid miss match between server and client rendering
+        useEffect(() => 
+            {
+                SetStyle(default_button_style)
+            },[SetStyle])
+
+    return <Button disabled={disable} variant="primary" size="sm" onClick={() => onClick(false)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={style}>{text}</Button>
 }
 
 // doc https://react-select.com/styles
@@ -121,7 +137,7 @@ export const customStylesSelect: StylesConfig<MyOptionType, IsMulti>= {
 
 
     }),
-    singleValue: (provided,state) => (
+    singleValue: (provided) => (
         {
             ...provided,
             color:  'whitesmoke',

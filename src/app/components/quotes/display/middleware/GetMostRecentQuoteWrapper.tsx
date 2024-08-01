@@ -15,8 +15,7 @@ export function GetMostRecentQuoteWrapper({SetRefreshResult,SetDisplayResult,ref
     //const [AllQuotes,SetAllQuotes] = useState<Array<QuoteAuthorList> | []>([])
     const AllQuotes = useRef< Array<QuoteAuthorList> >(new Array<QuoteAuthorList>)
 
-    const getAllAuthors:FunctionNameSmartContract = "getAllAuthors"
-    let nbAuthors = 0
+    const getAllAuthors:FunctionNameSmartContractRead = "getAllAuthors"
     const fetchedAuthors = useSmartContractFunctionRead(getAllAuthors) as ResultGetAllAuthorsType
     
     console.log(' GetMostRecentQuoteWrapper fetchedAuthors Ref',fetchedAuthors);
@@ -24,9 +23,7 @@ export function GetMostRecentQuoteWrapper({SetRefreshResult,SetDisplayResult,ref
 
     if(fetchedAuthors != undefined)
     {
-        nbAuthors = fetchedAuthors.length
-        const quotes_fetched:Quote[] = []
-        //SetAllAuthors(fetchedAuthors)
+
 
         return  fetchedAuthors.map((author,i,authors) => {
             console.log('GetMostRecentQuoteWrapper map author',author);
@@ -46,21 +43,6 @@ export function GetMostRecentQuoteWrapper({SetRefreshResult,SetDisplayResult,ref
         })
      
     }
-
-   
-    
-    // else
-    // {
-    //         return (
-    //             <p>tacho</p>
-    //         )
-    // }
-
-//     return (
-//          <FetchQuotes author={authortest} 
-//             setAllQuotes={SetAllQuotes}
-//              AllQuotes={AllQuotes} />
-//     )
  }
 
 
@@ -88,7 +70,7 @@ function FetchQuotes({author,
                      SetDisplayResult}:FetchQuotesProps)
 {
     console.log(' FetchQuotes')
-    const getQuotesbyOwner:FunctionNameSmartContract = "getQuotesbyOwner"
+    const getQuotesbyOwner:FunctionNameSmartContractRead = "getQuotesbyOwner"
     const [findMostRecentQuote, SetfindMostRecentQuote] = useState(false)
     const fetchedQuotes = useSmartContractFunctionRead(getQuotesbyOwner, author as Address) as ResultGetQuotebyOwner
     //let allQuotesWithAuthor:QuoteAuthorList[] = []
@@ -133,42 +115,7 @@ function FetchQuotes({author,
                   
             }
     },[fetchedQuotes,findMostRecentQuote,refreshResult])
-    // if(fetchedQuotes != undefined && !findMostRecentQuote && refreshResult)
-    // {
-
-    //     console.log('FetchQuotes Ref',allQuotes.current);
-        
-    //     if(allQuotes.current.length == 0 || // no quotes were stored, AllQuotes is empty
-    //         allQuotes.current[allQuotes.current.length-1].author != author) // the quotes for the author requested were not already stored
-    //     {
-    //         console.log('FetchQuotes Ref before push AllQuotes length',allQuotes.current.length );
-    //         console.log('FetchQuotes Ref before push last element',allQuotes.current[allQuotes.current.length-1]);
-    //         // store value of ref
-    //         const newQuotes:QuoteAuthorList[] =  allQuotes.current
-    //         // add new author with quotes to previous data
-    //         newQuotes.push({author:author, quotes:fetchedQuotes})
-    //         // update ref with updated data
-    //         allQuotes.current = newQuotes
-    //     }
-
-    //     // last author was called
-    //     // so sorting most recent quote from all quotes can began
-    //     if(nbAuthors === positionAuthor+1)
-    //     {
-    //         if(refreshResult)
-    //         {
-
-    //             //allQuotesWithAuthor = allQuotes.current
-    //             SetfindMostRecentQuote(true)
-    //             SetRefreshResult(false)
-                
-                
-    //         }
-            
-    //     }
-        
-          
-    // }
+    
 
     console.log(' FetchQuotes AllQuotes',allQuotes.current);
 

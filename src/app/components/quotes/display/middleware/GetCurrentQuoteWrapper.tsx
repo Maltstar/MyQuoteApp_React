@@ -12,7 +12,7 @@ export default function GetCurrentQuoteWrapper({refreshResult,SetRefreshResult,S
 {
 
     const [Quote,SetQuote] = useState<Quote_with_Author|undefined>(undefined)
-    const apiName:FunctionNameSmartContract = "getQuote"
+    const apiName:FunctionNameSmartContractRead = "getQuote"
     const fetchedData = useSmartContractFunctionRead(apiName) as ResultGetQuoteType
 
     // title of the section

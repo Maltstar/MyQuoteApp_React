@@ -5,12 +5,11 @@
 import React, { ReactNode } from 'react'
 import { config, projectId } from '@/config/index'
 
-import { createWeb3Modal, useWeb3ModalEvents, useWeb3ModalState } from '@web3modal/wagmi/react'
+import { createWeb3Modal } from '@web3modal/wagmi/react'
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { State, WagmiProvider } from 'wagmi'
-import { watchAccount } from '@wagmi/core'
 
 // Setup queryClient
 const queryClient = new QueryClient()

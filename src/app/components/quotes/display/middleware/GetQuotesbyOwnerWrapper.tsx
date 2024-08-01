@@ -1,9 +1,7 @@
 //'use client'
 
-
 import { useEffect, useState } from "react";
-import {CommonProps, CommonWithHookProps} from "./type"
-import DisplayAuthors from "../lowlevel/DisplayAuthors";
+import { CommonWithHookProps} from "./type"
 import AlertWarning from "./AlertWarning";
 import { AlertWarningProps } from "./AlertWarning";
 import ListQuotes from "../lowlevel/ListQuotes";
@@ -29,11 +27,11 @@ export function SelectOwnerList({...rest}:SelectOwnerListProps)
         value:string
     }
 
-    const apiName:FunctionNameSmartContract = "getAllAuthors"
+    const apiName:FunctionNameSmartContractRead = "getAllAuthors"
     const fetchedAuthors = useSmartContractFunctionRead(apiName) as ResultGetAllAuthorsType
 
    // Dynamically create select list
-    let options: option[] = [];
+    const options: option[] = [];
     if(fetchedAuthors != undefined)
     {
         fetchedAuthors.map((author,i) =>
@@ -85,7 +83,7 @@ export function GetQuotesbyOwnerInputChecked({owner,SetDisplayResult,refreshResu
 {
 
     const [quotes,SetQuotes] = useState<QuoteAuthorList|undefined>(undefined)
-    const apiName:FunctionNameSmartContract = "getQuotesbyOwner"
+    const apiName:FunctionNameSmartContractRead = "getQuotesbyOwner"
     // console.log('OwnerSetByUser before checkAuthorInput:',OwnerSetByUser);
     // console.log('OwnerSetByUser:',OwnerSetByUser);
 
@@ -283,39 +281,42 @@ export default function GetQuotesbyOwnerWrapper({refreshResult,SetRefreshResult,
 
         const AlertWarnProps : Omit<AlertWarningProps,'type'> = 
         {
+            variant:"warning",
             show:showAlert,
             setShow:setshowAlert
         }
     
         return(
-
-            !list ? // author is typed as input
-            (
-            emptyInput ? /* The user input is empty className=fade show style={ {width:"50%",margin:"auto"}} */  
-            <>
-                <AlertWarning {...AlertWarnProps } type="empty_input"/>
+            <div>
                 
-            </>
-            :/* The user input is incorrectly formated or is not a valid author address*/  
-            errorInput ? 
-            <>
-            <AlertWarning {...AlertWarnProps } type="error_input"/>
-            </>
-            
-            : /* The user entered a valid author*/
-            <GetQuotesbyOwnerInputChecked {...GetQuotesbyOwnerInputProps}/>)
-
-            : // author is chosen from a list
-            
-            <>
-                <SelectOwnerList {...SelectListOwnerProps}/>
-                {displayResutlOwnerList &&
-                <GetQuotesbyOwnerInputChecked {...GetQuotesbyOwnerListProps}/>}
-            </>
-            
-            
-
-            
-
+                {!list ? // author is typed as input
+                    <div>
+                        
+                            {
+                                emptyInput ? /* The user input is empty className=fade show style={ {width:"50%",margin:"auto"}} */  
+                                <>
+                                    <AlertWarning {...AlertWarnProps } type="empty_input"/>
+                                    
+                                </>
+                                :/* The user input is incorrectly formated or is not a valid author address*/  
+                                errorInput ? 
+                                <>
+                                    <AlertWarning {...AlertWarnProps } type="error_input"/>
+                                </>
+                            
+                        
+                            : /* The user entered a valid author*/
+                            <GetQuotesbyOwnerInputChecked {...GetQuotesbyOwnerInputProps}/>
+                            }
+                        
+                    </div>
+                        : // author is chosen from a list
+                    <div>
+                        <SelectOwnerList {...SelectListOwnerProps}/>
+                        {displayResutlOwnerList &&
+                        <GetQuotesbyOwnerInputChecked {...GetQuotesbyOwnerListProps}/>}
+                    </div>
+                }
+            </div>
         )
-}
+}   
