@@ -91,10 +91,16 @@ a {
  font-family:  'Impact' ;
  font-size: 4rem ;
  margin:auto;
+ /*margin-right: 1%; */
+ 
+ 
+ display: inline-block;
+ 
  margin-bottom: 2%;
  color : var(--color-2); 
  text-decoration: underline double var(--color-1);
  text-shadow: 2px 2px 15px var(--color-1) ;
+ width: fit-content;
 }
 
 h1, .popup
@@ -107,6 +113,8 @@ h1, .popup
  /* _text-decoration: underline double var(--color-1);
  _text-shadow: 2px 2px 15px var(--color-1) ; */
 }
+
+
 
 #up_about
 {
@@ -404,6 +412,25 @@ h2
     margin-bottom: 2%;
   }
 
+  #title_and_button
+{
+  
+
+}
+  #button_connect
+  {
+    color:black;
+    font-size: medium;
+    position: absolute;
+    top: 10;
+    right: 0;
+    width: fit-content;
+    /* margin-left: 10%; */
+    display: inline-block;
+
+     
+  }
+  /* py-2 px-4 rounded sticky-md-top position-absolute top-10 end-0 */
   #up
   {
     width: 100%; 
@@ -595,6 +622,14 @@ h2
     _height: 100%;
   }
 
+  #navigation_menu
+  {
+    display: flex;
+    justify-content: center;
+    gap:1%;
+    margin-bottom: 7%;
+  }
+
   #write_quote_menu{
     display: block;
     height: fit-content;
@@ -634,8 +669,29 @@ h2
     margin-bottom: 4%;
   }
 
-  
+  #button_connect
+  {
+    color:black;
+    font-size: medium;
+    position: relative;
+    margin-bottom: 5%;
+    margin-top: 1%;
+    top: 10;
+    right: 0;
+    width: fit-content;
+    /* margin-left: 10%; */
+    display: inline-block;
 
+     
+  }
+
+  .logos{
+    display: block;
+  }
+
+  .logo{
+    display: inline-block;
+  }
 
 
   #author_input

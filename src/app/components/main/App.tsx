@@ -1,12 +1,12 @@
-import ConnectButton from "@/components/button/ConnectButton"
 import './App.scss';
 import Form from "@/app/ui_menu/Form";
+import AppHeader from "@/app/layout/AppHeader";
 
 export default function App()
 {
     return (
         <>
-            <ConnectButton/>
+            <AppHeader/>  
             {/* <GetQuoteButton disable={false}/> */}
             <Form/>
         </>

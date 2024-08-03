@@ -24,7 +24,7 @@ export default function RootLayout({
     <html lang="en">
       <body>
         
-        <AppHeader/>
+        
         <ContextProvider initialState={initialState}>{children}</ContextProvider>
         <AppFooter/>
       </body>
