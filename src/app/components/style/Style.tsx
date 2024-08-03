@@ -36,7 +36,7 @@ export default function Button_with_hover({display="block",v_align=false, disabl
 {
 
     const [isHover, setIsHover] = useState(false);
-    const [style, SetStyle] = useState<MyCustomCSS | undefined>(undefined)
+    //const [style, SetStyle] = useState<MyCustomCSS | undefined>(undefined)
     console.log("display",display);
 
     
@@ -68,13 +68,13 @@ export default function Button_with_hover({display="block",v_align=false, disabl
     };
 
     // avoid miss match between server and client rendering
-    useEffect(() => 
-    {
-        SetStyle(default_button_style)
-    },[SetStyle])
+    // useEffect(() => 
+    // {
+    //     SetStyle(default_button_style)
+    // },[])
     
 
-    return <Button disabled={disable} variant="primary" size="lg" onClick={onClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={style} {...rest}>{text}</Button>
+    return <Button disabled={disable} variant="primary" size="lg" onClick={onClick} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style} {...rest}>{text}</Button>
 
 }
 
@@ -93,7 +93,7 @@ export function Small_Button_with_hover({text,onClick,disable=false,color}:Small
 {
 
     const [isHover, setIsHover] = useState(false);
-    const [style, SetStyle] = useState<MyCustomCSS | undefined>(undefined)
+   // const [style, SetStyle] = useState<MyCustomCSS | undefined>(undefined)
 
     const handleMouseEnter = () => {
         setIsHover(true);
@@ -118,12 +118,12 @@ export function Small_Button_with_hover({text,onClick,disable=false,color}:Small
 
 
         // avoid miss match between server and client rendering
-        useEffect(() => 
-            {
-                SetStyle(default_button_style)
-            },[SetStyle])
+        // useEffect(() => 
+        //     {
+        //         SetStyle(default_button_style)
+        //     },[])
 
-    return <Button disabled={disable} variant="primary" size="sm" onClick={() => onClick(false)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={style}>{text}</Button>
+    return <Button disabled={disable} variant="primary" size="sm" onClick={() => onClick(false)} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} style={default_button_style}>{text}</Button>
 }
 
 // doc https://react-select.com/styles
