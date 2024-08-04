@@ -6,7 +6,6 @@ import { cookieToInitialState } from 'wagmi'
 
 import { config } from '@/config'
 import { ContextProvider } from '@/context'
-import AppHeader from './layout/AppHeader'
 import AppFooter from './layout/AppFooter'
 
 export const metadata: Metadata = {

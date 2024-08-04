@@ -3,7 +3,7 @@ import { http, createConfig } from 'wagmi'
 import { mainnet, sepolia } from 'wagmi/chains'
 import { walletConnect, injected, coinbaseWallet } from 'wagmi/connectors'
 
-import { cookieStorage, createStorage } from 'wagmi'
+// import { cookieStorage, createStorage } from 'wagmi'
 import { defaultWagmiConfig } from '@web3modal/wagmi/react/config'
 
 // doc https://docs.walletconnect.com/web3modal/react/about
@@ -36,9 +36,9 @@ export const config = createConfig({
     })
   ],
   ssr: true,
-  storage: createStorage({
-    storage: cookieStorage
-  })
+  // storage: createStorage({
+  //   storage: cookieStorage
+  // })
 })
 
 
@@ -51,8 +51,8 @@ export const configWagmiDefault = defaultWagmiConfig({
     url: 'https://myapp.com',
     icons: ['https://myapp.com/favicon.ico']
   },
-  storage: createStorage({
-    storage: cookieStorage
-  }),
+  // storage: createStorage({
+  //   storage: cookieStorage
+  // }),
   ssr: true
 })
