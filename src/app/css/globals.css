@@ -66,6 +66,8 @@ body {
  .nextlink
  {
     color: var(--color-3);
+    margin-left:0.5rem;
+    margin-right:0.5rem;
  }
 
 a {
@@ -335,11 +337,6 @@ h2
 	background:#2F000B;
 }
 
-  /* a{
-    margin: 2%;
-    color: yellowgreen;
-    
-  }; */
 
 
   h2{
@@ -503,6 +500,10 @@ h2
     margin-bottom: 0%;
     display: inline;
     color:white; */
+    height:7rem;
+    width:30%;
+    color:white;
+    margin-bottom: 4%;
     
   }
 
@@ -618,7 +619,7 @@ h2
     margin:auto; */
     /* margin-bottom:1%;
     text-align: center;*/
-    width:fit-content; 
+    width:90%; 
     _height: 100%;
   }
 
@@ -691,6 +692,7 @@ h2
 
   .logo{
     display: inline-block;
+    margin-left: 2%;
   }
 
 

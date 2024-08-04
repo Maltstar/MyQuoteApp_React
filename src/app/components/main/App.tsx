@@ -6,8 +6,7 @@ export default function App()
 {
     return (
         <>
-            <AppHeader/>  
-            {/* <GetQuoteButton disable={false}/> */}
+            <AppHeader instructions={true}/>  
             <Form/>
         </>
     )

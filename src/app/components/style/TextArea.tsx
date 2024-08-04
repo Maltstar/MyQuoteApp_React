@@ -42,7 +42,7 @@ export default function TextArea({placeholder,...rest}:TextareaProps) {
         placeholder={placeholder}
         ref={textAreaRef}
         // rows={1}
-        style={style}
+        //style={style}
         value={value}
         {...rest}
       />

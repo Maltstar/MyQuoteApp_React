@@ -1,7 +1,13 @@
 import ConnectButton from "../components/button/ConnectButton"
+import Instructions from '../components/how_to/Instructions';
 import Nav from "../ui_menu/Nav"
 
-export default function AppHeader ()
+interface AppHeaderProps
+{
+    instructions:boolean
+}
+
+export default function AppHeader({instructions}:AppHeaderProps)
 {
     const title = 'Quote App'
 
@@ -13,6 +19,9 @@ export default function AppHeader ()
             </div>
 
             <Nav/>
+            <h2 className="instructions_title">Read or write your quote on blockchain (Sepolia test network)</h2>
+            {instructions && <Instructions/>}
+            
         </div>
     )
 }
