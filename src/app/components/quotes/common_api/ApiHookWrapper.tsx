@@ -2,22 +2,25 @@
 import { lazyRetry } from "@/lib/utils"
 import { ComponentType, lazy, LazyExoticComponent, Suspense, useEffect } from "react"
 import { CommonWithHookProps } from '../display/middleware/type';
-    
+
+import SetQuoteWrapper from "@/components/quotes/display/middleware/SetQuoteWrapper";
+import GetAllAuthorsWrapper from "@/components/quotes/display/middleware/GetAllAuthorsWrapper";
+import GetMostRecentQuoteWrapper from "@/components/quotes/display/middleware/GetMostRecentQuoteWrapper";
 // declaring components for lazy loading
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let GetCurrentQuoteWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let GetAllAuthorsWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
+//let GetAllAuthorsWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let GetQuotesbyOwnerWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let GetAllQuotesWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let GetMostRecentQuoteWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
+//let GetMostRecentQuoteWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let SetQuoteWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
+//let SetQuoteWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
 
 export interface ApiHookWrapperProps extends CommonWithHookProps{
         apiName:FunctionNameRead | FunctionNameWrite, // the name of the smart contract function to call
@@ -41,11 +44,11 @@ export interface ApiHookWrapperProps extends CommonWithHookProps{
         // lazy loading all component with lazyRetry to avoid chunk errors
                     
         GetCurrentQuoteWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ '@/components/quotes/display/middleware/GetCurrentQuoteWrapper'), "GetCurrentQuoteWrapper"));
-        GetAllAuthorsWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllAuthorsWrapper" */ '@/components/quotes/display/middleware/GetAllAuthorsWrapper'), "GetAllAuthorsWrapper"));
+        //GetAllAuthorsWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllAuthorsWrapper" */ '@/components/quotes/display/middleware/GetAllAuthorsWrapper'), "GetAllAuthorsWrapper"));
         GetAllQuotesWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotesWrapper" */ '@/components/quotes/display/middleware/GetAllQuotesWrapper'), "GetAllQuotesWrapper"));
         GetQuotesbyOwnerWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetQuotesbyOwnerWrapper" */ '@/components/quotes/display/middleware/GetQuotesbyOwnerWrapper'), "GetQuotesbyOwnerWrapper"));
-        GetMostRecentQuoteWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetMostRecentQuoteWrapper" */ '@/components/quotes/display/middleware/GetMostRecentQuoteWrapper'), "GetMostRecentQuoteWrapper"));
-        SetQuoteWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "SetQuoteWrapper" */ '@/components/quotes/display/middleware/SetQuoteWrapper'), "SetQuoteWrapper"));
+        //GetMostRecentQuoteWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetMostRecentQuoteWrapper" */ '@/components/quotes/display/middleware/GetMostRecentQuoteWrapper'), "GetMostRecentQuoteWrapper"));
+        //SetQuoteWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "SetQuoteWrapper" */ '@/components/quotes/display/middleware/SetQuoteWrapper'), "SetQuoteWrapper"));
 
       },[])
 
@@ -74,13 +77,14 @@ export interface ApiHookWrapperProps extends CommonWithHookProps{
                         return(
                           <>
                                   {/* display spinner while lazy loading component  */ }
-                                 <Suspense fallback={ // display spinner until component is loaded
+                                 {/* <Suspense fallback={ // display spinner until component is loaded
                                       <div className="spinner-border text-warning" role="status">
                                       <span className="visually-hidden">Loading...</span>
                                       </div>}
                                       >
                                           { GetAllAuthorsWrapper!= undefined && <GetAllAuthorsWrapper {...rest }/>}
-                                  </Suspense>
+                                  </Suspense> */}
+                                  <GetAllAuthorsWrapper {...rest }/>
                           </>
                               )
 
@@ -116,13 +120,14 @@ export interface ApiHookWrapperProps extends CommonWithHookProps{
                         return(
                           <>
                                   {/* display spinner while lazy loading component  */ }
-                                 <Suspense fallback={ // display spinner until component is loaded
+                                 {/* <Suspense fallback={ // display spinner until component is loaded
                                       <div className="spinner-border text-warning" role="status">
                                       <span className="visually-hidden">Loading...</span>
                                       </div>}
                                       >
                                           { GetMostRecentQuoteWrapper!= undefined && <GetMostRecentQuoteWrapper {...rest }/>}
-                                  </Suspense>
+                                  </Suspense> */}
+                                  <GetMostRecentQuoteWrapper {...rest }/>
                           </>
                               )
 
@@ -130,14 +135,16 @@ export interface ApiHookWrapperProps extends CommonWithHookProps{
                         return(
                           <>
                                   {/* display spinner while lazy loading component  */ }
-                                 <Suspense fallback={ // display spinner until component is loaded
+                                 {/* <Suspense fallback={ // display spinner until component is loaded
                                       <div className="spinner-border text-warning" role="status">
                                       <span className="visually-hidden">Loading...</span>
                                       </div>}
                                       >
                                           { SetQuoteWrapper!= undefined && <SetQuoteWrapper {...rest }/>}
-                                  </Suspense>
+                                  </Suspense> */}
+                                  <SetQuoteWrapper {...rest }/>
                           </>
+
                               )
 
                       default:

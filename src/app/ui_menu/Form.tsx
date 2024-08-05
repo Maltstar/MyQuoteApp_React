@@ -4,7 +4,7 @@
 // doc https://docs.walletconnect.com/web3modal/react/hooks#useweb3modalstate
 import { useState, useEffect, lazy, ComponentType, LazyExoticComponent, Suspense } from 'react';
 import { config } from '@/config/index'
-import GetMostRecentQuote from '../components/quotes/display/highlevel/GetMostRecentQuote';
+//import GetMostRecentQuote from '../components/quotes/display/highlevel/GetMostRecentQuote';
 import { useAccount } from 'wagmi'
 import { lazyRetry } from '@/lib/utils';
 
@@ -21,7 +21,7 @@ let GetQuotesbyOwnerList  :LazyExoticComponent<ComponentType<any>>|undefined = u
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let GetAllQuotes  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-//let GetMostRecentQuote  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
+let GetMostRecentQuote  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let SetQuote  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
 
@@ -72,7 +72,7 @@ export default function Form()
             GetQuotesbyOwner = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetQuotesbyOwner" */ '@/components/quotes/display/highlevel/GetQuotesbyOwner'), "GetQuotesbyOwner"));
             GetQuotesbyOwnerList = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetQuotesbyOwnerList" */ '@/components/quotes/display/highlevel/GetQuotesbyOwnerList'), "GetQuotesbyOwnerList"));
             GetAllQuotes = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ '@/components/quotes/display/highlevel/GetAllQuotes'), "GetAllQuotes"));
-           // GetMostRecentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ '@/components/quotes/display/highlevel/GetMostRecentQuote'), "GetMostRecentQuote"));
+            GetMostRecentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ '@/components/quotes/display/highlevel/GetMostRecentQuote'), "GetMostRecentQuote"));
             SetQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotes" */ '@/components/quotes/display/highlevel/SetQuote'), "SetQuote"));
             
             
@@ -82,14 +82,14 @@ export default function Form()
     return(
         <>
                 {/* display spinner while lazy loading component  */ }
-               {/* <Suspense fallback={ // display spinner until component is loaded
+               <Suspense fallback={ // display spinner until component is loaded
                     <div className="spinner-border text-warning" role="status">
                     <span className="visually-hidden">Loading...</span>
                     </div>}
                     >
                         { GetMostRecentQuote!= undefined && <GetMostRecentQuote disable={!ActivateForm}/>}
-                </Suspense> */}
-                <GetMostRecentQuote disable={!ActivateForm}/>
+                </Suspense>
+                {/* <GetMostRecentQuote disable={!ActivateForm}/> */}
 
                 <Suspense fallback={ // display spinner until component is loaded
                     <div className="spinner-border text-warning" role="status">

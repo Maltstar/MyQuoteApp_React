@@ -1,12 +1,12 @@
 
-import { ComponentType, lazy, LazyExoticComponent, MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
+import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { useSmartContractFunctionRead } from "../../../hooks/SmartContractHooks";
-//import DisplayCurrentQuote from "../lowlevel/DisplayCurrentQuote";
+import DisplayCurrentQuote from "../lowlevel/DisplayCurrentQuote";
 import { CommonWithHookProps } from "./type";
-import { findMostRecentQuote, lazyRetry } from "@/lib/utils";
+import { findMostRecentQuote } from "@/lib/utils";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-let DisplayCurrentQuote :LazyExoticComponent<ComponentType<any>>|undefined = undefined
+//let DisplayCurrentQuote :LazyExoticComponent<ComponentType<any>>|undefined = undefined
 
 export default function GetMostRecentQuoteWrapper({SetRefreshResult,SetDisplayResult,refreshResult}:CommonWithHookProps)
 {
@@ -138,9 +138,9 @@ function FindMostRecentQuote({allQuotes,SetDisplayResult}:FindMostRecentQuotePro
 {
     const mostRecentQuote = useMemo( () => findMostRecentQuote(allQuotes),[allQuotes])
     //console.log('FindMostRecentQuote mostRecentQuote',mostRecentQuote);
-    useEffect(() => {
-        DisplayCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "DisplayCurrentQuote" */ '@/components/quotes/display/lowlevel/DisplayCurrentQuote'), "DisplayCurrentQuote"));
-    },[])
+    // useEffect(() => {
+    //     DisplayCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "DisplayCurrentQuote" */ '@/components/quotes/display/lowlevel/DisplayCurrentQuote'), "DisplayCurrentQuote"));
+    // },[])
     
     const title = 'Most Recent Quote'
 
