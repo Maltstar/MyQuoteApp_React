@@ -1,18 +1,16 @@
 
-import { MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
+import { ComponentType, lazy, LazyExoticComponent, MutableRefObject, useEffect, useMemo, useRef, useState } from "react";
 import { useSmartContractFunctionRead } from "../../../hooks/SmartContractHooks";
-import DisplayCurrentQuote from "../lowlevel/DisplayCurrentQuote";
+//import DisplayCurrentQuote from "../lowlevel/DisplayCurrentQuote";
 import { CommonWithHookProps } from "./type";
-import { findMostRecentQuote } from "@/lib/utils";
+import { findMostRecentQuote, lazyRetry } from "@/lib/utils";
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let DisplayCurrentQuote :LazyExoticComponent<ComponentType<any>>|undefined = undefined
 
-
-export function GetMostRecentQuoteWrapper({SetRefreshResult,SetDisplayResult,refreshResult}:CommonWithHookProps)
+export default function GetMostRecentQuoteWrapper({SetRefreshResult,SetDisplayResult,refreshResult}:CommonWithHookProps)
 {
      
-    //const [AllQuotes,SetAllQuotes] = useState<Array<QuoteAuthorList> | []>([])
-
-    //const [AllQuotes,SetAllQuotes] = useState<Array<QuoteAuthorList> | []>([])
     const AllQuotes = useRef< Array<QuoteAuthorList> >(new Array<QuoteAuthorList>)
 
     const getAllAuthors:FunctionNameSmartContractRead = "getAllAuthors"
@@ -139,10 +137,16 @@ interface FindMostRecentQuoteProps extends Omit<CommonWithHookProps,'SetRefreshR
 function FindMostRecentQuote({allQuotes,SetDisplayResult}:FindMostRecentQuoteProps)
 {
     const mostRecentQuote = useMemo( () => findMostRecentQuote(allQuotes),[allQuotes])
-    console.log('FindMostRecentQuote mostRecentQuote',mostRecentQuote);
+    //console.log('FindMostRecentQuote mostRecentQuote',mostRecentQuote);
+    useEffect(() => {
+        DisplayCurrentQuote = lazy(() => lazyRetry(() => import(/* webpackChunkName: "DisplayCurrentQuote" */ '@/components/quotes/display/lowlevel/DisplayCurrentQuote'), "DisplayCurrentQuote"));
+    },[])
     
     const title = 'Most Recent Quote'
 
-    return <DisplayCurrentQuote  title={title} Quote={mostRecentQuote} SetDisplayQuote={SetDisplayResult}/>
+    return (
+    
+        DisplayCurrentQuote != undefined && <DisplayCurrentQuote  title={title} Quote={mostRecentQuote} SetDisplayQuote={SetDisplayResult}/>
+    )
     
 }

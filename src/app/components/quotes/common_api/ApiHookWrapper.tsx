@@ -1,13 +1,23 @@
 
-import GetCurrentQuoteWrapper from '../display/middleware/GetCurrentQuoteWrapper';
+import { lazyRetry } from "@/lib/utils"
+import { ComponentType, lazy, LazyExoticComponent, Suspense, useEffect } from "react"
 import { CommonWithHookProps } from '../display/middleware/type';
-import GetAllAuthorsWrapper from '../display/middleware/GetAllAuthorsWrapper';
-import GetQuotesbyOwnerWrapper from '../display/middleware/GetQuotesbyOwnerWrapper';
-import GetAllQuotesWrapper from '../display/middleware/GetAllQuotesWrapper';
-import { GetMostRecentQuoteWrapper } from '../display/middleware/GetMostRecentQuoteWrapper';
-import SetQuoteWrapper from '../display/middleware/SetQuoteWrapper';
     
+// declaring components for lazy loading
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let GetCurrentQuoteWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let GetAllAuthorsWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let GetQuotesbyOwnerWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let GetAllQuotesWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let GetMostRecentQuoteWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let SetQuoteWrapper  :LazyExoticComponent<ComponentType<any>>|undefined = undefined
 
 export interface ApiHookWrapperProps extends CommonWithHookProps{
         apiName:FunctionNameRead | FunctionNameWrite, // the name of the smart contract function to call
@@ -26,6 +36,20 @@ export interface ApiHookWrapperProps extends CommonWithHookProps{
     //    export default function ApiHookWrapper({apiName,refreshQuote,SetRefreshQuote,SetDisplayQuote}:ApiHookWrapperProps)
     export default function ApiHookWrapper({apiName,...rest}:ApiHookWrapperProps)
     {
+
+      useEffect(() => {
+        // lazy loading all component with lazyRetry to avoid chunk errors
+                    
+        GetCurrentQuoteWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ '@/components/quotes/display/middleware/GetCurrentQuoteWrapper'), "GetCurrentQuoteWrapper"));
+        GetAllAuthorsWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllAuthorsWrapper" */ '@/components/quotes/display/middleware/GetAllAuthorsWrapper'), "GetAllAuthorsWrapper"));
+        GetAllQuotesWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetAllQuotesWrapper" */ '@/components/quotes/display/middleware/GetAllQuotesWrapper'), "GetAllQuotesWrapper"));
+        GetQuotesbyOwnerWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetQuotesbyOwnerWrapper" */ '@/components/quotes/display/middleware/GetQuotesbyOwnerWrapper'), "GetQuotesbyOwnerWrapper"));
+        GetMostRecentQuoteWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetMostRecentQuoteWrapper" */ '@/components/quotes/display/middleware/GetMostRecentQuoteWrapper'), "GetMostRecentQuoteWrapper"));
+        SetQuoteWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "SetQuoteWrapper" */ '@/components/quotes/display/middleware/SetQuoteWrapper'), "SetQuoteWrapper"));
+
+      },[])
+
+
            
             return(
                 <>
@@ -33,22 +57,88 @@ export interface ApiHookWrapperProps extends CommonWithHookProps{
                     switch (apiName) {
                     
                       case 'getQuote':
-                        return <GetCurrentQuoteWrapper {...rest } />
+                        return(
+                          <>
+                                  {/* display spinner while lazy loading component  */ }
+                                 <Suspense fallback={ // display spinner until component is loaded
+                                      <div className="spinner-border text-warning" role="status">
+                                      <span className="visually-hidden">Loading...</span>
+                                      </div>}
+                                      >
+                                          { GetCurrentQuoteWrapper!= undefined && <GetCurrentQuoteWrapper {...rest }/>}
+                                  </Suspense>
+                          </>
+                              )
                       
                       case 'getAllAuthors':
-                        return <GetAllAuthorsWrapper {...rest } /> 
+                        return(
+                          <>
+                                  {/* display spinner while lazy loading component  */ }
+                                 <Suspense fallback={ // display spinner until component is loaded
+                                      <div className="spinner-border text-warning" role="status">
+                                      <span className="visually-hidden">Loading...</span>
+                                      </div>}
+                                      >
+                                          { GetAllAuthorsWrapper!= undefined && <GetAllAuthorsWrapper {...rest }/>}
+                                  </Suspense>
+                          </>
+                              )
 
                       case 'getAllQuotes':
-                          return <GetAllQuotesWrapper {...rest } /> 
+                        return(
+                          <>
+                                  {/* display spinner while lazy loading component  */ }
+                                 <Suspense fallback={ // display spinner until component is loaded
+                                      <div className="spinner-border text-warning" role="status">
+                                      <span className="visually-hidden">Loading...</span>
+                                      </div>}
+                                      >
+                                          { GetAllQuotesWrapper!= undefined && <GetAllQuotesWrapper {...rest }/>}
+                                  </Suspense>
+                          </>
+                              )
                       
                       case 'getQuotesbyOwner': case 'getQuotesbyOwnerList':
-                        return <GetQuotesbyOwnerWrapper {...rest }/>                         
+                        return(
+                          <>
+                                  {/* display spinner while lazy loading component  */ }
+                                 <Suspense fallback={ // display spinner until component is loaded
+                                      <div className="spinner-border text-warning" role="status">
+                                      <span className="visually-hidden">Loading...</span>
+                                      </div>}
+                                      >
+                                          { GetQuotesbyOwnerWrapper!= undefined && <GetQuotesbyOwnerWrapper {...rest }/>}
+                                  </Suspense>
+                          </>
+                              )
 
                       case 'getMostRecentQuote':
-                          return <GetMostRecentQuoteWrapper {...rest } /> 
+                        return(
+                          <>
+                                  {/* display spinner while lazy loading component  */ }
+                                 <Suspense fallback={ // display spinner until component is loaded
+                                      <div className="spinner-border text-warning" role="status">
+                                      <span className="visually-hidden">Loading...</span>
+                                      </div>}
+                                      >
+                                          { GetMostRecentQuoteWrapper!= undefined && <GetMostRecentQuoteWrapper {...rest }/>}
+                                  </Suspense>
+                          </>
+                              )
 
                       case 'setQuote':
-                            return <SetQuoteWrapper {...rest } />
+                        return(
+                          <>
+                                  {/* display spinner while lazy loading component  */ }
+                                 <Suspense fallback={ // display spinner until component is loaded
+                                      <div className="spinner-border text-warning" role="status">
+                                      <span className="visually-hidden">Loading...</span>
+                                      </div>}
+                                      >
+                                          { SetQuoteWrapper!= undefined && <SetQuoteWrapper {...rest }/>}
+                                  </Suspense>
+                          </>
+                              )
 
                       default:
                         return null

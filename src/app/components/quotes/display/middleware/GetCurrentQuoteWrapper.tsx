@@ -40,7 +40,7 @@ export default function GetCurrentQuoteWrapper({refreshResult,SetRefreshResult,S
         // the smart contract returned data
         if(fetchedData != undefined) 
         //if (fetchedData is ResultGetQuoteType)
-        {
+        {DisplayCurrentQuote
             manageResult(fetchedData as ResultGetQuoteType)
         }
     }

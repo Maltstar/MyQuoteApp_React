@@ -1,14 +1,19 @@
-import Section from "@/app/ui_menu/Section";
+// import Section from "@/app/ui_menu/Section";
 import {SectionProps} from "@/app/ui_menu/Section";
-import { Suspense, useState } from 'react';
+import { Suspense, useState, lazy, LazyExoticComponent, ComponentType, useEffect } from 'react';
 
 import {ApiHookWrapperProps} from '@/components/quotes/common_api/ApiHookWrapper';
 import {DisableProps} from  '@/components/quotes/display/middleware/type';
 
-import ApiHookWrapper from '@/components/quotes/common_api/ApiHookWrapper'
+//import ApiHookWrapper from '@/components/quotes/common_api/ApiHookWrapper'
 import TextArea from "@/app/components/style/TextArea";
+import { lazyRetry } from "@/lib/utils";
 
-//const ApiHookWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "GetCurrentQuote" */ '@/components/quotes/common_api/ApiHookWrapper'), "ApiHookWrapper"));
+// declaring components for lazy loading 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let ApiHookWrapper:LazyExoticComponent<ComponentType<any>>|undefined = undefined
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let Section:LazyExoticComponent<ComponentType<any>>|undefined = undefined
 
 
 interface FunctionsProps extends DisableProps
@@ -64,7 +69,17 @@ export default function Functions({disable,functionName}:FunctionsProps)
         SetDisplayResult(true)
         // a user made a request to display the quote
         SetRefreshResult(true)
-    } 
+        // import component dynamically
+        ApiHookWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "ApiHookWrapper" */ '@/components/quotes/common_api/ApiHookWrapper'), "ApiHookWrapper"));
+    }
+    
+    useEffect(() => {
+
+        // import component dynamically
+        Section = lazy(() => lazyRetry(() => import(/* webpackChunkName: "ApiHookWrapper" */ '@/app/ui_menu/Section'), "Section"));
+
+
+    },[])
 
 
 
@@ -102,36 +117,52 @@ export default function Functions({disable,functionName}:FunctionsProps)
 
                 case 'getQuote': case 'getAllAuthors':  case 'getAllQuotes': case 'getMostRecentQuote':
                     return (
-                    <Section {...sectionProps}>
+                    <> 
                         <Suspense fallback={ // display spinner until component is loaded
-                    <div className="spinner-border text-warning" role="status">
-                    <span className="visually-hidden">Loading...</span>
-                    </div>}
-                    >
-                        { displayResult && <ApiHookWrapper {...ChildrenPropsRead} />}
-                    </Suspense>
-                    </Section>
+                            <div className="spinner-border text-warning" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                            </div>}
+                            >
+                                {Section != undefined &&  
+                                <Section {...sectionProps}> 
+                                    <Suspense fallback={ // display spinner until component is loaded
+                                    <div className="spinner-border text-warning" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                    </div>}
+                                    >
+                                        { displayResult && ApiHookWrapper !=undefined && <ApiHookWrapper {...ChildrenPropsRead} />}
+                                    </Suspense>
+                                </Section>}
+                        </Suspense>
+                    </>
+                  
                 )
                 
                 
                 
                 case 'getQuotesbyOwner':
                     return (// interface for GetQuotesbyOwner
-                        <>
+                        
                             <div id="menu_get_author">
                                 <input id="author_input" type="text" alt="text field to enter the author" placeholder="type the author address"/>
-                                <Section {...sectionProps}>
-                                    
-                                        <Suspense fallback={ // display spinner until component is loaded
-                                        <div className="spinner-border text-warning" role="status">
-                                        <span className="visually-hidden">Loading...</span>
-                                        </div>}
-                                        >
-                                            { displayResult && <ApiHookWrapper {...ChildrenPropsRead}  />}
-                                        </Suspense>                          
-                                </Section>
+                                <Suspense fallback={ // display spinner until component is loaded
+                                <div className="spinner-border text-warning" role="status">
+                                <span className="visually-hidden">Loading...</span>
+                                </div>}
+                                >
+                                    {Section != undefined &&  
+                                    <Section {...sectionProps}> 
+                                            <Suspense fallback={ // display spinner until component is loaded
+                                            <div className="spinner-border text-warning" role="status">
+                                            <span className="visually-hidden">Loading...</span>
+                                            </div>}
+                                            >
+                                                { displayResult && ApiHookWrapper !=null && <ApiHookWrapper {...ChildrenPropsRead}  />}
+                                            </Suspense>                                            
+                                    </Section>}
+                                </Suspense> 
                             </div>
-                        </>)
+                    )
 
                 case 'getQuotesbyOwnerList':
                     return (
@@ -140,7 +171,7 @@ export default function Functions({disable,functionName}:FunctionsProps)
                         <span className="visually-hidden">Loading...</span>
                         </div>}
                         >
-                            <ApiHookWrapper {...OwnerListChildrenProps}  />
+                            {ApiHookWrapper !=null && <ApiHookWrapper {...OwnerListChildrenProps}  />}
                         </Suspense>
                         )
 
@@ -148,21 +179,28 @@ export default function Functions({disable,functionName}:FunctionsProps)
                 case 'setQuote':
                    return(
                     <div id="write_quote_menu">
-                        <Section {...sectionProps}>
-                           
-                            <Suspense fallback={ // display spinner until component is loaded
-                                <div className="spinner-border text-warning" role="status">
-                                <span className="visually-hidden">Loading...</span>
-                                </div>}
-                                >
-                                    { displayResult && <ApiHookWrapper {...ChildrenPropsRead} />}
-                            </Suspense>
+                        <Suspense fallback={ // display spinner until component is loaded
+                        <div className="spinner-border text-warning" role="status">
+                        <span className="visually-hidden">Loading...</span>
+                        </div>}
+                        >
+                            {Section != undefined &&  
+                            <Section {...sectionProps}> 
+                    
+                                <Suspense fallback={ // display spinner until component is loaded
+                                    <div className="spinner-border text-warning" role="status">
+                                    <span className="visually-hidden">Loading...</span>
+                                    </div>}
+                                    >
+                                        { displayResult && ApiHookWrapper !=null && <ApiHookWrapper {...ChildrenPropsRead} />}
+                                </Suspense>
 
-                             {/* https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/*/}
-                            {/* <div className="grow-wrap">  */}
-                            <TextArea placeholder='enter your quote, e.g “But I know, somehow, that only when it is dark enough can you see the stars.” ― Martin Luther King, Jr.'/>
+                                {/* https://css-tricks.com/the-cleanest-trick-for-autogrowing-textareas/*/}
+                                {/* <div className="grow-wrap">  */}
+                                <TextArea placeholder='enter your quote, e.g “But I know, somehow, that only when it is dark enough can you see the stars.” ― Martin Luther King, Jr.'/>
 
-                        </Section>
+                            </Section>}
+                        </Suspense>
                      </div>
                    )
 

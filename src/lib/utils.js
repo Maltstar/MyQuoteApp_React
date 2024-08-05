@@ -39,9 +39,10 @@ export const default_bytes20 ="0x0000000000000000000000000000000000000000"
  * @returns 
  */
 export const lazyRetry = function(componentImport, name) {
+    //console.log("lazyRetry - typeof window", typeof window);
     return new Promise((resolve, reject) => {
-        if(typeof window !== "undefined")
-        {
+        // if(typeof window !== "undefined")
+        // {
             // check if the window has already been refreshed
             const hasRefreshed = JSON.parse(
                 // eslint-disable-next-line no-undef
@@ -62,7 +63,7 @@ export const lazyRetry = function(componentImport, name) {
                 reject(error); // Default error behaviour as already tried refresh
             });
             
-        }
+        //}
 
     });
        

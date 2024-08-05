@@ -75,14 +75,6 @@ export default function SetQuoteWrapper({SetDisplayResult,SetRefreshResult,refre
                         }
                     )
 
-                    //  const write = functionWrite.writeFunction(
-                    //     {
-                    //         abi,
-                    //         address:functionWrite.param.address,
-                    //         functionName:functionWrite.param.functionName,
-                    //         args:[functionWrite.param.args]
-                    //     }
-                    // )
 
                     console.log('SetQuoteWrapper result',result);
                     

@@ -16,11 +16,11 @@ function Logo({text_link,link,image_src}:LogoProps)
 
         <div className="logo">
 
-        <Image className="image_logo" src={image_src} alt={`${text_link} logo`} width={32} height={32}/>
+            <Image className="image_logo" src={image_src} alt={`${text_link} logo`} width={32} height={32}/>
 
-        <Link className="nextlink" href={link}>
-            {text_link}
-        </Link>
+            <Link className="nextlink" href={link}>
+                {text_link}
+            </Link>
         </div>
     )
     

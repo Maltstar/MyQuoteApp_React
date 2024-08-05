@@ -18,9 +18,6 @@
                         
                             <h5 className="title_author">Author {position}: {address}
                             </h5>
-                        {/* <button onClick={() => SetActivateReadQuote(false)}>
-                            clear authors
-                        </button> */}
                     </article>
 
 

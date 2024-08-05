@@ -24,6 +24,7 @@
       "@/hooks/*": ["./src/app/components/hooks/*"],
       "@/config/*":["./src/config/*"],
       "@/context/*":["./src/context/*"],
+      "@/layout/*":["./src/app/layout/*"],
       "@/lib/*": ["src/lib/*"],
       "@/gen/*": ["./src/gen/*"],
       "@/public/*":["./public/*"],
