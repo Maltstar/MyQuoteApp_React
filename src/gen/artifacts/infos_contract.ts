@@ -1,4 +1,4 @@
-{
+const artifact = {
     "address": "0x6a4d382239f8bab7a481e59a0a4a67ca33d3bbf2",
     "abi": [
         {
@@ -95,4 +95,4 @@
             "type": "function"
         }
     ]
-}
+} as const; export default artifact;
