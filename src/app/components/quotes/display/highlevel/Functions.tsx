@@ -70,13 +70,15 @@ export default function Functions({disable,functionName}:FunctionsProps)
         // a user made a request to display the quote
         SetRefreshResult(true)
         // import component dynamically
-        ApiHookWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "ApiHookWrapper" */ '@/components/quotes/common_api/ApiHookWrapper'), "ApiHookWrapper"));
+        //ApiHookWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "ApiHookWrapper" */ '@/components/quotes/common_api/ApiHookWrapper'), "ApiHookWrapper"));
     }
     
     useEffect(() => {
 
         // import component dynamically
         Section = lazy(() => lazyRetry(() => import(/* webpackChunkName: "ApiHookWrapper" */ '@/app/ui_menu/Section'), "Section"));
+        ApiHookWrapper = lazy(() => lazyRetry(() => import(/* webpackChunkName: "ApiHookWrapper" */ '@/components/quotes/common_api/ApiHookWrapper'), "ApiHookWrapper"));
+
 
 
     },[])
